@@ -1,7 +1,7 @@
 <footer class="footer">
-  <p>&copy; <?= date('Y') ?> App 2.0</p>
+  <p>&copy; <?= date('Y') ?> BattleCouncil.com - v2.0 - highly beta</p>
 </footer>
 
-<script src="/assets/js/app.js"></script>
+<script src="../js/app.js"></script>
 </body>
 </html>
