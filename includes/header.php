@@ -44,10 +44,21 @@
       <i class="fa-solid fa-house"></i>
     </a>
 
-    <!-- RIGHT: LOGIN -->
-    <a href="/login.php" class="nav-login">
-      <i class="fa-solid fa-user"></i>
-    </a>
+    <!-- RIGHT: LOGIN / USER -->
+    <?php if (isLoggedIn()): ?>
+        <a href="#" class="nav-login">
+        <!-- Future use
+          <a href="/member_dashboard.php" class="nav-login">
+        -->
+            <i class="fa-solid fa-user"></i>
+            <?= e($_SESSION['username'] ?? 'User') ?>
+        </a>
+    <?php else: ?>
+        <a href="/login.php" class="nav-login">
+            <i class="fa-solid fa-user"></i>
+            Login
+        </a>
+    <?php endif; ?>
 
   </div>
 
@@ -59,6 +70,7 @@
     <a href="#">🪖 Squad Editor</a>
     <a href="#">🐲 Matrix Data</a>
     <a href="#">👥 Members</a>
+    <a href="#">Log out</a>
 
     <hr>
 

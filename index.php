@@ -15,8 +15,7 @@ requireLogin();
   <div class="grid">
     
     <div class="card">
-      <h3>Card Title</h3>
-      <p>Quick content</p>
+      <?php include __DIR__ . '/components/cards/welcome.php'; ?>
     </div>
 
     <div class="card">

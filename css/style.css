@@ -112,6 +112,19 @@ body {
   cursor: pointer;
 }
 
+.nav-login {
+    display: flex;
+    align-items: center;
+    gap: 6px;       /* space between icon and text */
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav-login i {
+    font-size: 1.1rem;
+}
+
 /* HAMBURGER MOBILE MENU */
 .mobile-menu {
   max-width: 1230px;
