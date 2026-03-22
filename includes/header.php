@@ -15,6 +15,16 @@
 
 <body>
 
+<!-- future login directed menu
+<?php //if (isLoggedIn()): ?>
+    <a href="/member_dashboard.php">Dashboard</a>
+    <a href="/logout.php">Logout</a>
+<?php //else: ?>
+    <a href="/login.php">Login</a>
+    <a href="/register.php">Register</a>
+<?php //endif; ?>
+-->
+
 <!-- HEADER IMAGE -->
 <div class="site-header">
   <img src="<?= BASE_URL ?>/images/site-header.png" alt="Battle Council">
@@ -45,10 +55,10 @@
   <div class="mobile-menu" id="mobileMenu">
     <a href="/index.php"><i class="fa-solid fa-house"></i> Home</a>
     <a href="/monster_hunt.php">⚔️ Monster Hunt</a>
-    <a href="/monster_editor.php">👹 Monster Editor</a>
-    <a href="/squad_editor.php">🪖 Squad Editor</a>
-    <a href="/matrix_data.php">🐲 Matrix Data</a>
-    <a href="/member_dashboard.php">👥 Members</a>
+    <a href="#">👹 Monster Editor</a>
+    <a href="#">🪖 Squad Editor</a>
+    <a href="#">🐲 Matrix Data</a>
+    <a href="#">👥 Members</a>
 
     <hr>
 

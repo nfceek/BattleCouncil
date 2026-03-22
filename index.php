@@ -1,6 +1,16 @@
-<?php require_once __DIR__ . '/config/config.php'; ?>
-<?php include __DIR__ . '/includes/header.php'; ?>
+<?php 
 
+require_once __DIR__ . '/config/config.php'; 
+include __DIR__ . '/includes/header.php'; 
+
+/* page protected
+requireLogin(); 
+  if(hasRole('veteran')){
+      // show veteran+ content
+  }
+*/
+
+  ?>
 <main class="container">
   <div class="grid">
     

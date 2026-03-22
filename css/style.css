@@ -161,3 +161,107 @@ body {
     display: none;
   }
 }
+
+/* =========================
+   AUTH FORMS
+   ========================= */
+/* TABS (Login/Register) */
+.auth-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-tabs button {
+    padding: 0.5rem 1.2rem;
+    border: 2px solid #4b0082;
+    border-radius: 6px;
+    background: #12151b;       /* dark background different from form button */
+    color: #ccc;               /* inactive color */
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.auth-tabs button.active {
+    background: #4b0082;       /* active tab background */
+    color: #fff;
+    cursor: default;
+}
+
+/* FORM BUTTONS */
+form.auth-form button {
+    margin-top: 20px;
+    align-self: center;
+    padding: 10px 25px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    background: #6a00b3;       /* distinct from tabs */
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+form.auth-form button:hover {
+    background: #8500d1;
+}
+.auth-tabs button:hover {
+    background: #6a00b3;
+}
+
+form.auth-form {
+    max-width: 360px;
+    margin: 0 auto 2rem auto; /* centers form, adds bottom spacing */
+    display: flex;
+    flex-direction: column;
+}
+
+form.auth-form label {
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+form.auth-form input {
+    padding: 8px 12px;
+    margin-bottom: 15px; /* space between input fields */
+    border-radius: 6px;
+    border: 1px solid #555;
+    font-size: 1rem;
+    width: 100%;
+    background: #1a1d24;
+    color: #eaecef;
+}
+
+form.auth-form button {
+    margin-top: 20px; /* space below inputs */
+    align-self: center; /* center button */
+    padding: 10px 25px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    background: #4b0082;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+form.auth-form button:hover {
+    background: #6a00b3;
+}
+
+/* Hide the alternative form switch by default */
+#switchToRegister,
+#switchToLogin {
+    display: none;
+}
+
+/* Show the correct switch button when its form is active */
+form#loginForm.active #switchToRegister {
+    display: block;
+}
+
+form#registerForm.active #switchToLogin {
+    display: block;
+}
