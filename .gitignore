@@ -1,0 +1,6 @@
+*.log
+/testing
+/admin
+/old
+/images/old
+/includes/old
