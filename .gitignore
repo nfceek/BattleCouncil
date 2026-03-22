@@ -3,4 +3,8 @@
 /admin
 /old
 /images/old
+/images/monsters/old
+/clans/old
 /includes/old
+/config/*
+/config/config.php
