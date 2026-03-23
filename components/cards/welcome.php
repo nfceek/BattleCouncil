@@ -93,10 +93,7 @@
         }
         </style>
 
-<div class="bc-container">
-    <div class="bc-grid">
-        <div class="bc-card">
-            <div class="bc-img">
+
                     <video src="/images/trent/Trent_the_Elder_generated.mp4" 
                     alt="Battle Council Video"
                     controls

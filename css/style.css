@@ -278,3 +278,73 @@ form#loginForm.active #switchToRegister {
 form#registerForm.active #switchToLogin {
     display: block;
 }
+
+.bc-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+    .bc-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 900px) {
+    .bc-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.bc-card {
+    background: #1a1d24;
+    border-radius: 12px;
+    overflow: hidden;                 /* prevents bleed */
+    
+    display: flex;                    /* keep layout */
+    flex-direction: column;
+
+    text-decoration: none;            /* remove link underline */
+    color: inherit;                   /* remove link color */
+}
+
+/* Hover behavior */
+.bc-card:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.bc-img {
+    width: 100%;
+    height: 220px;        /* fixed height instead of max-height */
+    overflow: hidden;
+}
+
+.bc-img video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    max-height: 220px;          /* 🔑 prevents giant takeover */
+}
+
+.bc-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;    /* 🔑 fills container and crops */
+    display: block;
+}
+
+.future-header {
+    font-weight: bold;
+    color: #888;          /* slightly softer gray */
+    opacity: 0.85;        /* subtle fade */
+}
+
+.future {
+    font-weight: 300;
+    font-style: italic;
+    color: #888;          /* slightly softer gray */
+    opacity: 0.85;        /* subtle fade */
+}
