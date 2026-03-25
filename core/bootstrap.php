@@ -1,10 +1,16 @@
 <?php
 
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../helpers/functions.php';
+define('ROOT_PATH', dirname(__DIR__));
 
-// services
-require_once __DIR__ . '/../services/AttackService.php';
+// CONFIG (session + DB)
+require_once ROOT_PATH . '/config/config.php';
 
-// controllers
-require_once __DIR__ . '/../controllers/MonsterHuntController.php';
+// ✅ HELPERS FIRST (this defines fetchAll)
+require_once ROOT_PATH . '/helpers/functions.php';
+
+// SERVICES
+require_once ROOT_PATH . '/services/MonsterHuntService.php';
+require_once ROOT_PATH . '/services/AttackEngine.php';
+
+// CONTROLLERS (these depend on helpers + services)
+require_once ROOT_PATH . '/controllers/MonsterHuntController.php';

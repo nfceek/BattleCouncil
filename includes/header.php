@@ -7,7 +7,7 @@
 
   <title><?= $pageTitle ?? APP_NAME ?></title>
 
-  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
+  <link rel="stylesheet" href="<?= BASE_URL ?>/../assets/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='https://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
@@ -40,7 +40,7 @@
     </button>
 
     <!-- CENTER: HOME -->
-    <a href="/index.php" class="nav-home">
+    <a href="<?= BASE_URL ?>/index.php" class="nav-home">
       <i class="fa-solid fa-house"></i>
     </a>
 
@@ -64,8 +64,8 @@
 
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
-    <a href="/index.php"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="/monster_hunt.php">⚔️ Monster Hunt</a>
+    <a href="<?= BASE_URL ?>/index.php"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="<?= BASE_URL ?>/monster_hunt.php">⚔️ Monster Hunt</a>
     <a href="#">👹 Monster Editor</a>
     <a href="#">🪖 Squad Editor</a>
     <a href="#">🐲 Matrix Data</a>
@@ -75,7 +75,7 @@
     <hr>
 
     <!-- AUTH -->
-    <a href="/login.php"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
-    <a href="/register.php"><i class="fa-solid fa-user-plus"></i> Register</a>
+    <a href="<?= BASE_URL ?>/login.php"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+    <a href="<?= BASE_URL ?>/register.php"><i class="fa-solid fa-user-plus"></i> Register</a>
   </div>
 </nav>

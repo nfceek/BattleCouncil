@@ -1,7 +1,32 @@
-<?php 
+<?php
+// ==============================
+// BOOTSTRAP / CONFIG / HELPERS
+// ==============================
+require_once __DIR__ . '/core/bootstrap.php';      // sessions, environment
+require_once __DIR__ . '/config/config.php';      // BASE_URL, DB
+require_once __DIR__ . '/helpers/functions.php';  // e(), isLoggedIn(), hasRole(), fetchAll()
 
-require_once __DIR__ . '/config/config.php'; 
-include __DIR__ . '/includes/header.php'; 
+// ==============================
+// SERVICES & CONTROLLERS
+// ==============================
+require_once __DIR__ . '/services/MonsterHuntService.php';
+require_once __DIR__ . '/controllers/MonsterHuntController.php';
+
+// ==============================
+// CONTROLLER DATA
+// ==============================
+$data = monsterHuntController($pdo);   // returns array of $squads, $creatures, $attackGroups etc.
+extract($data);
+
+// ==============================
+// PAGE SETTINGS
+// ==============================
+$pageClass = 'page-index';
+
+// ==============================
+// HEADER
+// ==============================
+require_once __DIR__ . '/includes/header.php';
 
 /* page protected
 requireLogin(); 
@@ -17,7 +42,7 @@ requireLogin();
           
           <div class="bc-card">
             <div class="bc-img">
-              <video src="/images/trent/Trent_the_Elder_generated.mp4" 
+              <video src="/../images/trent/Trent_the_Elder_generated.mp4" 
                 alt="Battle Council Video"
                 controls
                 autoplay
@@ -148,5 +173,12 @@ requireLogin();
       <row style="height:30px;" />
   </main>
 
+<script>
+window.attackGroups = <?= json_encode($attackGroups ?? [], JSON_UNESCAPED_UNICODE) ?>;
+</script>
 
-<?php include __DIR__ . '/includes/footer.php'; ?>
+<?php
+// ==============================
+// FOOTER
+// ==============================
+require_once __DIR__ . '/includes/footer.php';
