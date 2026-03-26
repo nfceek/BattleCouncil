@@ -30,6 +30,7 @@ if (!function_exists('hasRole')) {
     function hasRole($role) {
         $roles = ['officer'=>1,'veteran'=>2,'superior'=>3,'admin'=>4];
         return isset($_SESSION['role']) &&
+               isset($roles[$_SESSION['role']]) &&
                $roles[$_SESSION['role']] >= $roles[$role];
     }
 }
@@ -39,43 +40,63 @@ if (!function_exists('hasRole')) {
 // ==============================
 
 if (!function_exists('fetchAll')) {
-    /**
-     * Execute a prepared statement and fetch all results as associative array
-     */
-    /*
+
     function fetchAll(PDO $pdo, string $sql, array $params = []): array {
         $stmt = $pdo->prepare($sql);
+
+        preg_match_all('/\?/', $sql, $matches);
+        $expected = count($matches[0]);
+        $actual = count($params);
+
+        if ($expected !== $actual) {
+            echo "<pre style='color:red'>";
+            echo "PARAM MISMATCH\n";
+            echo "Expected: $expected\n";
+            echo "Actual: $actual\n\n";
+            echo "SQL:\n$sql\n\n";
+            print_r($params);
+            echo "</pre>";
+            exit;
+        }
+
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    */
-
-    function fetchAll(PDO $pdo, string $sql, array $params = []): array {
-    $stmt = $pdo->prepare($sql);
-
-    try {
-        $stmt->execute($params);
-    } catch (PDOException $e) {
-        echo "<pre>";
-        echo "SQL:\n$sql\n\n";
-        echo "Params:\n";
-        print_r($params);
-        echo "</pre>";
-        throw $e;
-    }
-
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-}
+
 
 if (!function_exists('fetchOne')) {
-    /**
-     * Execute a prepared statement and fetch a single row
-     */
+
     function fetchOne(PDO $pdo, string $sql, array $params = []): ?array {
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
+
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ?: null;
+    }
+}
+
+// ==============================
+// DISPLAY HELPERS
+// ==============================
+
+if (!function_exists('shortNum')) {
+    function shortNum($n) {
+        if (!is_numeric($n)) return $n;
+
+        if ($n >= 1000000000) return round($n / 1000000000, 2) . 'B';
+        if ($n >= 1000000)    return round($n / 1000000, 2) . 'M';
+        if ($n >= 1000)       return round($n / 1000, 2) . 'K';
+
+        return number_format($n);
+    }
+}
+
+if (!function_exists('bonusDot')) {
+    function bonusDot($pct) {
+        if ($pct == 0) return "dot-green";
+        if ($pct > 50) return "dot-red";
+        return "dot-yellow";
     }
 }

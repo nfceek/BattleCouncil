@@ -6,15 +6,14 @@ function monsterHuntController($pdo) {
        Inputs
     ------------------------------*/
     $rarity = $_GET['rarity'] ?? 'Common';
-    if(!in_array($rarity, ['Common','Rare'])) $rarity = 'Common';
+    if (!in_array($rarity, ['Common','Rare'])) $rarity = 'Common';
 
-    $selectedSquad = $_GET['squadID'] ?? '';
+    $selectedSquad = isset($_GET['squadID']) ? (int)$_GET['squadID'] : 0;
     $playerLevel   = isset($_GET['playerLevel']) ? (int)$_GET['playerLevel'] : 6;
 
     $useFighters  = isset($_GET['useFighters']);
     $useCreatures = isset($_GET['useCreatures']);
     $buildPlan    = isset($_GET['buildPlan']);
-
 
     /* -----------------------------
        Squads
@@ -26,45 +25,143 @@ function monsterHuntController($pdo) {
         ORDER BY name, level
     ", [$rarity]);
 
-
     /* -----------------------------
-       Monsters
+       Squad + Monsters (FULL DATA)
     ------------------------------*/
     $monsters = [];
+    $squadStats = null;
 
-    if ($buildPlan && $selectedSquad) {
+    if ($selectedSquad > 0) {
+
+        $stats = fetchAll($pdo, "
+            SELECT name, level, valor, frags, xp, rarity, image_base
+            FROM monster_squad
+            WHERE squadID = ? AND rarity = ?
+        ", [$selectedSquad, $rarity]);
+
+        $squadStats = $stats[0] ?? null;
+
         $monsters = fetchAll($pdo, "
-            SELECT m.monsterID, m.name, m.type, m.health, m.strength
+            SELECT 
+                m.monsterID,
+                m.name,
+                m.type,
+                sm.quantity,
+                m.health,
+                m.strength,
+
+                (sm.quantity * m.health)   AS total_health,
+                (sm.quantity * m.strength) AS total_strength,
+
+                COALESCE(MAX(CASE WHEN mb.bonus_against='Mel' THEN mb.bonus_percent END),0) AS bonus_mel,
+                COALESCE(MAX(CASE WHEN mb.bonus_against='Mtd' THEN mb.bonus_percent END),0) AS bonus_mtd,
+                COALESCE(MAX(CASE WHEN mb.bonus_against='Rng' THEN mb.bonus_percent END),0) AS bonus_rng,
+                COALESCE(MAX(CASE WHEN mb.bonus_against='Fly' THEN mb.bonus_percent END),0) AS bonus_fly,
+                COALESCE(MAX(CASE WHEN mb.bonus_against='Oth' THEN mb.bonus_percent END),0) AS bonus_oth
+
             FROM squad_monster sm
             JOIN monster m ON m.monsterID = sm.monsterID
+            LEFT JOIN monster_bonus mb ON mb.monsterID = m.monsterID
             WHERE sm.squadID = ?
+            GROUP BY m.monsterID
+            ORDER BY total_strength DESC
         ", [$selectedSquad]);
     }
 
     $enemyType = $monsters[0]['type'] ?? null;
 
     /* -----------------------------
-       Creatures
+       Units (Creatures + Fighters)
     ------------------------------*/
+    $units = [];
     $creatures = [];
 
-    if ($buildPlan && $useCreatures) {
-        $creatures = fetchAll($pdo, "/* your creature query */", [$playerLevel]);
+    if ($buildPlan) {
 
-        foreach ($creatures as &$c) {
-            $c['bonuses'] = $c['bonuses'] ? json_decode($c['bonuses'], true) : [];
+        // --- Fighters ---
+        if ($useFighters) {
+            $fighters = getFighters($pdo, $playerLevel, 'Reg');
+            $units = array_merge($units, $fighters);
         }
-        unset($c);
+
+        // --- Creatures ---
+        if ($useCreatures) {
+
+            $creatures = fetchAll($pdo, "
+                SELECT 
+                    c.creatureID,
+                    c.name,
+                    c.type,
+                    c.level,
+                    c.strength,
+                    c.health,
+                    c.imgpath,
+                    JSON_OBJECTAGG(cb.bonus_against, cb.bonus_percent) AS bonuses
+                FROM creature c
+                LEFT JOIN creature_bonus cb ON cb.creatureID = c.creatureID
+                WHERE c.level <= ?
+                GROUP BY c.creatureID
+                ORDER BY c.strength DESC
+                LIMIT 12
+            ", [$playerLevel]);
+
+            $i = 1;
+            foreach ($creatures as &$c) {
+                $c['formation_no'] = $i++;
+                $c['bonuses'] = $c['bonuses'] ? json_decode($c['bonuses'], true) : [];
+            }
+            unset($c);
+
+            $units = array_merge($units, $creatures);
+        }
     }
 
-
     /* -----------------------------
-    Attack Groups
+       Attack Engine (REAL LOGIC)
     ------------------------------*/
-    $attackGroups = buildAttackGroups($creatures ?? [], $enemyType ?? null, 2);
+    $attackGroups = [];
+    $counterSignal = [];
+
+    if ($buildPlan && $selectedSquad > 0 && !empty($monsters)) {
+
+        $weak = ['Mel'=>0,'Mtd'=>0,'Rng'=>0,'Fly'=>0,'Oth'=>0];
+
+        foreach ($monsters as $m) {
+            foreach ($weak as $k => $_) {
+                $weak[$k] += $m["bonus_" . strtolower($k)];
+            }
+        }
+
+        foreach ($weak as $k => $v) {
+            $weak[$k] = round($v / max(count($monsters),1));
+            $counterSignal[$k] = $v == 0 ? 'green' : ($v > 50 ? 'red' : 'yellow');
+        }
+
+        $scores = [];
+
+        foreach ($units as $u) {
+
+            $score =
+                ($u['attack_vs_mel'] ?? $u['strength']) * (100 - $weak['Mel']) +
+                ($u['attack_vs_mtd'] ?? $u['strength']) * (100 - $weak['Mtd']) +
+                ($u['attack_vs_rng'] ?? $u['strength']) * (100 - $weak['Rng']) +
+                ($u['attack_vs_fly'] ?? $u['strength']) * (100 - $weak['Fly']);
+
+            $scores[] = $u + ['score' => $score];
+        }
+
+        usort($scores, fn($a,$b) => $b['score'] <=> $a['score']);
+
+        $groups = array_chunk(array_slice($scores, 0, 12), 1);
+
+        foreach ($groups as $g) {
+            $attackGroups[] = $g;
+            if (count($attackGroups) >= 4) break;
+        }
+    }
 
     /* -----------------------------
-    Return to View
+       Return
     ------------------------------*/
     return [
         'inputs' => [
@@ -77,9 +174,12 @@ function monsterHuntController($pdo) {
         ],
         'data' => [
             'squads' => $squads,
+            'monsters' => $monsters,
+            'squadStats' => $squadStats,
             'creatures' => $creatures,
             'enemyType' => $enemyType,
             'attackGroups' => $attackGroups,
+            'counterSignal' => $counterSignal
         ]
     ];
 }
