@@ -101,29 +101,29 @@ if (!function_exists('bonusDot')) {
     }
 }
 
-/* -----------------------------
-   Squad Image Resolution
-------------------------------*/
+function resolveSquadImage($squadStats) {
 
-if (!function_exists('resolveSquadImage')) {
-    function resolveSquadImage($squadStats) {
+    $base   = strtolower($squadStats['image_base'] ?? 'default');
+    $rarity = strtolower($squadStats['rarity'] ?? 'common');
+    $level  = (int)($squadStats['level'] ?? 1);
 
-        $base   = strtolower($squadStats['image_base'] ?? 'default');
-        $rarity = strtolower($squadStats['rarity'] ?? 'common');
-        $level  = (int)($squadStats['level'] ?? 1);
+    // filesystem base (REAL path)
+    $fsBase = $_SERVER['DOCUMENT_ROOT'] . '/battlecouncil';
 
-        $paths = [
-            "/images/monsters/{$base}_{$rarity}_lvl{$level}.png",
-            "/images/monsters/{$base}_{$rarity}.png",
-            "/images/monsters/{$base}.png"
-        ];
+    // browser path (what <img> uses)
+    $webBase = '/battlecouncil';
 
-        foreach ($paths as $path) {
-            if (file_exists($_SERVER['DOCUMENT_ROOT'] . $path)) {
-                return $path;
-            }
+    $paths = [
+        "/images/monsters/{$base}_{$rarity}_{$level}.png",
+        "/images/monsters/{$base}_{$rarity}.png",
+        "/images/monsters/{$base}.png"
+    ];
+
+    foreach ($paths as $path) {
+        if (file_exists($fsBase . $path)) {
+            return $webBase . $path;
         }
-
-        return '/images/monsters/default.png';
     }
+
+    return $webBase . "/images/monsters/default.png";
 }

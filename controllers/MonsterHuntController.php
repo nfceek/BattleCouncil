@@ -160,7 +160,24 @@ function monsterHuntController($pdo) {
     /* -----------------------------
        Image Resolution
     ------------------------------*/
-    $imagePath = resolveSquadImage($squadStats ?? []);
+    $imagePath = resolveSquadImage($squadStats ?? []);   
+    
+    /*     
+    echo '<pre>';
+    echo "=== EXTRACT CHECK ===\n";
+    //echo '<pre>'; print_r($data); exit;  
+    //var_dump($squads ?? null);
+    //var_dump($squadSelected ?? null);
+    var_dump($squadStats ?? null);
+    echo '</pre>';
+    
+    echo '<pre>';
+    echo "FINAL IMAGE PATH:\n";
+    var_dump($imagePath);
+    echo "EXISTS:\n";
+    var_dump(file_exists($_SERVER['DOCUMENT_ROOT'] . str_replace('/battlecouncil','',$imagePath)));
+    echo '</pre>';
+    */
 
     /* -----------------------------
        Final Return

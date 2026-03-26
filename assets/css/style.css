@@ -445,3 +445,247 @@ form#registerForm.active #switchToLogin {
     text-align: center;
     padding-bottom: 12px;
   }
+
+  /* FLEX WRAPPER */
+.squad-text-block-flex {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+/* IMAGE */
+.squad-image-container {
+    flex-shrink: 0;
+}
+
+.squad-img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+/* RIGHT SIDE */
+.squad-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* LINES */
+.squad-line {
+    line-height: 1.2;
+}
+
+.squad-line-top h3 {
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* middle spacing */
+.squad-line-middle {
+    margin: 4px 0;
+}
+
+/* bottom stats */
+.squad-line-bottom {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+/* counter pills */
+.counter-bar {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.counter {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+.counter.green { background: #1f7a1f; }
+.counter.yellow { background: #a88b00; }
+.counter.red { background: #8b1a1a; }
+
+/* ==============================
+   BASE BUTTON SYSTEM
+============================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    user-select: none;
+}
+
+/* ==============================
+   PRIMARY (Build Plan)
+============================== */
+.btn-primary {
+    background: linear-gradient(135deg, #2e7dff, #1b4fd8);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* slightly bigger for emphasis */
+.btn-build {
+    width: 100%;
+    margin-top: 6px;
+    font-size: 1rem;
+    padding: 12px;
+}
+
+/* ==============================
+   NAV BUTTONS (Prev / Next)
+============================== */
+/* NAV BUTTONS (lighter + more visible) */
+.btn-nav {
+    background: #2f2f2f;           /* lighter base */
+    color: #f1f1f1;                /* brighter text */
+    border: 1px solid #444;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+/* hover = lift + brighter */
+.btn-nav:hover {
+    background: #3a3a3a;
+    border-color: #555;
+    color: #ffffff;
+
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+}
+
+/* active = press */
+.btn-nav:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* ==============================
+   GROUP SWITCH LAYOUT
+============================== */
+.group-switch {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.group-switch .btn {
+    flex: 1;
+}
+
+/* ==============================
+   GRID WRAPPER
+============================== */
+.creature-grid {
+    margin-top: 12px;
+    overflow-x: auto;
+    border-radius: 10px;
+    padding-bottom: 20px;
+}
+
+/* ==============================
+   TABLE BASE
+============================== */
+.creature-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 520px;
+
+    background: #161616;
+    border: 1px solid #3a3a3a; /* stronger outer border */
+}
+
+/* ==============================
+   HEADERS
+============================== */
+.creature-table thead th {
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    padding: 6px 8px;
+    text-align: center;
+
+    background: #222;
+    color: #ddd;
+
+    border-bottom: 1px solid #555;  /* visible divider */
+    border-right: 1px solid #444;
+}
+
+/* first column */
+.creature-table thead th.col-label {
+    text-align: left;
+    min-width: 120px;
+}
+
+/* ==============================
+   BODY CELLS
+============================== */
+.creature-table td {
+    font-size: 0.8rem;
+    padding: 8px 6px;
+    text-align: center;
+
+    border-bottom: 1px solid #3f3f3f; /* stronger row lines */
+    border-right: 1px solid #333;
+}
+
+/* row labels */
+.creature-table td.row-label {
+    text-align: left;
+    font-weight: 600;
+    color: #ccc;
+
+    background: #202020;
+}
+
+/* ==============================
+   ROW STRIPING
+============================== */
+.creature-table tbody tr:nth-child(even) {
+    background: #1b1b1b;
+}
+
+/* ==============================
+   HOVER
+============================== */
+.creature-table tbody tr:hover {
+    background: #2a2a2a;
+}
+
+/* ==============================
+   LAST COLUMN CLEANUP
+============================== */
+.creature-table th:last-child,
+.creature-table td:last-child {
+    border-right: none;
+}
+
