@@ -25,27 +25,3 @@ function getAttacksByRarity($pdo, $rarity) {
 function getFighters($pdo, $playerLevel, $unitType) {
     return fetchAll($pdo, "/* your full query unchanged */", [$playerLevel, $unitType]);
 }
-
-/* -----------------------------
-   Image Resolver
-------------------------------*/
-function resolveSquadImage($squadStats) {
-
-    $base = strtolower($squadStats['image_base'] ?? 'default');
-    $rarity = strtolower($squadStats['rarity'] ?? 'common');
-    $level = (int)($squadStats['level'] ?? 1);
-
-    $paths = [
-        "/images/monsters/{$base}_{$rarity}_lvl{$level}.png",
-        "/images/monsters/{$base}_{$rarity}.png",
-        "/images/monsters/{$base}.png"
-    ];
-
-    foreach ($paths as $path) {
-        if (file_exists($_SERVER['DOCUMENT_ROOT'] . $path)) {
-            return $path;
-        }
-    }
-
-    return '/images/monsters/default.png';
-}

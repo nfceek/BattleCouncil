@@ -26,20 +26,18 @@ function monsterHuntController($pdo) {
     ", [$rarity]);
 
     /* -----------------------------
-       Squad + Monsters (FULL DATA)
+       Squad + Monsters
     ------------------------------*/
-    $monsters = [];
+    $monsters   = [];
     $squadStats = null;
 
     if ($selectedSquad > 0) {
 
-        $stats = fetchAll($pdo, "
-            SELECT name, level, valor, frags, xp, rarity, image_base
+        $squadStats = fetchOne($pdo, "
+            SELECT name, level, rarity, image_base, valor, frags, xp
             FROM monster_squad
-            WHERE squadID = ? AND rarity = ?
-        ", [$selectedSquad, $rarity]);
-
-        $squadStats = $stats[0] ?? null;
+            WHERE squadID = ?
+        ", [$selectedSquad]);
 
         $monsters = fetchAll($pdo, "
             SELECT 
@@ -78,13 +76,11 @@ function monsterHuntController($pdo) {
 
     if ($buildPlan) {
 
-        // --- Fighters ---
         if ($useFighters) {
             $fighters = getFighters($pdo, $playerLevel, 'Reg');
             $units = array_merge($units, $fighters);
         }
 
-        // --- Creatures ---
         if ($useCreatures) {
 
             $creatures = fetchAll($pdo, "
@@ -99,7 +95,7 @@ function monsterHuntController($pdo) {
                     JSON_OBJECTAGG(cb.bonus_against, cb.bonus_percent) AS bonuses
                 FROM creature c
                 LEFT JOIN creature_bonus cb ON cb.creatureID = c.creatureID
-                WHERE c.level <= ?
+                WHERE c.level = ?
                 GROUP BY c.creatureID
                 ORDER BY c.strength DESC
                 LIMIT 12
@@ -117,7 +113,7 @@ function monsterHuntController($pdo) {
     }
 
     /* -----------------------------
-       Attack Engine (REAL LOGIC)
+       Attack Engine
     ------------------------------*/
     $attackGroups = [];
     $counterSignal = [];
@@ -140,12 +136,13 @@ function monsterHuntController($pdo) {
         $scores = [];
 
         foreach ($units as $u) {
+            $base = $u['strength'] ?? 0;
 
             $score =
-                ($u['attack_vs_mel'] ?? $u['strength']) * (100 - $weak['Mel']) +
-                ($u['attack_vs_mtd'] ?? $u['strength']) * (100 - $weak['Mtd']) +
-                ($u['attack_vs_rng'] ?? $u['strength']) * (100 - $weak['Rng']) +
-                ($u['attack_vs_fly'] ?? $u['strength']) * (100 - $weak['Fly']);
+                ($u['attack_vs_mel'] ?? $base) * (100 - $weak['Mel']) +
+                ($u['attack_vs_mtd'] ?? $base) * (100 - $weak['Mtd']) +
+                ($u['attack_vs_rng'] ?? $base) * (100 - $weak['Rng']) +
+                ($u['attack_vs_fly'] ?? $base) * (100 - $weak['Fly']);
 
             $scores[] = $u + ['score' => $score];
         }
@@ -161,25 +158,31 @@ function monsterHuntController($pdo) {
     }
 
     /* -----------------------------
-       Return
+       Image Resolution
+    ------------------------------*/
+    $imagePath = resolveSquadImage($squadStats ?? []);
+
+    /* -----------------------------
+       Final Return
     ------------------------------*/
     return [
         'inputs' => [
-            'rarity' => $rarity,
+            'rarity'        => $rarity,
             'selectedSquad' => $selectedSquad,
-            'playerLevel' => $playerLevel,
-            'useFighters' => $useFighters,
-            'useCreatures' => $useCreatures,
-            'buildPlan' => $buildPlan,
+            'playerLevel'   => $playerLevel,
+            'useFighters'   => $useFighters,
+            'useCreatures'  => $useCreatures,
+            'buildPlan'     => $buildPlan,
         ],
         'data' => [
-            'squads' => $squads,
-            'monsters' => $monsters,
-            'squadStats' => $squadStats,
-            'creatures' => $creatures,
-            'enemyType' => $enemyType,
-            'attackGroups' => $attackGroups,
-            'counterSignal' => $counterSignal
+            'squads'        => $squads,
+            'monsters'      => $monsters,
+            'squadStats'    => $squadStats,
+            'creatures'     => $creatures,
+            'enemyType'     => $enemyType,
+            'attackGroups'  => $attackGroups,
+            'counterSignal' => $counterSignal,
+            'imagePath'     => $imagePath
         ]
     ];
 }

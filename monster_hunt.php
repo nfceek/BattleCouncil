@@ -65,16 +65,16 @@ requireLogin();
                         <!-- Squad Dropdown -->
                         <div class="squad-select" style="margin-bottom:10px;">
                             <label><strong>Choose Squad</strong></label>
-    <!-- Squad Dropdown -->
-    <select name="squadID">
-        <option value="">-- Choose Squad --</option>
-        <?php foreach ($squads as $squad): ?>
-            <option value="<?= $squad['squadID'] ?>"
-                <?= ($inputs['selectedSquad'] == $squad['squadID']) ? 'selected' : '' ?>>
-                <?= htmlspecialchars($squad['name']) ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
+                            <!-- Squad Dropdown -->
+                            <select name="squadID">
+                                <option value="">-- Choose Squad --</option>
+                                <?php foreach ($squads as $squad): ?>
+                                    <option value="<?= $squad['squadID'] ?>"
+                                        <?= ($inputs['selectedSquad'] == $squad['squadID']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($squad['name']) . " Lvl (" . $squad['level'] . ")" ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
 
                         <!-- Player Level -->
@@ -125,74 +125,166 @@ requireLogin();
                 </div>
 
                 <div class="bc-content">
-                    <?php if (!empty($monsters)): ?>
-                        <h4>Squad Monsters</h4>
-                        <div class="monster-grid">
-                            <?php foreach ($monsters as $monster): 
-                                $mel = $monster['bonus_mel'] ?? 0;
-                                $mtd = $monster['bonus_mtd'] ?? 0;
-                                $rng = $monster['bonus_rng'] ?? 0;
-                                $fly = $monster['bonus_fly'] ?? 0;
-                                $oth = $monster['bonus_oth'] ?? 0;
-                            ?>
-                                <details class="monster-row">
-                                    <summary class="monster-summary">
-                                        <span class="col col-name"><?= htmlspecialchars($monster['name']) ?> (<?= htmlspecialchars($monster['type']) ?>)</span>
-                                        <span class="col col-qty">Qty: <?= shortNum($monster['quantity'] ?? 1) ?></span>
-                                        <span class="col col-hlh">Hth: <?= shortNum($monster['health'] ?? 0) ?></span>
-                                        <span class="col col-str">Str: <?= shortNum($monster['strength'] ?? 0) ?></span>
-                                    </summary>
 
-                                    <div class="monster-calc">
-                                        <span class="bonus-col">
-                                            <span class="dot <?= bonusDot($mel) ?>" title="Mel <?= $mel ?>%">Mel</span>
-                                            <span class="dot <?= bonusDot($mtd) ?>" title="Mtd <?= $mtd ?>%">Mtd</span>
-                                            <span class="dot <?= bonusDot($rng) ?>" title="Rng <?= $rng ?>%">Rng</span>
-                                            <span class="dot <?= bonusDot($fly) ?>" title="Fly <?= $fly ?>%">Fly</span>
-                                            <span class="dot <?= bonusDot($oth) ?>" title="Other <?= $oth ?>%">Oth</span>
-                                        </span>
-                                    </div>
-                                </details>
-                            <?php endforeach; ?>
+                    <?php
+                    // init safety (prevents warnings)
+                    $monsterHealthList   = $monsterHealthList   ?? [];
+                    $monsterStrengthList = $monsterStrengthList ?? [];
+                    $monsterTotalHealth  = $monsterTotalHealth  ?? 0;
+                    $monsterTotalStrength= $monsterTotalStrength ?? 0;
+                    ?>
+
+                    <div class="inner-card">
+
+                        <!-- =========================
+                            SQUAD HEADER
+                        ========================== -->
+                        <div class="squad-image-container">
+                            <img src="<?= e($imagePath) ?>" class="squad-img" alt="<?= e($squadStats['name'] ?? '') ?>">
+                            <div class="squad-text-block">
+                                <div class="reward-text-top">
+                                    <h3>
+                                        <?= e($squadStats['rarity'] ?? '') ?>
+                                        <?= e($squadStats['name'] ?? '') ?>
+                                        | Lvl <?= (int)($squadStats['level'] ?? 0) ?>
+                                    </h3>
+                                </div>
+                                <div class="reward-text-middle">
+                                    <?php if (!empty($counterSignal)): ?>
+                                        <div class="counter-bar">
+                                            Damage Mods:
+                                            <?php foreach ($counterSignal as $t => $c): ?>
+                                                <span class="counter <?= e($c) ?>"><?= e($t) ?></span>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="reward-text-bottom">
+                                    Valor: <?= shortNum($squadStats['valor'] ?? 0) ?>
+                                    &nbsp;|&nbsp;
+                                    Frags: <?= shortNum($squadStats['frags'] ?? 0) ?>
+                                    &nbsp;|&nbsp;
+                                    XP: <?= shortNum($squadStats['xp'] ?? 0) ?>
+                                </div>
+
+                            </div>
                         </div>
 
-                        <?php if (!empty($attackGroups)): ?>
-                            <h4 style="margin-top:15px;">Creature Attack Options: <?= count($attackGroups) ?></h4>
-                            <div id="creatureDisplay"></div>
+                        <!-- =========================
+                            MONSTERS
+                        ========================== -->
+                        <?php if (!empty($monsters)): ?>
+                            <div class="monster-grid">
+                                <?php foreach ($monsters as $monster): ?>
+                                    <?php
+                                        $mel = $monster['bonus_mel'] ?? 0;
+                                        $mtd = $monster['bonus_mtd'] ?? 0;
+                                        $rng = $monster['bonus_rng'] ?? 0;
+                                        $fly = $monster['bonus_fly'] ?? 0;
+                                        $oth = $monster['bonus_oth'] ?? 0;
 
-                            <div class="group-switch" style="margin-top:10px;">
-                                <button id="prev">&lt; Prev</button>
-                                <button id="next">Next &gt;</button>
+                                        $health   = $monster['total_health'] ?? 0;
+                                        $strength = $monster['total_strength'] ?? 0;
+
+                                        $monsterHealthList[]   = $health;
+                                        $monsterStrengthList[] = $strength;
+
+                                        $monsterTotalHealth   += $health;
+                                        $monsterTotalStrength += $strength;
+                                    ?>
+                                    <details class="monster-row">
+                                        <summary class="monster-summary">
+                                            <span class="col col-name">
+                                                <?= e($monster['name']) ?> (<?= e($monster['type']) ?>)
+                                            </span>
+                                            <span class="col col-qty">
+                                                Qty: <?= shortNum($monster['quantity'] ?? 0) ?>
+                                            </span>
+                                            <span class="col col-hlh">
+                                                Hth: <?= shortNum($health) ?>
+                                            </span>
+
+                                            <span class="col col-str">
+                                                Str: <?= shortNum($strength) ?>
+                                            </span>
+
+                                        </summary>
+
+                                        <div class="monster-calc">
+                                            <span class="bonus-col">
+                                                <span class="dot <?= bonusDot($mel) ?>" title="Mel <?= $mel ?>%"></span> Mel
+                                                <span class="dot <?= bonusDot($mtd) ?>" title="Mtd <?= $mtd ?>%"></span> Mtd
+                                                <span class="dot <?= bonusDot($rng) ?>" title="Rng <?= $rng ?>%"></span> Rng
+                                                <span class="dot <?= bonusDot($fly) ?>" title="Fly <?= $fly ?>%"></span> Fly
+                                                <span class="dot <?= bonusDot($oth) ?>" title="Other <?= $oth ?>%"></span> Oth
+                                            </span>
+                                        </div>
+
+                                    </details>
+
+                                <?php endforeach; ?>
+
                             </div>
 
+                            <?php
+                            // ✅ compute AFTER loop (correct placement)
+                            $monsterMaxHealth   = !empty($monsterHealthList) ? max($monsterHealthList) : 0;
+                            $monsterMaxStrength = !empty($monsterStrengthList) ? max($monsterStrengthList) : 0;
+                            ?>
+                        <?php else: ?>
+                            <p>No monsters assigned.</p>
+                        <?php endif; ?>
+                    </div>
+
+                    <hr> 
+
+                    <?php if (!empty($monsters)): ?>
+                        <?php if (!empty($attackGroups)): ?>
+                            <h4 style="margin-top:15px;">
+                                Creature Attack Options: <?= count($attackGroups) ?>
+                            </h4>
+                            <div id="creatureDisplay"></div>
+                            <div class="group-switch" style="margin-top:10px;">
+                                <button type="button" id="prev">&lt; Prev</button>
+                                <button type="button" id="next">Next &gt;</button>
+                            </div>
                             <script>
                                 const attackGroups = <?= json_encode($attackGroups) ?>;
                                 let currentIndex = 0;
-
                                 function renderCreature(i) {
                                     const creature = attackGroups[i][0];
                                     if (!creature) return;
-                                    
                                     const bonusParts = Object.entries(creature.bonuses || {})
                                         .map(([type, val]) => `${type.toLowerCase()} +${val}%`)
                                         .join(' | ');
-
                                     const html = `
                                         <div class="creature-text-block" style="display:flex; gap:15px; align-items:flex-start; padding-left:8px;">
+                                            
                                             <div class="creature-image-container">
                                                 <img src="${creature.imgpath}" class="creature-img" style="max-width:120px;">
                                             </div>
+
                                             <div style="flex-grow:1;">
                                                 <div class="formation-text-top">
-                                                    <h3>Formation #${creature.formation_no} | ${creature.name} (${creature.type})</h3>
+                                                    <h3>
+                                                        Formation #${creature.formation_no} |
+                                                        ${creature.name} (${creature.type})
+                                                    </h3>
                                                 </div>
+
                                                 <div class="formation-text-middle">
-                                                    Bonus Mods: <div class="focus-pill">${bonusParts}</div>
+                                                    Bonus Mods:
+                                                    <div class="focus-pill">${bonusParts}</div>
                                                 </div>
+
                                                 <div class="formation-text-bottom">
-                                                    Base Str: ${creature.strength.toLocaleString()} | Base Hth: ${creature.health.toLocaleString()}
+                                                    Base Str: ${Number(creature.strength).toLocaleString()}
+                                                    &nbsp;|&nbsp;
+                                                    Base Hth: ${Number(creature.health).toLocaleString()}
                                                 </div>
                                             </div>
+
                                         </div>
                                     `;
 
@@ -211,16 +303,21 @@ requireLogin();
 
                                 renderCreature(currentIndex);
                             </script>
+
+                        <?php else: ?>
+
+                            <p>No attack groups available.</p>
+
                         <?php endif; ?>
 
                     <?php else: ?>
+
                         <p>No monsters assigned to this squad.</p>
+
                     <?php endif; ?>
+
                 </div>
             </div>
-
-        </div>
-    </div>
 
     <script>
     window.attackGroups = <?= json_encode($attackGroups ?? [], JSON_UNESCAPED_UNICODE) ?>;
