@@ -105,7 +105,7 @@ function resolveSquadImage($squadStats) {
 
     $base   = strtolower($squadStats['image_base'] ?? 'default');
     $rarity = strtolower($squadStats['rarity'] ?? 'common');
-    $level  = (int)($squadStats['level'] ?? 1);
+    $level  = (int)($squadStats['level'] ?? 3);
 
     // filesystem base (REAL path)
     $fsBase = $_SERVER['DOCUMENT_ROOT'] . '/battlecouncil';

@@ -323,8 +323,12 @@ form#registerForm.active #switchToLogin {
 /* Image */
 .bc-img {
     position: relative;
-    height: 40px; /* adjust per design */
+    height: 220px; /* adjust per design */
     overflow: hidden;
+}
+
+.page-monster-hunt .bc-img {
+    height: 40px; /* your smaller header strip */
 }
 
 .bc-img video {

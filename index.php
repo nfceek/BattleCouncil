@@ -41,7 +41,7 @@ requireLogin();
         <div class="bc-grid">
           
           <div class="bc-card">
-            <div class="bc-img">
+            <div class="bc-img" style="height: 220px;">
               <video src="/../images/trent/Trent_the_Elder_generated.mp4" 
                 alt="Battle Council Video"
                 controls
@@ -85,10 +85,10 @@ requireLogin();
             </div>
           </div>
 
-          <div> 
+          <div class="bc-card"> 
             <a href="<?= BASE_URL ?>/monster_hunt.php" class="bc-card">
               
-              <div class="bc-img">
+              <div class="bc-img" style="height: 220px;">
                 <img src="<?= BASE_URL ?>/images/cards/war_table.jpg" alt="Battle Council">
               </div>    
 
@@ -110,7 +110,7 @@ requireLogin();
           </div>
 
           <div class="bc-card">
-            <div class="bc-img">
+            <div class="bc-img" style="height: 220px;">
               <img src="<?= BASE_URL ?>/images/cards/tavern.jpg" alt="tavern">
             </div>    
             <div class="bc-content">
@@ -125,7 +125,7 @@ requireLogin();
           </div>
 
           <div class="bc-card">
-            <div class="bc-img">
+            <div class="bc-img" style="height: 220px;">
               <img src="<?= BASE_URL ?>/images/cards/legion_forge.jpg" alt="legion-forge">
             </div>    
             <div class="bc-content">
@@ -140,7 +140,7 @@ requireLogin();
           </div>
 
           <div class="bc-card">
-            <div class="bc-img">
+            <div class="bc-img" style="height: 220px;">
               <img src="<?= BASE_URL ?>/images/cards/beast_codex.jpg" alt="Beast Codex">
             </div>    
             <div class="bc-content">
@@ -155,7 +155,7 @@ requireLogin();
           </div>
 
           <div class="bc-card">
-            <div class="bc-img">
+            <div class="bc-img" style="height: 220px;">
               <img src="<?= BASE_URL ?>/images/cards/captain_archive.jpg" alt="Player Archive">
             </div>    
             <div class="bc-content">

@@ -28,20 +28,10 @@
     $attackGroups   = $view['attackGroups'] ?? [];
     $enemyType      = $view['enemyType'] ?? null;
   
-    /*
-    echo '<pre>';
-    echo "=== EXTRACT CHECK ===\n";
-    //echo '<pre>'; print_r($data); exit;  
-    //var_dump($squads ?? null);
-    var_dump($squadSelected ?? null);
-    var_dump($squadStats ?? null);
-    echo '</pre>';
-    */
-
     // ==============================
     // PAGE SETTINGS
     // ==============================
-    $pageClass = 'page-index';
+    $pageClass = 'page-monster-hunt';
 
     // ==============================
     // HEADER
@@ -103,7 +93,7 @@
 
                         <!-- Unit Types -->
                         <div class="bonus-section" style="margin-bottom:12px;">
-                            <label><strong>Troops </strong></label>
+                            <label><strong>Troops: </strong></label>
                             <!--<label>
                                 <input type="checkbox" name="useFighters" value="1" 
                                      //!empty($inputs['useFighters']) ? 'checked' : '' ?> disabled>
@@ -160,7 +150,7 @@
 
                             <!-- LEFT: IMAGE -->
                             <div class="squad-image-container">
-                                <img src="<?= '/images/monsters/' . e($squadStats['image_base']) .'.png' ?>" class="squad-img" alt="<?= e($squadStats['name'] ?? '') ?>">
+                                <img src="<?= '/images/monsters/' . e($squadStats['image_base'] ?? 'default') .'.png' ?>" class="squad-img" alt="<?= e($squadStats['name'] ?? '') ?>">
                             </div>
 
                             <!-- RIGHT: TEXT -->
@@ -247,7 +237,9 @@
                                 $monsterMaxStrength = !empty($monsterStrengthList) ? max($monsterStrengthList) : 0;
                                 ?>
                                 <?php else: ?>
-                                    <p>No monsters assigned.</p>
+                                    <div style="text-align:center;">
+                                        <p>No monsters assigned.</p>
+                                    </div>
                                 <?php endif; ?>
                             </div>    
                         </div>
@@ -416,7 +408,9 @@
                             <p>No attack groups available.</p>
                         <?php endif; ?>
                     <?php else: ?>
-                        <p>No monsters assigned to this squad.</p>
+                        <div style="text-align:center;">
+                            <p>No monsters assigned to this squad.</p>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
