@@ -83,7 +83,7 @@
                         <div class="planner-section" style="margin-bottom:10px;">
                             <label><strong>Creature Level: </strong></label>
                             <select name="playerLevel" class="selectLevel">
-                                <?php for($i=3;$i<=10;$i++): ?>
+                                <?php for($i=3;$i<=9;$i++): ?>
                                     <option value="<?= $i ?>" <?= ($inputs['playerLevel']==$i)?'selected':'' ?>>
                                         Level <?= $i ?>
                                     </option>
@@ -255,13 +255,27 @@
                                     <button type="button" id="prev" class="btn btn-nav">← Prev</button>
                                     <button type="button" id="next" class="btn btn-nav">Next →</button>
                                 </div>
+    <?php
+    echo '<pre>';
+    echo "=== EXTRACT CHECK ===\n";
+    //echo '<pre>'; print_r($data); exit;  
+    //var_dump($squads ?? null);
+    //var_dump($squadSelected ?? null);
+    var_dump($monsters ?? null);
+    echo '</pre>';
+    ?>
+
+                               
                             <script>           
                                 const attackGroups = <?= json_encode($attackGroups) ?>;
                                 const monsterMaxHealth = <?= (int)$monsterMaxHealth ?>;
                                 const monsterMaxStrength = <?= (int)$monsterMaxStrength ?>;
                                 let currentIndex = 0;
+console.log({monsters});
 
                                 function shortNum(n) {
+                                     
+
                                     n = Number(n) || 0;
 
                                     if (n >= 1000000000) return (n / 1000000000).toFixed(0) + ' B';
@@ -279,41 +293,46 @@
                                     if (units < 1) return 1;
 
                                     if (units > 500) return '<span style="color:red;">✖</span>';
+ console.log({  creatureStrength, percent,  monsterMaxHealth, units });
 
                                     return units.toLocaleString();
                                 }
 
-                                function calcLosses(creatureHealth, percent = 0, units) {
-                                    const boostedHP = creatureHealth * (1 + percent / 100) * units;
-                                    const diff = monsterMaxStrength - boostedHP;
+function calcLosses(creatureHealth, percent = 0, units) {
+if (!units || units <= 0) {
+    return '<span style="color:#888;">—</span>'; // or 0 if you prefer
+}
+    const unitHP = creatureHealth * (1 + percent / 100);
+    const totalHP = unitHP * units;
+    const diff = monsterMaxStrength - totalHP;
 
-                                    /* ❌ catch bad inputs → show red X
-                                    if (units <= 0) {
-                                        return '<span style="color:red;">✖</span>';
-                                    }*/
+console.log({
+  creatureHealth,
+  percent,
+  units,
+  unitHP,
+  totalHP,
+  monsterMaxStrength,
+  diff
+});
+    // survives fully
+    if (diff <= 0) {
+        return '<span style="color:green;font-weight:bold">0</span>';
+    }
 
-                                    if (diff >= boostedHP) {
-                                        if (monsterMaxStrength >= boostedHP) {
-                                            // how many creatures die
-                                            const spend = Math.ceil(monsterMaxStrength / creatureHealth);
-                                            return `<span style="color:red;">${spend}</span>`;
-                                        }
-                                    }
+    // total wipe
+    if (monsterMaxStrength >= totalHP) {
+        return `<span style="color:red;">${units}</span>`;
+    }
 
-                                    if (diff <= 0) {
-                                        // Creature survives completely → GREEN 0
-                                        return '<span style="color:green;font-wieght:bold">0</span>';
-                                    }
-
-                                    // Partial losses: how many creatures "die" to cover the diff
-                                    const loss = Math.ceil(diff / creatureHealth);
-
-                                    // Never exceed the units sent
-                                    return Math.min(loss, units).toLocaleString();
-                                }
+    // partial loss
+    const loss = Math.ceil(monsterMaxStrength / unitHP);
+    return `<span>${Math.min(loss, units)}</span>`;
+}
 
                                 /* ------------------ RENDER ------------------ */
                                 function renderCreature(i) {
+                                    window.renderGroup = renderCreature;
                                     const creature = attackGroups[i][0];
                                     if (!creature) return;
 
@@ -328,7 +347,7 @@
 
                                     levels.forEach(p => {
                                         const units = calcUnitsNeeded(creature.strength, p);
-                                        const losses = calcLosses(creature.health, units, p);
+                                        const losses = calcLosses(creature.health, p, units);
 
                                         strRow += `<td>${units}</td>`;
                                         hlhRow += `<td>${losses}</td>`;
@@ -377,7 +396,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td class="row-label">Units (STR)</td>
+                                                        <td class="row-label"># to Send</td>
                                                         ${strRow}
                                                     </tr>
                                                     <tr>
