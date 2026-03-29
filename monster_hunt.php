@@ -9,7 +9,7 @@
     // ==============================
     // SERVICES & CONTROLLERS
     // ==============================
-    require_once __DIR__ . '/services/AttackEngine.php';
+    //require_once __DIR__ . '/services/AttackEngine.php';
     //require_once __DIR__ . '/services/MonsterHuntService.php';
     require_once __DIR__ . '/controllers/MonsterHuntController.php';
 
@@ -132,7 +132,6 @@
                 </div>
 
                 <div class="bc-content">
-
                     <?php
                     // init safety (prevents warnings)
                     $monsterHealthList   = $monsterHealthList   ?? [];
@@ -258,183 +257,202 @@
                                     <button type="button" id="prev" class="btn btn-nav">← Prev</button>
                                     <button type="button" id="next" class="btn btn-nav">Next →</button>
                                 </div>
-                         
-                            <script>           
-                                const attackGroups          = <?= json_encode($attackGroups) ?>;
-                                const monsterQtyList      = <?= json_encode($monsterQtyList) ?>;
-                                const monsterHealthList   = <?= json_encode($monsterHealthList) ?>;
-                                const monsterStrengthList = <?= json_encode($monsterStrengthList) ?>;
+                                <script src="/assets/js/combatEngine.js"></script>
+                                <script>
+                                    const attackGroups        = <?= json_encode($attackGroups) ?>;
+                                    const monsterQtyList      = <?= json_encode($monsterQtyList) ?>;
+                                    const monsterHealthList   = <?= json_encode($monsterHealthList) ?>;
+                                    const monsterStrengthList = <?= json_encode($monsterStrengthList) ?>;
 
-                                // Make sure calcLosses is defined **before this loop**
-                                for (let i = 0; i < monsterQtyList.length; i++) {
-                                    const lossesHtml = calcLosses(i, 0); // 0% bonus
-                                    console.log(`Monster: ${i}: ${lossesHtml}`);
-                                }
+                                    const monsterMaxHealth    = <?= (int)$monsterMaxHealth ?>;
 
-                                const monsterMaxHealth      = <?= (int)$monsterMaxHealth ?>;
-                                const monsterMaxStrength    = <?= (int)$monsterMaxStrength ?>;
-                                let currentIndex = 0;
+                                    // =========================
+                                    // BUILD MONSTER OBJECTS
+                                    // =========================
+                                    const monsters = CombatEngine.buildMonsters(
+                                        monsterQtyList,
+                                        monsterHealthList,
+                                        monsterStrengthList
+                                    );
 
-                                function shortNum(n) {
-                                     
-                                    n = Number(n) || 0;
-
-                                    if (n >= 1000000000) return (n / 1000000000).toFixed(0) + ' B';
-                                    if (n >= 1000000)     return (n / 1000000).toFixed(0) + ' M';
-                                    if (n >= 1000)        return (n / 1000).toFixed(0) + ' K';
-
-                                    return n.toLocaleString();
-                                }
-
-                                /* ------------------ CALCS ------------------ */
-                                function calcUnitsNeeded(creatureStrength, percent = 0) {
-                                    const boosted = creatureStrength * (1 + percent / 100);
-                                    let units = Math.ceil(monsterMaxHealth / boosted);  
-
-                                    if (units < 1) return 1;
-
-                                    if (units > 500) return '<span style="color:red;">✖</span>';
-
-                                    return units.toLocaleString();
-                                }
-
-                                function calcLosses(creatureStrength, creatureHealth, percent = 0, units) {
-                                    if (!units || units <= 0) {
-                                        return '<span style="color:#888;">—</span>'; // or 0 if you prefer
+                                    // =========================
+                                    // HELPERS
+                                    // =========================
+                                    function shortNum(n) {
+                                        n = Number(n) || 0;
+                                        if (n >= 1e9) return (n / 1e9).toFixed(0) + ' B';
+                                        if (n >= 1e6) return (n / 1e6).toFixed(0) + ' M';
+                                        if (n >= 1e3) return (n / 1e3).toFixed(0) + ' K';
+                                        return n.toLocaleString();
                                     }
 
-                                    const unitHP = creatureHealth * (1 + percent / 100);        // calcs the total health of creature as % is applied
-                                    const totalHP = unitHP * units;                             // total of the health of the creature group
-                                    const diff = monsterMaxStrength - totalHP;                  // is the total creature group hlh > monster group str Y/N
-
-                                    console.log({ creatureStrength,creatureHealth, percent,  units, unitHP,  totalHP, monsterStrengthList, monsterMaxStrength, monsterMaxHealth, diff,unitHP, monsterQtyList });
-
-                                    
-
-
-                                    /* original calcs */
-                                    for (let i = 0; i < monsterQtyList.length; i++) {
-                                        const lossesHtml = calcLosses(i, 0); // 0% bonus
-                                        console.log(`Monster ${i}: ${lossesHtml}`);
+                                    // =========================
+                                    // UNITS NEEDED
+                                    // =========================
+                                    function calcUnitsNeeded(creatureStrength, percent = 0) {
+                                        return CombatEngine.calcUnitsNeeded(
+                                            monsterMaxHealth,
+                                            creatureStrength,
+                                            percent
+                                        );
                                     }
 
-                                    if (diff >= unitHP) {
-                                        if (monsterMaxStrength >= unitdHP) {
-                                            // how many creatures die
-                                            const spend = Math.ceil(monsterMaxStrength / creatureHealth);
-                                            console.log(spend);
-                                            return `<span style="color:red;">${spend}</span>`;
+                                    // =========================
+                                    // CORE ENGINE (LAYERED)
+                                    // =========================
+                                    function runCombatSimulation({ units, creature }) {
+
+                                        let currentUnits = units;
+                                        let totalLost = 0;
+
+                                        const creatureUnitHP  = creature.health * (1 + creature.percent / 100);
+                                        const creatureUnitStr = creature.strength * (1 + creature.percent / 100);
+
+                                        for (let i = 0; i < monsters.length; i++) {
+                                            if (currentUnits <= 0) break;
+
+                                            const m = monsters[i];
+
+                                            // ---- MONSTER ATTACK FIRST (worst case)
+                                            const monsterAttack = m.totalStrength;
+                                            let creatureLoss = Math.ceil(monsterAttack / creatureUnitHP);
+                                            creatureLoss = Math.min(creatureLoss, currentUnits);
+
+                                            currentUnits -= creatureLoss;
+                                            totalLost += creatureLoss;
+
+                                            if (currentUnits <= 0) break;
+
+                                            // ---- CREATURE ATTACK BACK
+                                            const creatureAttack = creatureUnitStr * currentUnits;
+
+                                            let monsterLoss = Math.ceil(creatureAttack / m.baseHth);
+                                            monsterLoss = Math.min(monsterLoss, m.qty);
+
+                                            // (future: reduce monster group and carry forward)
                                         }
-                                    }                                       
-    
-                                    // survives fully in Round 1
-                                    if (diff <= 0) {
-                                        return '<span style="color:green;font-weight:bold">0</span>';
+
+                                        return totalLost;
                                     }
 
-                                    // total wipe
-                                    if (monsterMaxStrength >= unitHP) {
-                                        return `<span style="color:red;">${units}</span>`;
+                                    // =========================
+                                    // LOSS CALC (UI WRAPPER)
+                                    // =========================
+                                    function calcWorstCaseLosses(strength, health, percent, units) {
+
+                                        if (!units || units === '✖') {
+                                            return '<span style="color:#888;">—</span>';
+                                        }
+
+                                        const result = CombatEngine.runSimulation({
+                                            units: Number(units),
+                                            creature: {
+                                                strength,
+                                                health,
+                                                percent
+                                            },
+                                            monsters
+                                        });
+
+                                        if (result.lost === 0) {
+                                            return '<span style="color:green;font-weight:bold">0</span>';
+                                        }
+
+                                        return `<span style="color:#ff6b6b;">${result.lost}</span>`;
                                     }
 
-                                    // partial loss
-                                    const loss = Math.ceil(monsterMaxStrength / unitHP);
-                                    return `<span>${Math.min(loss, units)}</span>`;
-                                }
+                                    // =========================
+                                    // RENDER
+                                    // =========================
+                                    let currentIndex = 0;
 
-                                /* ------------------ RENDER ------------------ */
-                                function renderCreature(i) {
-                                    window.renderGroup = renderCreature;
-                                    const creature = attackGroups[i][0];
-                                    if (!creature) return;
+                                    function renderCreature(i) {
+                                        const creature = attackGroups[i][0];
+                                        if (!creature) return;
 
-                                    const bonusParts = Object.entries(creature.bonuses || {}).map(
-                                        ([type, val]) => `${type.toLowerCase()} +${Number(val).toLocaleString()}%`
-                                    ).join(' &nbsp;|&nbsp; ');
+                                        const levels = [0,200,400,600,800,1000,1200];
 
-                                    const levels = [0,200,400,600,800,1000,1200];
+                                        let sendRow = '';
+                                        let lossRow = '';
 
-                                    let strRow = '';
-                                    let hlhRow = '';
+                                        levels.forEach(p => {
+                                            const units = calcUnitsNeeded(creature.strength, p);
+                                            const losses = calcWorstCaseLosses(
+                                                creature.strength,
+                                                creature.health,
+                                                p,
+                                                units
+                                            );
 
-                                    levels.forEach(p => {
-                                        const units = calcUnitsNeeded(creature.strength, p);
-                                        const losses = calcLosses(creature.strength, creature.health, p, units);
+                                            sendRow += `<td>${units}</td>`;
+                                            lossRow += `<td>${losses}</td>`;
+                                        });
 
-                                        strRow += `<td>${units}</td>`;
-                                        hlhRow += `<td>${losses}</td>`;
-                                    });
-
-                                    const html = `
-
-                                        <div class="creature-text-block" style="display:flex; gap:15px; align-items:flex-start; padding-left:8px;">
-                                            
-                                            <div class="creature-image-container">
-                                                <img src="${creature.imgpath}" class="creature-img" style="max-width:120px;">
-                                            </div>
-
-                                            <div style="flex-grow:1;">
-                                                <div class="formation-text-top">
-                                                    <h3>Formation #${creature.formation_no} ${creature.name} (${creature.type})</h3>
+                                        const html = `
+                                            <div class="creature-text-block" style="display:flex; gap:15px; align-items:flex-start; padding-left:8px;">
+                                                <div class="creature-image-container">
+                                                    <img src="${creature.imgpath}" class="creature-img" style="max-width:120px;">
                                                 </div>
 
-                                                <div class="formation-text-middle" style="padding-top:8px;padding-bottom:8px;">
-                                                    Base Str: ${shortNum(creature.strength)}
-                                                    &nbsp;|&nbsp;
-                                                    Base Hth: ${shortNum(creature.health)}
+                                                <div style="flex-grow:1;">
+                                                    <div class="formation-text-top">
+                                                        <h3>Formation #${creature.formation_no} ${creature.name} (${creature.type})</h3>
+                                                    </div>
+
+                                                    <div class="formation-text-middle" style="padding-top:8px;padding-bottom:8px;">
+                                                        Base Str: ${shortNum(creature.strength)}
+                                                        &nbsp;|&nbsp;
+                                                        Base Hth: ${shortNum(creature.health)}
+                                                    </div>
                                                 </div>
-
-                                                <!--<div class="formation-text-bottom">
-                                                    Bonus Mods:
-                                                    <div class="focus-pill">${bonusParts}</div>
-                                                </div>-->
-                                                
                                             </div>
-                                        </div>
 
-                                        <div class="creature-grid">
-                                            <table class="creature-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="col-label"></th>
-                                                        <th>Base</th>
-                                                        <th>200%</th>
-                                                        <th>400%</th>
-                                                        <th>600%</th>
-                                                        <th>800%</th>
-                                                        <th>1000%</th>
-                                                        <th>1200%</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="row-label"># to Send</td>
-                                                        ${strRow}
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="row-label">Losses (HTH)</td>
-                                                        ${hlhRow}
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    `;
+                                            <div class="creature-grid">
+                                                <table class="creature-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Base</th>
+                                                            <th>200%</th>
+                                                            <th>400%</th>
+                                                            <th>600%</th>
+                                                            <th>800%</th>
+                                                            <th>1000%</th>
+                                                            <th>1200%</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td># to Send</td>
+                                                            ${sendRow}
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Worst Case Loss</td>
+                                                            ${lossRow}
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        `;
 
-                                    document.getElementById('creatureDisplay').innerHTML = html;
-                                }
+                                        document.getElementById('creatureDisplay').innerHTML = html;
+                                    }
 
-                                document.getElementById('next').onclick = () => {
-                                    currentIndex = (currentIndex + 1) % attackGroups.length;
+                                    // =========================
+                                    // NAV
+                                    // =========================
+                                    document.getElementById('next').onclick = () => {
+                                        currentIndex = (currentIndex + 1) % attackGroups.length;
+                                        renderCreature(currentIndex);
+                                    };
+
+                                    document.getElementById('prev').onclick = () => {
+                                        currentIndex = (currentIndex - 1 + attackGroups.length) % attackGroups.length;
+                                        renderCreature(currentIndex);
+                                    };
+
                                     renderCreature(currentIndex);
-                                };
-
-                                document.getElementById('prev').onclick = () => {
-                                    currentIndex = (currentIndex - 1 + attackGroups.length) % attackGroups.length;
-                                    renderCreature(currentIndex);
-                                };
-
-                                renderCreature(currentIndex);
-                            </script>
+                                </script>
                         <?php else: ?>
                             <p>No attack groups available.</p>
                         <?php endif; ?>
