@@ -24,42 +24,80 @@ const CombatEngine = (() => {
         return units;
     }
 
-    function runSimulation({ units, creature, monsters }) {
+function runSimulation({ units, creature, monsters }) {
 
-        let currentUnits = units;
-        let totalLost = 0;
+    let currentUnits = units;
+    let totalLost = 0;
+    let rounds = [];
 
-        const unitHP  = creature.health * (1 + creature.percent / 100);
-        const unitStr = creature.strength * (1 + creature.percent / 100);
+    const creatureUnitHP  = creature.health * (1 + creature.percent / 100);
+    const creatureUnitStr = creature.strength * (1 + creature.percent / 100);
 
-        for (let i = 0; i < monsters.length; i++) {
-            if (currentUnits <= 0) break;
+    for (let i = 0; i < monsters.length; i++) {
 
-            const m = monsters[i];
+        let m = monsters[i];
 
-            // ---- MONSTER ATTACK FIRST
-            let loss = Math.ceil(m.totalStrength / unitHP);
-            loss = Math.min(loss, currentUnits);
+        let monsterRemaining = m.qty;
 
-            currentUnits -= loss;
-            totalLost += loss;
+        if (monsterRemaining <= 0) continue;
 
-            if (currentUnits <= 0) break;
+        let round = 0;
 
-            // ---- CREATURE ATTACK
-            const attack = unitStr * currentUnits;
+        while (monsterRemaining > 0 && currentUnits > 0 && round < 10) {
+            round++;
 
-            let monsterLoss = Math.ceil(attack / m.baseHth);
-            monsterLoss = Math.min(monsterLoss, m.qty);
+            // =========================
+            // MONSTER ATTACK FIRST
+            // =========================
+            const monsterAttack = monsterRemaining * m.baseStr;
 
-            // future: reduce m.qty if partial carryover needed
+            let creatureLoss = Math.ceil(monsterAttack / creatureUnitHP);
+            creatureLoss = Math.min(creatureLoss, currentUnits);
+
+            currentUnits -= creatureLoss;
+            totalLost += creatureLoss;
+
+            if (currentUnits <= 0) {
+                rounds.push({
+                    monsterIndex: i,
+                    round,
+                    creatureLost: creatureLoss,
+                    monsterLost: 0,
+                    creatureRemaining: 0,
+                    monsterRemaining
+                });
+                break;
+            }
+
+            // =========================
+            // CREATURE ATTACK BACK
+            // =========================
+            const creatureAttack = currentUnits * creatureUnitStr;
+
+            let monsterLoss = Math.ceil(creatureAttack / m.baseHth);
+            monsterLoss = Math.min(monsterLoss, monsterRemaining);
+
+            monsterRemaining -= monsterLoss;
+
+            rounds.push({
+                monsterIndex: i,
+                round,
+                creatureLost: creatureLoss,
+                monsterLost: monsterLoss,
+                creatureRemaining: currentUnits,
+                monsterRemaining
+            });
+
+            if (monsterRemaining <= 0) break;
         }
-
-        return {
-            lost: totalLost,
-            remaining: currentUnits
-        };
     }
+
+    return {
+        lost: totalLost,
+        remaining: currentUnits,
+        rounds
+    };
+}
 
     return {
         buildMonsters,

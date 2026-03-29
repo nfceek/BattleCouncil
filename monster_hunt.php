@@ -257,7 +257,7 @@
                                     <button type="button" id="prev" class="btn btn-nav">← Prev</button>
                                     <button type="button" id="next" class="btn btn-nav">Next →</button>
                                 </div>
-                                <script src="/assets/js/combatEngine.js"></script>
+                                <script src="/assets/js/CombatEngine.js"></script>
                                 <script>
                                     const attackGroups        = <?= json_encode($attackGroups) ?>;
                                     const monsterQtyList      = <?= json_encode($monsterQtyList) ?>;
