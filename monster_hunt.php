@@ -10,7 +10,7 @@
     // SERVICES & CONTROLLERS
     // ==============================
     require_once __DIR__ . '/services/AttackEngine.php';
-    require_once __DIR__ . '/services/MonsterHuntService.php';
+    //require_once __DIR__ . '/services/MonsterHuntService.php';
     require_once __DIR__ . '/controllers/MonsterHuntController.php';
 
     // ==============================
@@ -199,10 +199,13 @@
 
                                                     $health   = $monster['total_health'] ?? 0;
                                                     $strength = $monster['total_strength'] ?? 0;
-                                                    $monsterHealthList[]   = $health;
-                                                    $monsterStrengthList[] = $strength;
-                                                    $monsterTotalHealth   += $health;
-                                                    $monsterTotalStrength += $strength;
+                                                    $quantity = $monster['quantity'] ?? 0;
+
+                                                    $monsterQtyList[]       = $quantity;
+                                                    $monsterHealthList[]    = $health;
+                                                    $monsterStrengthList[]  = $strength;
+                                                    $monsterTotalHealth     += $health;
+                                                    $monsterTotalStrength   += $strength;
                                                 ?>
                                                 <details class="monster-row">
                                                     <summary class="monster-summary" style="text-align:left;padding-left:6px;">
@@ -220,13 +223,13 @@
                                                             Str: <?= shortNum($strength) ?>
                                                         </span>
 
-                                                        <!--<span class="bonus-col">
+                                                        <span class="bonus-col">
                                                             <span class="dot <?= bonusDot($mel) ?>" title="Mel <?= $mel ?>%"></span> Mel
                                                             <span class="dot <?= bonusDot($mtd) ?>" title="Mtd <?= $mtd ?>%"></span> Mtd
                                                             <span class="dot <?= bonusDot($rng) ?>" title="Rng <?= $rng ?>%"></span> Rng
                                                             <span class="dot <?= bonusDot($fly) ?>" title="Fly <?= $fly ?>%"></span> Fly
                                                             <span class="dot <?= bonusDot($oth) ?>" title="Other <?= $oth ?>%"></span> Oth
-                                                        </span>-->
+                                                        </span>
                                                     </div>
                                                 </details>
                                             <?php endforeach; ?>
@@ -255,27 +258,25 @@
                                     <button type="button" id="prev" class="btn btn-nav">← Prev</button>
                                     <button type="button" id="next" class="btn btn-nav">Next →</button>
                                 </div>
-    <?php
-    echo '<pre>';
-    echo "=== EXTRACT CHECK ===\n";
-    //echo '<pre>'; print_r($data); exit;  
-    //var_dump($squads ?? null);
-    //var_dump($squadSelected ?? null);
-    var_dump($monsters ?? null);
-    echo '</pre>';
-    ?>
-
-                               
+                         
                             <script>           
-                                const attackGroups = <?= json_encode($attackGroups) ?>;
-                                const monsterMaxHealth = <?= (int)$monsterMaxHealth ?>;
-                                const monsterMaxStrength = <?= (int)$monsterMaxStrength ?>;
+                                const attackGroups          = <?= json_encode($attackGroups) ?>;
+                                const monsterQtyList      = <?= json_encode($monsterQtyList) ?>;
+                                const monsterHealthList   = <?= json_encode($monsterHealthList) ?>;
+                                const monsterStrengthList = <?= json_encode($monsterStrengthList) ?>;
+
+                                // Make sure calcLosses is defined **before this loop**
+                                for (let i = 0; i < monsterQtyList.length; i++) {
+                                    const lossesHtml = calcLosses(i, 0); // 0% bonus
+                                    console.log(`Monster: ${i}: ${lossesHtml}`);
+                                }
+
+                                const monsterMaxHealth      = <?= (int)$monsterMaxHealth ?>;
+                                const monsterMaxStrength    = <?= (int)$monsterMaxStrength ?>;
                                 let currentIndex = 0;
-console.log({monsters});
 
                                 function shortNum(n) {
                                      
-
                                     n = Number(n) || 0;
 
                                     if (n >= 1000000000) return (n / 1000000000).toFixed(0) + ' B';
@@ -293,42 +294,53 @@ console.log({monsters});
                                     if (units < 1) return 1;
 
                                     if (units > 500) return '<span style="color:red;">✖</span>';
- console.log({  creatureStrength, percent,  monsterMaxHealth, units });
 
                                     return units.toLocaleString();
                                 }
 
-function calcLosses(creatureHealth, percent = 0, units) {
-if (!units || units <= 0) {
-    return '<span style="color:#888;">—</span>'; // or 0 if you prefer
-}
-    const unitHP = creatureHealth * (1 + percent / 100);
-    const totalHP = unitHP * units;
-    const diff = monsterMaxStrength - totalHP;
+                                function calcLosses(creatureStrength, creatureHealth, percent = 0, units) {
+                                    if (!units || units <= 0) {
+                                        return '<span style="color:#888;">—</span>'; // or 0 if you prefer
+                                    }
 
-console.log({
-  creatureHealth,
-  percent,
-  units,
-  unitHP,
-  totalHP,
-  monsterMaxStrength,
-  diff
-});
-    // survives fully
-    if (diff <= 0) {
-        return '<span style="color:green;font-weight:bold">0</span>';
-    }
+                                    const unitHP = creatureHealth * (1 + percent / 100);        // calcs the total health of creature as % is applied
+                                    const totalHP = unitHP * units;                             // total of the health of the creature group
+                                    const diff = monsterMaxStrength - totalHP;                  // is the total creature group hlh > monster group str Y/N
 
-    // total wipe
-    if (monsterMaxStrength >= totalHP) {
-        return `<span style="color:red;">${units}</span>`;
-    }
+                                    console.log({ creatureStrength,creatureHealth, percent,  units, unitHP,  totalHP, monsterStrengthList, monsterMaxStrength, monsterMaxHealth, diff,unitHP, monsterQtyList });
 
-    // partial loss
-    const loss = Math.ceil(monsterMaxStrength / unitHP);
-    return `<span>${Math.min(loss, units)}</span>`;
-}
+                                    
+
+
+                                    /* original calcs */
+                                    for (let i = 0; i < monsterQtyList.length; i++) {
+                                        const lossesHtml = calcLosses(i, 0); // 0% bonus
+                                        console.log(`Monster ${i}: ${lossesHtml}`);
+                                    }
+
+                                    if (diff >= unitHP) {
+                                        if (monsterMaxStrength >= unitdHP) {
+                                            // how many creatures die
+                                            const spend = Math.ceil(monsterMaxStrength / creatureHealth);
+                                            console.log(spend);
+                                            return `<span style="color:red;">${spend}</span>`;
+                                        }
+                                    }                                       
+    
+                                    // survives fully in Round 1
+                                    if (diff <= 0) {
+                                        return '<span style="color:green;font-weight:bold">0</span>';
+                                    }
+
+                                    // total wipe
+                                    if (monsterMaxStrength >= unitHP) {
+                                        return `<span style="color:red;">${units}</span>`;
+                                    }
+
+                                    // partial loss
+                                    const loss = Math.ceil(monsterMaxStrength / unitHP);
+                                    return `<span>${Math.min(loss, units)}</span>`;
+                                }
 
                                 /* ------------------ RENDER ------------------ */
                                 function renderCreature(i) {
@@ -347,7 +359,7 @@ console.log({
 
                                     levels.forEach(p => {
                                         const units = calcUnitsNeeded(creature.strength, p);
-                                        const losses = calcLosses(creature.health, p, units);
+                                        const losses = calcLosses(creature.strength, creature.health, p, units);
 
                                         strRow += `<td>${units}</td>`;
                                         hlhRow += `<td>${losses}</td>`;

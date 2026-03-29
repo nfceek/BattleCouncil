@@ -93,12 +93,11 @@ if (!function_exists('shortNum')) {
     }
 }
 
-if (!function_exists('bonusDot')) {
-    function bonusDot($pct) {
-        if ($pct == 0) return "dot-green";
-        if ($pct > 50) return "dot-red";
-        return "dot-yellow";
-    }
+function bonusDot($val) {
+    if ($val <= 0) return 'low';
+    if ($val < 25) return 'mid';
+    if ($val < 75) return 'high';
+    return 'max';
 }
 
 function resolveSquadImage($squadStats) {

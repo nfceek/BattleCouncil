@@ -693,3 +693,58 @@ form#registerForm.active #switchToLogin {
     border-right: none;
 }
 
+/* Container */
+.bonus-col {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  font-size: 12px;
+  color: #ccc;
+}
+
+/* Each label group (dot + text) */
+.bonus-col span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+/* Dot base */
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  background: #555; /* default */
+  box-shadow: 0 0 4px rgba(0,0,0,0.6);
+}
+
+/* Strength tiers (you can match these to bonusDot() output) */
+.dot.low {
+  background: #666;
+}
+
+.dot.mid {
+  background: #f0c419; /* muted yellow */
+  box-shadow: 0 0 6px rgba(240,196,25,0.5);
+}
+
+.dot.high {
+  background: #da2a2a; /* red */
+  box-shadow: 0 0 6px rgba(76,175,80,0.6);
+}
+
+.dot.max {
+  background: #00e5ff; /* cyan highlight */
+  box-shadow: 0 0 8px rgba(0,229,255,0.8);
+}
+
+/* Optional: negative / debuff */
+.dot.neg {
+  background: #e53935;
+  box-shadow: 0 0 6px rgba(229,57,53,0.6);
+}
