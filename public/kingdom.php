@@ -9,7 +9,7 @@ require_once __DIR__ . '/../helpers/functions.php';  // e(), isLoggedIn(), hasRo
 // ==============================
 // PAGE SETTINGS
 // ==============================
-$pageClass = 'Calculators';
+$pageClass = 'The Realm';
 
 // ==============================
 // HEADER
@@ -19,26 +19,25 @@ require_once __DIR__ . '/../includes/header.php';
 
 <!-- MAIN CONTENT -->
 <div class="container">
-    <div style="padding-bottom: 10px">
-        <h1>Calculate ... Then Kill</h1>
-    </div>
+    <h1>Welcome to <?= APP_NAME ?></h1>
+
     <div class="bc-grid">
         <div class="bc-card"> 
-            <a href="<?= BASE_URL ?>/public/monster_hunt.php" class="bc-card">
+            <a href="#" class="bc-card">
                 
                 <div class="bc-img" style="height: 220px;">
-                <img src="<?= BASE_URL ?>/images/cards/orcs.png" alt="Battle Council">
+                <img src="<?= BASE_URL ?>/../images/cards/realms1.png" alt="The Realm">
                 </div>    
 
                 <div class="bc-content">
                 <div class="bc-content-leader" style="text-align:center">
-                    <h2>Small Game</h2>
+                    <h2>The Kingdom</h2>
                 </div>
 
                 <div class="bc-content-inner" style="padding: 15px;">  
                     <p>
-                    Make quick work of smaller monster squads on the world map.<br />
-                    Recommended for: Level 4/5/6 player & monster squads 1-20.
+                    Want to know more about other lands? Are you searching for<br />
+                    someone or something? This is your resource
                     </p>
                 </div>
                 </div>
@@ -46,53 +45,52 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
 
         <div class="bc-card"> 
-            <a href="<?= BASE_URL ?>/public/calculators.php" class="bc-card">
+            <a href="#" class="bc-card">
                 
                 <div class="bc-img" style="height: 220px;">
-                <img src="<?= BASE_URL ?>/images/cards/rare_squads.png" alt="Battle Council">
+                <img src="<?= BASE_URL ?>/../images/cards/gear_info.png" alt="The Realm">
                 </div>    
 
                 <div class="bc-content">
                 <div class="bc-content-leader" style="text-align:center">
-                    <h2>Rare & Epic Squads</h2>
+                    <h2>Finery & Armory</h2>
                 </div>
 
                 <div class="bc-content-inner" style="padding: 15px;">  
                     <p>
-                    Larger squads require layering of troops.<br />This is NOT 
-                    stacking.<br />You are sending troops and<br />expect to survive the 
-                    encounter.<br />Be sure to have Doria loaded.
+                    Learn what to wear in the Realm? Learn about<br />
+                    gear for your Hero & Captains
                     </p>
                 </div>
                 </div>
-            </a>
+             </a>   
         </div>
+            
 
-        <div class="bc-card"> 
-            <a href="<?= BASE_URL ?>/public/calculators.php" class="bc-card">
+            <div class="bc-card"> 
+                <a href="<?= BASE_URL ?>/public/ledger.php" class="bc-card">
                 
                 <div class="bc-img" style="height: 220px;">
-                <img src="<?= BASE_URL ?>/images/cards/citadels.png" alt="Battle Council">
+                <img src="<?= BASE_URL ?>/../images/cards/ledger1.png" alt="The Ledger">
                 </div>    
 
                 <div class="bc-content">
                 <div class="bc-content-leader" style="text-align:center">
-                    <h2>Citadel Cracker</h2>
+                    <h2>The Ledger</h2>
                 </div>
 
                 <div class="bc-content-inner" style="padding: 15px;">  
                     <p>
-                    Get the trebuche out.<br />It's time to go stomp
-                    some citadels.<br />Calculate your attack,  
-                    Watch the walls fall<br >Take the rewards!
+                    Help out BattleCouncil and get rewards<br />
+                    This is the reward points info page
                     </p>
                 </div>
                 </div>
-
-            </a>
+                </a>
         </div>
 
-    </div>        
+
+    </div>       
 </div>
 
 <script>
