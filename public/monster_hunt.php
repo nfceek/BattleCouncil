@@ -2,16 +2,16 @@
     // ==============================
     // BOOTSTRAP / CONFIG / HELPERS
     // ==============================
-    require_once __DIR__ . '/core/bootstrap.php';      // sessions, environment
-    require_once __DIR__ . '/config/config.php';      // BASE_URL, DB
-    require_once __DIR__ . '/helpers/functions.php';  // e(), isLoggedIn(), hasRole(), fetchAll()
+    require_once __DIR__ . '/../core/bootstrap.php';      // sessions, environment
+    require_once __DIR__ . '/../config/config.php';      // BASE_URL, DB
+    require_once __DIR__ . '/../helpers/functions.php';  // e(), isLoggedIn(), hasRole(), fetchAll()
 
     // ==============================
     // SERVICES & CONTROLLERS
     // ==============================
     //require_once __DIR__ . '/services/AttackEngine.php';
     //require_once __DIR__ . '/services/MonsterHuntService.php';
-    require_once __DIR__ . '/controllers/MonsterHuntController.php';
+    require_once __DIR__ . '/../controllers/MonsterHuntController.php';
 
     // ==============================
     // CONTROLLER DATA
@@ -36,7 +36,7 @@
     // ==============================
     // HEADER
     // ==============================
-    require_once __DIR__ . '/includes/header.php';
+    require_once __DIR__ . '/../includes/header.php';
 
     /* page protected
     requireLogin(); 
@@ -257,7 +257,7 @@
                                     <button type="button" id="prev" class="btn btn-nav">← Prev</button>
                                     <button type="button" id="next" class="btn btn-nav">Next →</button>
                                 </div>
-                                <script src="/assets/js/CombatEngine.js"></script>
+                                <script src="<?= BASE_URL ?>/assets/js/CombatEngine.js"></script>
                                 <script>
                                     const attackGroups        = <?= json_encode($attackGroups) ?>;
                                     const monsterQtyList      = <?= json_encode($monsterQtyList) ?>;
@@ -471,4 +471,4 @@
 // ==============================
 // FOOTER
 // ==============================
-require_once __DIR__ . '/includes/footer.php';
+require_once __DIR__ . '/../includes/footer.php';

@@ -7,18 +7,6 @@ require_once __DIR__ . '/config/config.php';      // BASE_URL, DB
 require_once __DIR__ . '/helpers/functions.php';  // e(), isLoggedIn(), hasRole(), fetchAll()
 
 // ==============================
-// SERVICES & CONTROLLERS
-// ==============================
-require_once __DIR__ . '/services/MonsterHuntService.php';
-require_once __DIR__ . '/controllers/MonsterHuntController.php';
-
-// ==============================
-// CONTROLLER DATA
-// ==============================
-$data = monsterHuntController($pdo);   // returns array of $squads, $creatures, $attackGroups etc.
-extract($data);
-
-// ==============================
 // PAGE SETTINGS
 // ==============================
 $pageClass = 'page-index';
@@ -86,7 +74,7 @@ requireLogin();
           </div>
 
           <div class="bc-card"> 
-            <a href="<?= BASE_URL ?>/monster_hunt.php" class="bc-card">
+            <a href="<?= BASE_URL ?>/public/calculators.php" class="bc-card">
               
               <div class="bc-img" style="height: 220px;">
                 <img src="<?= BASE_URL ?>/images/cards/war_table.jpg" alt="Battle Council">
@@ -94,8 +82,8 @@ requireLogin();
 
               <div class="bc-content">
                 <div class="bc-content-leader" style="text-align:center">
-                  <h2>Monster Hunt</h2>
-                  <h2>Calculator</h2>
+                  <h2>Monster Hunting</h2>
+                  <h2>Calculators</h2>
                 </div>
 
                 <div class="bc-content-inner" style="padding: 15px;">  

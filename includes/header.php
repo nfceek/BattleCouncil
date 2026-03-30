@@ -65,6 +65,7 @@
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
     <a href="<?= BASE_URL ?>/index.php"><i class="fa-solid fa-house"></i> Home</a>
+    
     <a href="<?= BASE_URL ?>/monster_hunt.php">⚔️ Monster Hunt</a>
     <a href="#">👹 Monster Editor</a>
     <a href="#">🪖 Squad Editor</a>
