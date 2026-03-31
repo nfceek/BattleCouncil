@@ -749,3 +749,80 @@ form#registerForm.active #switchToLogin {
   background: #e53935;
   box-shadow: 0 0 6px rgba(229,57,53,0.6);
 }
+
+
+.unit-row {
+    background: #555; /* default */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.unit-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: #161616;
+    padding: 8px;
+    border-radius: 6px;
+    min-width: 120px;
+}
+
+.unit-select {
+    width: 100%;
+}
+
+.unit-levels {
+    display: flex;
+    gap: 6px;
+}
+
+.unit-levels label {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+}
+/*  layer calc css  */
+.mtd-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mtd-levels {
+    display: flex;
+    gap: 8px;
+}
+
+.mtd-levels label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.difficulty-group {
+    display: flex;
+    justify-content: center;   /* centers horizontally */
+    align-items: center;
+    gap: 14px;
+    margin: 12px;
+}
+
+.difficulty-group label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.layer-header {
+  background: #555; /* default */
+  text-align: left;
+  padding:8px;
+}
+
+.layer-block {
+  margin:8px;
+}

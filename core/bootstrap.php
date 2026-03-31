@@ -13,4 +13,4 @@ require_once ROOT_PATH . '/services/MonsterHuntService.php';
 require_once ROOT_PATH . '/services/AttackEngine.php';
 
 // CONTROLLERS (these depend on helpers + services)
-require_once ROOT_PATH . '/controllers/MonsterHuntController.php';
+require_once ROOT_PATH . '/controllers/SquadController.php';

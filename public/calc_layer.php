@@ -10,6 +10,40 @@ require_once __DIR__ . '/../services/PointsService.php';
 require_once __DIR__ . '/../services/ClanServices.php';
 
 // ==============================
+// SERVICES & CONTROLLERS
+// ==============================
+require_once __DIR__ . '/../controllers/LayerController.php';
+
+$data = layerController($pdo);
+
+$inputs      = $data['inputs'];
+$squads      = $data['squads'];
+$layerCount  = $data['layerCount'];   
+$config      = $data['config'];
+$bonusMatrix = $data['bonusMatrix'];
+
+// ==============================
+// EXAMPLE POINTS REWARD ASSIGNMENT -- FUTURE USE
+/* ==============================
+if ($battleResult['win']) {
+
+    $pointsEarned = 10;
+
+    // Example scaling
+    if ($battleResult['rarity'] === 'rare') {
+        $pointsEarned += 15;
+    }
+
+    PointsService::add(
+        $pdo,
+        $userId,
+        $pointsEarned,
+        'monster_hunt_win',
+        $battleResult['hunt_id'] ?? null
+    );
+}
+*/
+// ==============================
 // PAGE SETTINGS
 // ==============================
 $pageClass = 'Layering Calculator';
@@ -28,138 +62,171 @@ require_once __DIR__ . '/../includes/header.php';
             <h1>Monster Hunting Calculator</h1>
         </div>
         <div class="mh-grid">
-            <!-- Card 1: Troop Attack Selection -->
-            <div class="bc-card">
-                <div class="bc-img" style="height:40px;">
-                    <img src="/images/cards/war_table.jpg" alt="Troop Attack" 
-                        style="width:100%; height:100%; object-fit:cover;opacity:.4;">
-                    <div class="bc-img-overlay">
-                        <div class="bc-img-title">Monster & Attack Squad Selections</div>
-                    </div>
-                </div>
 
-                <div class="bc-content">
-                    <form method="GET">
-                        <!-- Squad Dropdown -->
-                        <div class="squad-select" style="margin-bottom:10px;">
-                            <label><strong>Choose Squad: </strong></label>
-                            <!-- Squad Dropdown -->
-                            <select name="squadID">
-                                <option value="">-- Choose Squad --</option>
-                                <?php foreach ($squads as $squad): ?>
-                                    <option value="<?= $squad['squadID'] ?>"
-                                        <?= ($inputs['selectedSquad'] == $squad['squadID']) ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($squad['name']) . " Lvl (" . $squad['level'] . ")" ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <!-- Troops Section -->
-                        <div class="planner-section" style="margin-bottom:10px;">
-
-                            <label><strong>Troop Level: </strong></label>
-                            
-                            <div>   <!-- div for inline -->
-                                <div> <!-- div for Mtd -->
-                                    <label>
-                                        <input type="checkbox" name="useMtdFighters" value="1" 
-                                            <?=!empty($inputs['useMtdFighters']) ? 'checked' : '' ?> disabled>
-                                        Mounted
-                                    </label>
-                                    
-                                    <select name="mtdLevel" class="selectLevel">
-                                        <?php for($i=3;$i<=9;$i++): ?>
-                                            <option value="<?= $i ?>" <?= ($inputs['mtdLevel']==$i)?'selected':'' ?>>
-                                                Level <?= $i ?>
-                                            </option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </div>
-
-                                <div> <!-- div for rng -->
-                                    <label>
-                                        <input type="checkbox" name="useRngFighters" value="1" 
-                                            <?=!empty($inputs['useRngFighters']) ? 'checked' : '' ?> disabled>
-                                        Archers
-                                    </label>
-                                    
-                                    <select name="rngLevel" class="selectLevel">
-                                        <?php for($i=3;$i<=9;$i++): ?>
-                                            <option value="<?= $i ?>" <?= ($inputs['rngLevel']==$i)?'selected':'' ?>>
-                                                Level <?= $i ?>
-                                            </option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </div>
-
-                                <div> <!-- div for Mel -->
-                                    <label>
-                                        <input type="checkbox" name="useMelFighters" value="1" 
-                                            <?=!empty($inputs['useMelFighters']) ? 'checked' : '' ?> disabled>
-                                        Melee
-                                    </label>
-                                    
-                                    <select name="melLevel" class="selectLevel">
-                                        <?php for($i=3;$i<=9;$i++): ?>
-                                            <option value="<?= $i ?>" <?= ($inputs['melLevel']==$i)?'selected':'' ?>>
-                                                Level <?= $i ?>
-                                            </option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </div>
-
-                                <div> <!-- div for fly -->
-                                    <label>
-                                        <input type="checkbox" name="useFlyFighters" value="1" 
-                                            <?=!empty($inputs['useFlyFighters']) ? 'checked' : '' ?> disabled>
-                                        Flying
-                                    </label>
-                                    
-                                    <select name="flyLevel" class="selectLevel">
-                                        <?php for($i=3;$i<=9;$i++): ?>
-                                            <option value="<?= $i ?>" <?= ($inputs['flylevel']==$i)?'selected':'' ?>>
-                                                Level <?= $i ?>
-                                            </option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Creature Section -->
-                        <div class="bonus-section" style="margin-bottom:12px;">
-                            <label><strong>Creature Level: </strong></label>
-
-                            <label>
-                                <input type="checkbox" name="useCreatures" value="1" 
-                                    <?= !empty($inputs['useCreatures']) ? 'checked' : '' ?> checked>
-                                Creatures
-                            </label>       
-
-                            <select name="playerLevel" class="selectLevel">
-                                <?php for($i=3;$i<=9;$i++): ?>
-                                    <option value="<?= $i ?>" <?= ($inputs['playerLevel']==$i)?'selected':'' ?>>
-                                        Level <?= $i ?>
-                                    </option>
-                                <?php endfor; ?>
-                            </select>
-
-                        </div>
-
-                        <!-- Submit -->
-                        <div>
-                            <button type="submit" 
-                                    name="buildPlan" 
-                                    value="1" 
-                                    class="btn btn-primary btn-build"
-                                    id="buildPlanBtn">
-                                ⚔ Build Attack Plan
-                            </button>
-                        </div>
-                    </form>
+        <!-- Card 1: Rarity and Squad Selection -->
+        <div class="bc-card">
+            <div class="bc-img" style="height:40px;">
+                <img src="/images/cards/war_table.jpg" alt="Troop Attack" 
+                    style="width:100%; height:100%; object-fit:cover;opacity:.4;">
+                <div class="bc-img-overlay">
+                    <div class="bc-img-title">Monster & Attack Squad Selections</div>
                 </div>
             </div>
+            <div class="bc-content">
+                <div class="rarity-select">
+                    <label><strong>Monster Squad to Attack:</strong></label>
+                    <div class="difficulty-group">
+                        <?php
+                        $difficulty = $inputs['difficulty'] ?? 'rare';
+                        ?>
+                        <label>
+                            <input type="radio" name="difficulty" value="common"
+                                <?= $difficulty === 'common' ? 'checked' : '' ?>>
+                            Common
+                        </label>
+                        <label>
+                            <input type="radio" name="difficulty" value="rare"
+                                <?= $difficulty === 'rare' ? 'checked' : '' ?>>
+                            Rare
+                        </label>
+                        <label>
+                            <input type="radio" name="difficulty" value="epic"
+                                <?= $difficulty === 'epic' ? 'checked' : '' ?>>
+                            Epic
+                        </label>
+                    </div>
+                </div>
+                <form method="GET">
+                    <!-- Squad Dropdown -->
+                    <div class="squad-select" style="margin-bottom:10px;">
+                        <label><strong>Choose Squad: </strong></label>
+                        <!-- Squad Dropdown -->
+                        <select name="squadID">
+                            <option value="">-- Choose Squad --</option>
+                            <?php foreach ($squads as $squad): ?>
+                                <option value="<?= $squad['squadID'] ?>"
+                                    <?= ($inputs['selectedSquad'] == $squad['squadID']) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($squad['name']) . " Lvl (" . $squad['level'] . ")" ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>                        
+                    <!-- Submit -->
+                    <div>
+                        <button type="submit" 
+                                name="buildPlan" 
+                                value="1" 
+                                class="btn btn-primary btn-build"
+                                id="buildPlanBtn">
+                            ⚔ Select Units for Attack
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Card 1: Rarity and Squad Selection -->
+        <div class="bc-card">
+            <div class="bc-img" style="height:40px;">
+                <img src="/images/cards/war_table.jpg"
+                    style="width:100%; height:100%; object-fit:cover; opacity:.4;">
+                <div class="bc-img-overlay">
+                    <div class="bc-img-title">Troops and Units by Layer</div>
+                </div>
+            </div>
+            <?php
+            $units = [
+                ''    => '-- Select Unit --',
+                'mtd' => 'Mounted',
+                'rng' => 'Archers',
+                'mel' => 'Melee',
+                'fly' => 'Flying',
+
+                // future expansion
+                // 'griffin' => 'Griffin',
+                // 'magog'   => 'Magog',
+            ];
+            ?>
+
+            <div class="bc-content">
+
+            <form method="GET">
+
+                <!-- Layer Count -->
+                <div class="layer-control">
+                    <label><strong>Layers:</strong></label>
+                    <select name="layerCount" id="layerCount">
+                        <?php for ($i=1;$i<=4;$i++): ?>
+                            <option value="<?= $i ?>" <?= ($layerCount == $i ? 'selected' : '') ?>>
+                                <?= $i ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+
+                <!-- Layers -->
+                <div class="layer-section">
+
+                <?php for ($layer = 1; $layer <= $layerCount; $layer++): ?>
+
+                    <div class="layer-block" data-layer="<?= $layer ?>">
+
+                        <div class="layer-header">
+                            <strong>Layer <?= $layer ?></strong>
+                        </div>
+
+                        <div class="unit-row">
+
+                            <?php for ($slot = 1; $slot <= 4; $slot++): ?>
+
+                            <?php
+                            $selectedUnit = $inputs['layers'][$layer]["unit{$slot}"] ?? '';
+                            $selectedLevel = $inputs['layers'][$layer]["level{$slot}"] ?? null;
+                            ?>
+
+                            <div class="unit-group" data-layer="<?= $layer ?>">
+
+                                <!-- Unit Select -->
+                                <select name="layers[<?= $layer ?>][unit<?= $slot ?>]" class="unit-select">
+                                    <?php foreach ($units as $key => $label): ?>
+                                        <option value="<?= $key ?>" <?= ($selectedUnit === $key ? 'selected' : '') ?>>
+                                            <?= $label ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+
+                                <!-- Level Radios -->
+                                <div class="unit-levels">
+                                    <?php for ($i=6;$i<=9;$i++): ?>
+                                        <label>
+                                            <input type="radio"
+                                                name="layers[<?= $layer ?>][level<?= $slot ?>]"
+                                                value="<?= $i ?>"
+                                                <?= ($selectedLevel == $i ? 'checked' : '') ?>>
+                                            <?= $i ?>
+                                        </label>
+                                    <?php endfor; ?>
+                                </div>
+
+                            </div>
+
+                            <?php endfor; ?>
+
+                        </div>
+                    </div>
+
+                <?php endfor; ?>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    ⚔ Build Attack Plan
+                </button>
+
+            </form>
+            </div>
+        </div>
+
 <!--
         <div class="bc-card"> 
             <a href="#" class="bc-card">
@@ -218,4 +285,4 @@ window.attackGroups = <?= json_encode($attackGroups ?? [], JSON_UNESCAPED_UNICOD
 // ==============================
 // FOOTER
 // ==============================
-require_once __DIR__ . '/../includes/footer.php';
+require_once __DIR__ . '/../includes/footer_layer.php';

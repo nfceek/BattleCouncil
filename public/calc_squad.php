@@ -9,14 +9,12 @@
     // ==============================
     // SERVICES & CONTROLLERS
     // ==============================
-    //require_once __DIR__ . '/services/AttackEngine.php';
-    //require_once __DIR__ . '/services/MonsterHuntService.php';
-    require_once __DIR__ . '/../controllers/MonsterHuntController.php';
+    require_once __DIR__ . '/../controllers/SquadController.php';
 
     // ==============================
     // CONTROLLER DATA
     // ==============================
-    $data = monsterHuntController($pdo);
+    $data = squadController($pdo);
 
     $inputs         = $data['inputs'];
     $view           = $data['data'];

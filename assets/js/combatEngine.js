@@ -152,5 +152,29 @@ const combatEngine = (() => {
     };
 })();
 
+// layer.js
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    document.querySelectorAll('.unit-group').forEach(group => {
+
+        const toggleName = group.dataset.toggle;
+        const targetName = group.dataset.target;
+
+        const toggle = group.querySelector(`input[name="${toggleName}"]`);
+        const inputs = group.querySelectorAll(`input[name="${targetName}"]`);
+
+        if (!toggle || inputs.length === 0) return;
+
+        function update() {
+            inputs.forEach(i => i.disabled = !toggle.checked);
+        }
+
+        toggle.addEventListener('change', update);
+        update();
+    });
+
+});
+
 // Make global for inline scripts
 window.CombatEngine = combatEngine;

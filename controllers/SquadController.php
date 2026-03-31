@@ -1,6 +1,6 @@
 <?php
 
-function monsterHuntController($pdo) {
+function squadController($pdo) {
 
     /* -----------------------------
        Inputs

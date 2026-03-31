@@ -27,7 +27,7 @@
 <!-- HEADER IMAGE -->
 <?php 
 requireLogin(); 
-//print_r($user);
+/*print_r($user);
 
   if(hasRole('admin')){
     echo '<div class="site-header">';
@@ -38,6 +38,7 @@ requireLogin();
     echo '<img src="<?= BASE_URL ?>/images/site-header.png" alt="Battle Council">';
     echo '</div>'; 
   }
+    */
 ?>
 
 <div class="site-header">
