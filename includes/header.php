@@ -24,8 +24,22 @@
     <a href="/register.php">Register</a>
 <?php //endif; ?>
 -->
-
 <!-- HEADER IMAGE -->
+<?php 
+requireLogin(); 
+//print_r($user);
+
+  if(hasRole('admin')){
+    echo '<div class="site-header">';
+    echo '<img src="<?= BASE_URL ?>/images/site-header-admin.png" alt="Admin Battle Council">';
+    echo '</div>';
+  }else{
+    echo '<div class="site-header">';
+    echo '<img src="<?= BASE_URL ?>/images/site-header.png" alt="Battle Council">';
+    echo '</div>'; 
+  }
+?>
+
 <div class="site-header">
   <img src="<?= BASE_URL ?>/images/site-header.png" alt="Battle Council">
 </div>
@@ -66,7 +80,7 @@
   <div class="mobile-menu" id="mobileMenu">
     <a href="<?= BASE_URL ?>/index.php"><i class="fa-solid fa-house"></i> Home</a>
     
-    <a href="<?= BASE_URL ?>/monster_hunt.php">⚔️ Monster Hunt</a>
+    <a href="<?= BASE_URL ?>/calc_squad.php">⚔️ Monster Hunt</a>
     <a href="#">👹 Monster Editor</a>
     <a href="#">🪖 Squad Editor</a>
     <a href="#">🐲 Matrix Data</a>

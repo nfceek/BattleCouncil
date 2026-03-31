@@ -24,7 +24,7 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
     <div class="bc-grid">
         <div class="bc-card"> 
-            <a href="<?= BASE_URL ?>/public/monster_hunt.php" class="bc-card">
+            <a href="<?= BASE_URL ?>/public/calc_squad.php" class="bc-card">
                 
                 <div class="bc-img" style="height: 220px;">
                 <img src="<?= BASE_URL ?>/images/cards/orcs.png" alt="Battle Council">
@@ -46,7 +46,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
 
         <div class="bc-card"> 
-            <a href="<?= BASE_URL ?>/public/calculators.php" class="bc-card">
+            <a href="<?= BASE_URL ?>/public/calc_layer.php" class="bc-card">
                 
                 <div class="bc-img" style="height: 220px;">
                 <img src="<?= BASE_URL ?>/images/cards/rare_squads.png" alt="Battle Council">
@@ -69,7 +69,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
 
         <div class="bc-card"> 
-            <a href="<?= BASE_URL ?>/public/calculators.php" class="bc-card">
+            <a href="<?= BASE_URL ?>/public/calc_citadel.php" class="bc-card">
                 
                 <div class="bc-img" style="height: 220px;">
                 <img src="<?= BASE_URL ?>/images/cards/citadels.png" alt="Battle Council">

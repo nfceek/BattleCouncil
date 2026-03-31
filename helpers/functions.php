@@ -15,7 +15,7 @@ if (!function_exists('isLoggedIn')) {
     }
 }
 
-/*
+
 if (!function_exists('requireLogin')) {
     function requireLogin() {
         if (!isLoggedIn()) {
@@ -24,7 +24,7 @@ if (!function_exists('requireLogin')) {
         }
     }
 }
-*/
+
 
 if (!function_exists('hasRole')) {
     function hasRole($role) {
