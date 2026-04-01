@@ -171,4 +171,4 @@ window.attackGroups = <?= json_encode($attackGroups ?? [], JSON_UNESCAPED_UNICOD
 // ==============================
 // FOOTER
 // ==============================
-require_once __DIR__ . '/includes/footer.php';
+require_once __DIR__ . '/includes/footer-index.php';

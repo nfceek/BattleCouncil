@@ -36,3 +36,61 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const radios = document.querySelectorAll('input[name="difficulty"]');
+    const squadSelect = document.getElementById('squadSelect');
+
+    radios.forEach(radio => {
+        radio.addEventListener('click', async () => {
+
+            const difficulty = radio.value;
+
+            // disable while loading
+            squadSelect.innerHTML = `<option>Loading...</option>`;
+            squadSelect.disabled = true;
+
+            try {
+                const res = await fetch(`/api/getSquads.php?difficulty=${difficulty}`);
+                const squads = await res.json();
+
+                // rebuild dropdown
+                let options = `<option value="">-- Choose Squad --</option>`;
+
+                squads.forEach(s => {
+                    options += `<option value="${s.squadID}">
+                        ${s.name} (Lvl ${s.level})
+                    </option>`;
+                });
+
+                squadSelect.innerHTML = options;
+                squadSelect.disabled = false;
+
+            } catch (err) {
+                console.error('Failed to load squads', err);
+                squadSelect.innerHTML = `<option>Error loading squads</option>`;
+            }
+        });
+    });
+
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const radios = document.querySelectorAll('input[name="difficulty"]');
+
+    radios.forEach(radio => {
+        radio.addEventListener('click', () => {
+
+            const url = new URL(window.location.href);
+            url.searchParams.set('difficulty', radio.value);
+
+            // reset squad when switching difficulty
+            url.searchParams.delete('squadID');
+
+            window.location.href = url.toString();
+        });
+    });
+
+});

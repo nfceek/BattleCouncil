@@ -56,101 +56,107 @@ require_once __DIR__ . '/../includes/header.php';
 
 <!-- MAIN CONTENT -->
 <div class="container">
-    <!-- MAIN CONTENT -->
-    <div class="container">
-        <div class="mh-leader">
-            <h1>Monster Hunting Calculator</h1>
-        </div>
-        <div class="mh-grid">
 
-        <!-- Card 1: Rarity and Squad Selection -->
-        <div class="bc-card">
-            <div class="bc-img" style="height:40px;">
-                <img src="/images/cards/war_table.jpg" alt="Troop Attack" 
-                    style="width:100%; height:100%; object-fit:cover;opacity:.4;">
-                <div class="bc-img-overlay">
-                    <div class="bc-img-title">Monster & Attack Squad Selections</div>
-                </div>
+    <div class="mh-leader">
+        <h1>Monster Hunting Calculator</h1>
+    </div>
+
+    <div class="layer-grid">
+
+        <!-- SINGLE FORM (wrap everything) -->
+        <form method="GET">
+
+    <div class="bc-layer-card">
+
+        <div class="bc-img" style="height:40px;">
+            <img src="/images/cards/war_table.jpg"
+                style="width:100%; height:100%; object-fit:cover; opacity:.4;">
+            <div class="bc-img-overlay">
+                <div class="bc-img-title">Monster & Attack Squad Selections</div>
             </div>
-            <div class="bc-content">
-                <div class="rarity-select">
-                    <label><strong>Monster Squad to Attack:</strong></label>
+        </div>
+
+        <div class="bc-content">
+            <!-- Difficulty -->
+            <div class="layer-rarity-select">
+                <label><strong>Monster Squad to Attack:</strong></label>
+                    <?php $difficulty = $inputs['difficulty'] ?? ''; ?>
+
                     <div class="difficulty-group">
-                        <?php
-                        $difficulty = $inputs['difficulty'] ?? 'rare';
-                        ?>
+
                         <label>
                             <input type="radio" name="difficulty" value="common"
                                 <?= $difficulty === 'common' ? 'checked' : '' ?>>
                             Common
                         </label>
+
                         <label>
                             <input type="radio" name="difficulty" value="rare"
                                 <?= $difficulty === 'rare' ? 'checked' : '' ?>>
                             Rare
                         </label>
+
                         <label>
                             <input type="radio" name="difficulty" value="epic"
                                 <?= $difficulty === 'epic' ? 'checked' : '' ?>>
                             Epic
                         </label>
-                    </div>
-                </div>
-                <form method="GET">
-                    <!-- Squad Dropdown -->
-                    <div class="squad-select" style="margin-bottom:10px;">
-                        <label><strong>Choose Squad: </strong></label>
-                        <!-- Squad Dropdown -->
-                        <select name="squadID">
-                            <option value="">-- Choose Squad --</option>
-                            <?php foreach ($squads as $squad): ?>
-                                <option value="<?= $squad['squadID'] ?>"
-                                    <?= ($inputs['selectedSquad'] == $squad['squadID']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($squad['name']) . " Lvl (" . $squad['level'] . ")" ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>                        
-                    <!-- Submit -->
-                    <div>
-                        <button type="submit" 
-                                name="buildPlan" 
-                                value="1" 
-                                class="btn btn-primary btn-build"
-                                id="buildPlanBtn">
-                            ⚔ Select Units for Attack
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
-        <!-- Card 1: Rarity and Squad Selection -->
-        <div class="bc-card">
+                    </div>
+            </div>
+
+            <!-- Squad -->
+            <div class="layer-squad-select">
+                <label><strong>Choose Squad:</strong></label>
+
+                <select name="squadID" id="squadSelect" >
+                    <option value="">-- Choose Squad --</option>
+                    <?php foreach ($squads as $squad): ?>
+                        <option value="<?= $squad['squadID'] ?>"
+                            <?= ($inputs['selectedSquad'] == $squad['squadID']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($squad['name']) ?> (Lvl <?= $squad['level'] ?>)
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <!-- Generate Plan -->
+            <div class="layer-generate-btn" >
+                <button type="submit"
+                        name="buildPlan"
+                        value="1"
+                        id="generatePlanBtn"
+                        class="btn btn-primary"
+                        disabled>
+                    ⚔ Generate Attack Plan
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+        <!-- Card 2: Layers -->
+        <div class="bc-layer-card">
+
             <div class="bc-img" style="height:40px;">
                 <img src="/images/cards/war_table.jpg"
-                    style="width:100%; height:100%; object-fit:cover; opacity:.4;">
+                     style="width:100%; height:100%; object-fit:cover; opacity:.4;">
                 <div class="bc-img-overlay">
                     <div class="bc-img-title">Troops and Units by Layer</div>
                 </div>
             </div>
-            <?php
-            $units = [
-                ''    => '-- Select Unit --',
-                'mtd' => 'Mounted',
-                'rng' => 'Archers',
-                'mel' => 'Melee',
-                'fly' => 'Flying',
-
-                // future expansion
-                // 'griffin' => 'Griffin',
-                // 'magog'   => 'Magog',
-            ];
-            ?>
 
             <div class="bc-content">
 
-            <form method="GET">
+                <?php
+                $units = [
+                    ''    => '-- Select Unit --',
+                    'mtd' => 'Mounted',
+                    'rng' => 'Archers',
+                    'mel' => 'Melee',
+                    'fly' => 'Flying',
+                ];
+                ?>
 
                 <!-- Layer Count -->
                 <div class="layer-control">
@@ -177,16 +183,15 @@ require_once __DIR__ . '/../includes/header.php';
 
                         <div class="unit-row">
 
-                            <?php for ($slot = 1; $slot <= 4; $slot++): ?>
+                        <?php for ($slot = 1; $slot <= 4; $slot++): ?>
 
                             <?php
                             $selectedUnit = $inputs['layers'][$layer]["unit{$slot}"] ?? '';
                             $selectedLevel = $inputs['layers'][$layer]["level{$slot}"] ?? null;
                             ?>
 
-                            <div class="unit-group" data-layer="<?= $layer ?>">
+                            <div class="unit-group">
 
-                                <!-- Unit Select -->
                                 <select name="layers[<?= $layer ?>][unit<?= $slot ?>]" class="unit-select">
                                     <?php foreach ($units as $key => $label): ?>
                                         <option value="<?= $key ?>" <?= ($selectedUnit === $key ? 'selected' : '') ?>>
@@ -195,7 +200,6 @@ require_once __DIR__ . '/../includes/header.php';
                                     <?php endforeach; ?>
                                 </select>
 
-                                <!-- Level Radios -->
                                 <div class="unit-levels">
                                     <?php for ($i=6;$i<=9;$i++): ?>
                                         <label>
@@ -210,7 +214,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                             </div>
 
-                            <?php endfor; ?>
+                        <?php endfor; ?>
 
                         </div>
                     </div>
@@ -219,17 +223,23 @@ require_once __DIR__ . '/../includes/header.php';
 
                 </div>
 
-                <button type="submit" class="btn btn-primary">
-                    ⚔ Build Attack Plan
-                </button>
-
-            </form>
             </div>
         </div>
 
+        <!-- Final Action -->
+        <div class="bc-layer-card">
+            <div class="bc-content">
+                <button type="submit" name="buildPlan" value="1" class="btn btn-primary">
+                    ⚔ Build Attack Plan
+                </button>
+            </div>
+        </div>
+
+        </form>
+
 <!--
-        <div class="bc-card"> 
-            <a href="#" class="bc-card">
+        <div class="bc-layer-card"> 
+            <a href="#" class="bc-layer-card">
                 
                 <div class="bc-img" style="height: 220px;">
                 <img src="<?= BASE_URL ?>/../images/cards/gear_info.png" alt="The Realm">
@@ -251,8 +261,8 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
             
 
-            <div class="bc-card"> 
-                <a href="<?= BASE_URL ?>/public/ledger.php" class="bc-card">
+            <div class="bc-layer-card"> 
+                <a href="<?= BASE_URL ?>/public/ledger.php" class="bc-layer-card">
                 
                 <div class="bc-img" style="height: 220px;">
                 <img src="<?= BASE_URL ?>/../images/cards/ledger1.png" alt="The Ledger">
@@ -274,8 +284,9 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
 -->
 
-    </div>       
-</div>
+    </div> <!-- mh-grid -->
+
+</div> <!-- container -->
 
 <script>
 window.attackGroups = <?= json_encode($attackGroups ?? [], JSON_UNESCAPED_UNICODE) ?>;

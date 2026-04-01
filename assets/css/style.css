@@ -516,6 +516,48 @@ form#registerForm.active #switchToLogin {
 .counter.yellow { background: #a88b00; }
 .counter.red { background: #8b1a1a; }
 
+  /* -----------------------------
+    Layer Grid (layer-grid)
+  ------------------------------*/
+  .layer-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr; /* 1 col on mobile & tablet */
+  }
+
+.bc-layer-card {
+  background: #1a1d24;
+  border-radius: 12px;
+  overflow: hidden;                 /* prevents bleed */
+  
+  display: flex;                    /* keep layout */
+  flex-direction: column;
+  margin-bottom: 12px;
+  text-decoration: none;            /* remove link underline */
+  color: inherit;                   /* remove link color */
+}
+
+.layer-header {
+  background: #555; /* default */
+  text-align: left;
+  padding:8px;
+}
+
+.layer-block {
+  margin:8px;
+}
+
+/* Hover behavior */
+.bc-card:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.layer-rarity-select, .layer-squad-select,
+.layer-generate-btn { 
+  margin-bottom: 12px;
+}
+
 /* ==============================
    BASE BUTTON SYSTEM
 ============================== */
@@ -817,12 +859,26 @@ form#registerForm.active #switchToLogin {
     cursor: pointer;
 }
 
-.layer-header {
-  background: #555; /* default */
-  text-align: left;
-  padding:8px;
+.difficulty-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
 }
 
-.layer-block {
-  margin:8px;
+.btn-reset-inline {
+    background: #2e7d32;   /* green */
+    color: #fff;
+    border: none;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: 0.2s ease;
 }
+
+.btn-reset-inline:hover {
+    background: #43a047;
+}
+
