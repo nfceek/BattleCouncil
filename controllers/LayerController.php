@@ -1,5 +1,9 @@
 <?php
-
+/*
+echo '<pre>';
+var_dump($_GET);
+echo '</pre>';
+*/
 /**
  * Difficulty → query rules
  */
@@ -42,7 +46,7 @@ function layerController(PDO $pdo): array {
 
     $useFighters  = isset($_GET['useFighters']);
     $useCreatures = isset($_GET['useCreatures']);
-    $buildPlan    = isset($_GET['buildPlan']);
+    $buildLayerPlan = isset($_GET['buildLayerPlan']);
 
     /* -----------------------------
        Squads (FIXED QUERY)
@@ -107,7 +111,7 @@ function layerController(PDO $pdo): array {
             'difficulty'   => $difficulty,
             'selectedSquad'=> $selectedSquad,
             'playerLevel'  => $playerLevel,
-            'buildPlan'    => $buildPlan
+            'buildLayerPlan'    => $buildLayerPlan
         ],
         'squads'     => $squads,
         'monsters'   => $monsters,

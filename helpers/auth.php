@@ -19,7 +19,7 @@ if (!function_exists('isLoggedIn')) {
 if (!function_exists('requireLogin')) {
     function requireLogin() {
         if (!isLoggedIn()) {
-            header("Location: " . BASE_URL . "/login.php");
+            //header("Location: " . BASE_URL . "/login.php");
             exit;
         }
     }

@@ -4,7 +4,7 @@
 // ==============================
 require_once __DIR__ . '/../core/bootstrap.php';      // sessions, environment
 require_once __DIR__ . '/../config/config.php';      // BASE_URL, DB
-require_once __DIR__ . '/../helpers/functions.php';  // e(), isLoggedIn(), hasRole(), fetchAll()
+require_once __DIR__ . '/../helpers/auth.php';  // e(), isLoggedIn(), hasRole(), fetchAll()
 
 require_once __DIR__ . '/../services/PointsService.php';
 require_once __DIR__ . '/../services/ClanServices.php';

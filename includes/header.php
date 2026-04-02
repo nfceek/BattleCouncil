@@ -1,4 +1,9 @@
-<?php require_once __DIR__ . '/../config/config.php'; ?>
+<?php 
+
+require_once __DIR__ . '/../config/config.php'; 
+require_once __DIR__ . '/../helpers/auth.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +31,7 @@
 -->
 <!-- HEADER IMAGE -->
 <?php 
-requireLogin(); 
+//requireLogin(); 
 /*print_r($user);
 
   if(hasRole('admin')){
@@ -59,22 +64,22 @@ requireLogin();
       <i class="fa-solid fa-house"></i>
     </a>
 
-    <!-- RIGHT: LOGIN / USER -->
-    <?php if (isLoggedIn()): ?>
+    <!-- RIGHT: LOGIN / USER 
+    <?php //if (isLoggedIn()): ?>
         <a href="#" class="nav-login">
-        <!-- Future use
+  
           <a href="/member_dashboard.php" class="nav-login">
-        -->
+        
             <i class="fa-solid fa-user"></i>
-            <?= e($_SESSION['username'] ?? 'User') ?>
+            <? //e($_SESSION['username'] ?? 'User') ?>
         </a>
-    <?php else: ?>
+    <?php //else: ?>
         <a href="/login.php" class="nav-login">
             <i class="fa-solid fa-user"></i>
             Login
         </a>
-    <?php endif; ?>
-
+    <?php //endif; ?>
+-->
   </div>
 
   <!-- MOBILE MENU -->

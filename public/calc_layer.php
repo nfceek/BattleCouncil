@@ -4,7 +4,7 @@
 // ==============================
 require_once __DIR__ . '/../core/bootstrap.php';      // sessions, environment
 require_once __DIR__ . '/../config/config.php';      // BASE_URL, DB
-require_once __DIR__ . '/../helpers/functions.php';  // e(), isLoggedIn(), hasRole(), fetchAll()
+require_once __DIR__ . '/../helpers/auth.php';  // e(), isLoggedIn(), hasRole(), fetchAll()
 
 require_once __DIR__ . '/../services/PointsService.php';
 require_once __DIR__ . '/../services/ClanServices.php';
@@ -16,12 +16,18 @@ require_once __DIR__ . '/../controllers/LayerController.php';
 
 $data = layerController($pdo);
 
-$inputs      = $data['inputs'];
-$squads      = $data['squads'];
-$layerCount  = $data['layerCount'];   
-$config      = $data['config'];
-$bonusMatrix = $data['bonusMatrix'];
+    $inputs      = $data['inputs'];
+    $squads      = $data['squads'];
+    $layerCount  = $data['layerCount'];   
+    $config      = $data['config'];
+    $bonusMatrix = $data['bonusMatrix'];
+    $monsters       = $data['monsters'] ?? [];
 
+/*
+echo '<pre>';
+print_r($monsters);
+echo '</pre>';
+*/
 // ==============================
 // EXAMPLE POINTS REWARD ASSIGNMENT -- FUTURE USE
 /* ==============================
@@ -43,6 +49,7 @@ if ($battleResult['win']) {
     );
 }
 */
+
 // ==============================
 // PAGE SETTINGS
 // ==============================
@@ -52,6 +59,7 @@ $pageClass = 'Layering Calculator';
 // HEADER
 // ==============================
 require_once __DIR__ . '/../includes/header.php';
+
 ?>
 
 <!-- MAIN CONTENT -->
@@ -63,23 +71,24 @@ require_once __DIR__ . '/../includes/header.php';
 
     <div class="layer-grid">
 
-        <!-- SINGLE FORM (wrap everything) -->
-        <form method="GET">
+    <!-- SINGLE FORM (wrap everything) -->
+    <form method="GET" id="layerForm">
 
-    <div class="bc-layer-card">
-
-        <div class="bc-img" style="height:40px;">
-            <img src="/images/cards/war_table.jpg"
-                style="width:100%; height:100%; object-fit:cover; opacity:.4;">
-            <div class="bc-img-overlay">
-                <div class="bc-img-title">Monster & Attack Squad Selections</div>
+        <div class="bc-layer-card">
+            <div class="bc-img" style="height:40px;">
+                <img src="/images/cards/war_table.jpg"
+                    style="width:100%; height:100%; object-fit:cover; opacity:.4;">
+                <div class="bc-img-overlay">
+                    <div class="bc-img-title">Monster & Attack Squad Selections</div>
+                </div>
             </div>
-        </div>
 
-        <div class="bc-content">
-            <!-- Difficulty -->
-            <div class="layer-rarity-select">
-                <label><strong>Monster Squad to Attack:</strong></label>
+            <div class="bc-content">
+
+                <!-- Difficulty -->
+                <div class="layer-rarity-select">
+                    <label><strong>Monster Squad to Attack:</strong></label>
+
                     <?php $difficulty = $inputs['difficulty'] ?? ''; ?>
 
                     <div class="difficulty-group">
@@ -103,38 +112,40 @@ require_once __DIR__ . '/../includes/header.php';
                         </label>
 
                     </div>
+                </div>
+
+                <!-- Squad -->
+                <div class="layer-squad-select">
+                    <label><strong>Choose Squad:</strong></label>
+
+                    <select name="squadID" id="squadSelect" >
+                        <option value="">-- Choose Squad --</option>
+                        <?php foreach ($squads as $squad): ?>
+                            <option value="<?= $squad['squadID'] ?>"
+                                <?= ($inputs['selectedSquad'] == $squad['squadID']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($squad['name']) ?> (Lvl <?= $squad['level'] ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <!-- Generate -->
+                <div class="layer-generate-btn">
+                    <button type="submit"
+                            name="buildLayerPlan"
+                            value="1"
+                            id="generatePlanBtn"
+                            class="btn btn-primary"
+                            >
+                        ⚔ Generate Attack Plan
+                    </button>
+                </div>
+
             </div>
-
-            <!-- Squad -->
-            <div class="layer-squad-select">
-                <label><strong>Choose Squad:</strong></label>
-
-                <select name="squadID" id="squadSelect" >
-                    <option value="">-- Choose Squad --</option>
-                    <?php foreach ($squads as $squad): ?>
-                        <option value="<?= $squad['squadID'] ?>"
-                            <?= ($inputs['selectedSquad'] == $squad['squadID']) ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($squad['name']) ?> (Lvl <?= $squad['level'] ?>)
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <!-- Generate Plan -->
-            <div class="layer-generate-btn" >
-                <button type="submit"
-                        name="buildPlan"
-                        value="1"
-                        id="generatePlanBtn"
-                        class="btn btn-primary"
-                        disabled>
-                    ⚔ Generate Attack Plan
-                </button>
-            </div>
-
         </div>
-    </div>
 
+    </form>
+        
         <!-- Card 2: Layers -->
         <div class="bc-layer-card">
 
@@ -181,42 +192,125 @@ require_once __DIR__ . '/../includes/header.php';
                             <strong>Layer <?= $layer ?></strong>
                         </div>
 
-                        <div class="unit-row">
+<div class="layer-section">
 
-                        <?php for ($slot = 1; $slot <= 4; $slot++): ?>
+<?php for ($layer = 1; $layer <= $layerCount; $layer++): ?>
 
-                            <?php
-                            $selectedUnit = $inputs['layers'][$layer]["unit{$slot}"] ?? '';
-                            $selectedLevel = $inputs['layers'][$layer]["level{$slot}"] ?? null;
-                            ?>
+    <?php
+    // Map monster to layer
+    $monster = $monsters[$layer - 1] ?? null;
 
-                            <div class="unit-group">
+    $selectedUnit1  = $inputs['layers'][$layer]['unit1'] ?? '';
+    $selectedLevel1 = $inputs['layers'][$layer]['level1'] ?? null;
 
-                                <select name="layers[<?= $layer ?>][unit<?= $slot ?>]" class="unit-select">
-                                    <?php foreach ($units as $key => $label): ?>
-                                        <option value="<?= $key ?>" <?= ($selectedUnit === $key ? 'selected' : '') ?>>
-                                            <?= $label ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+    $selectedUnit2  = $inputs['layers'][$layer]['unit2'] ?? '';
+    $selectedLevel2 = $inputs['layers'][$layer]['level2'] ?? null;
+    ?>
 
-                                <div class="unit-levels">
-                                    <?php for ($i=6;$i<=9;$i++): ?>
-                                        <label>
-                                            <input type="radio"
-                                                name="layers[<?= $layer ?>][level<?= $slot ?>]"
-                                                value="<?= $i ?>"
-                                                <?= ($selectedLevel == $i ? 'checked' : '') ?>>
-                                            <?= $i ?>
-                                        </label>
-                                    <?php endfor; ?>
-                                </div>
+    <div class="layer-block">
 
-                            </div>
+        <!-- Layer Header -->
+        <div class="layer-header">
+            <strong>Layer <?= $layer ?></strong>
+        </div>
 
+        <!-- Monster vs Fighter Split -->
+        <div class="layer-row">
+
+            <!-- LEFT: MONSTER -->
+            <div class="layer-monster">
+
+                <?php if ($monster): ?>
+                    <div class="monster-name">
+                        <strong><?= htmlspecialchars($monster['name']) ?></strong>
+                    </div>
+
+                    <div class="monster-meta">
+                        Type: <?= htmlspecialchars($monster['type']) ?>
+                    </div>
+
+                    <div class="monster-meta">
+                        Qty: <?= (int)$monster['quantity'] ?>
+                    </div>
+                <?php else: ?>
+                    <div class="monster-meta">No monster</div>
+                <?php endif; ?>
+
+            </div>
+
+            <!-- RIGHT: FIGHTERS -->
+            <div class="layer-fighters">
+
+                <!-- Round 1 -->
+                <div class="unit-round">
+
+                    <div class="unit-round-label"><strong>Round 1</strong></div>
+
+                    <select name="layers[<?= $layer ?>][unit1]" class="unit-select">
+                        <option value="">-- Select Unit --</option>
+                        <?php foreach ($units as $key => $label): ?>
+                            <option value="<?= $key ?>"
+                                <?= ($selectedUnit1 === $key ? 'selected' : '') ?>>
+                                <?= $label ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+
+                    <div class="unit-levels">
+                        <?php for ($i=6;$i<=9;$i++): ?>
+                            <label>
+                                <input type="radio"
+                                    name="layers[<?= $layer ?>][level1]"
+                                    value="<?= $i ?>"
+                                    <?= ($selectedLevel1 == $i ? 'checked' : '') ?>>
+                                <?= $i ?>
+                            </label>
                         <?php endfor; ?>
+                    </div>
 
-                        </div>
+                </div>
+
+                <!-- Round 2 -->
+                <div class="unit-round">
+
+                    <div class="unit-round-label"><strong>Round 2</strong></div>
+
+                    <select name="layers[<?= $layer ?>][unit2]"
+                            class="unit-select round2"
+                            disabled>
+                        <option value="">-- Select Unit --</option>
+                        <?php foreach ($units as $key => $label): ?>
+                            <option value="<?= $key ?>"
+                                <?= ($selectedUnit2 === $key ? 'selected' : '') ?>>
+                                <?= $label ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+
+                    <div class="unit-levels">
+                        <?php for ($i=6;$i<=9;$i++): ?>
+                            <label>
+                                <input type="radio"
+                                    name="layers[<?= $layer ?>][level2]"
+                                    value="<?= $i ?>"
+                                    <?= ($selectedLevel2 == $i ? 'checked' : '') ?>
+                                    disabled>
+                                <?= $i ?>
+                            </label>
+                        <?php endfor; ?>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<?php endfor; ?>
+
+</div>
                     </div>
 
                 <?php endfor; ?>
@@ -235,7 +329,7 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </div>
 
-        </form>
+
 
 <!--
         <div class="bc-layer-card"> 

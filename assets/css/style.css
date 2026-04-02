@@ -882,3 +882,33 @@ form#registerForm.active #switchToLogin {
     background: #43a047;
 }
 
+/* unit row monster v. attack group */
+
+.layer-row {
+    display: flex;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.layer-monster {
+    width: 35%;
+    border-right: 1px solid #444;
+    padding-right: 10px;
+}
+
+.layer-fighters {
+    width: 65%;
+    display: flex;
+    gap: 15px;
+}
+
+.unit-round {
+    flex: 1;
+}
+
+.layer-block {
+    margin-bottom: 15px;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 6px;
+}
