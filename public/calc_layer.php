@@ -89,7 +89,7 @@ require_once __DIR__ . '/../includes/header.php';
 
         <!-- Leadership Type -->
         <div class="input-block">
-            <label><strong>Leadership of Attack</strong></label>
+            <label class=inline-attack-header>Leadership of Attack</label>
 
             <div class="inline-group">
                 <?php
@@ -116,35 +116,36 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
         <!-- Command Capacity -->        
         <label><strong>Command Capacity</strong></label>
+            <div class="inline-group-capacity">
+                <div>
+                    <label>Leadership</label>
+                    <input type="number"
+                        name="leadership"
+                        value="<?= $inputs['leadership'] ?? '' ?>"
+                        class="input-small">
+                        <span class="icon-slot"></span>
+                </div>
 
-        <div class="inline-group">
+                <div>
+                    <label>Authority</label>
+                    <input type="number"
+                        name="authority"
+                        value="<?= $inputs['authority'] ?? '' ?>"
+                        class="input-small">
+                        <span class="icon-slot"></span>
+                </div>
 
-            <div>
-                <label>Leadership</label>
-                <input type="number"
-                    name="leadership"
-                    value="<?= $inputs['leadership'] ?? '' ?>"
-                    class="input-small">
+                <div>
+                    <label>Dominance</label>
+                    <input type="number"
+                        name="dominance"
+                        value="<?= $inputs['dominance'] ?? '' ?>"
+                        class="input-small">
+                        <span class="icon-slot"></span>
+                </div>
+
             </div>
-
-            <div>
-                <label>Authority</label>
-                <input type="number"
-                    name="authority"
-                    value="<?= $inputs['authority'] ?? '' ?>"
-                    class="input-small">
-            </div>
-
-            <div>
-                <label>Dominance</label>
-                <input type="number"
-                    name="dominance"
-                    value="<?= $inputs['dominance'] ?? '' ?>"
-                    class="input-small">
-            </div>
-
-        </div>
-        </div>
+  
 
         <!-- Troop Selection -->
         <div class="input-block">
@@ -298,7 +299,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <?php for ($layer = 1; $layer <= $layerCount; $layer++): ?>
                     <div class="layer-block" data-layer="<?= $layer ?>">
                         <div class="layer-header">
-                            <strong>Layer <?= $layer ?></strong>
+                            <strong>Round <?= $layer ?></strong>
                         </div>
                     <div class="layer-section">
                     <?php for ($layer = 1; $layer <= $layerCount; $layer++): ?>
@@ -347,7 +348,7 @@ require_once __DIR__ . '/../includes/header.php';
                                     <!-- Round 1 -->
                                     <div class="unit-round">
 
-                                        <div class="unit-round-label"><strong>Round 1</strong></div>
+                                        <div class="unit-round-label"><strong>Attack 1</strong></div>
 
                                         <select name="layers[<?= $layer ?>][unit1]" class="unit-select">
                                             <option value="">-- Select Unit --</option>
@@ -376,7 +377,7 @@ require_once __DIR__ . '/../includes/header.php';
                                     <!-- Round 2 -->
                                     <div class="unit-round">
 
-                                        <div class="unit-round-label"><strong>Round 2</strong></div>
+                                        <div class="unit-round-label"><strong>Attack 2</strong></div>
 
                                         <select name="layers[<?= $layer ?>][unit2]"
                                                 class="unit-select round2"

@@ -921,17 +921,63 @@ form#registerForm.active #switchToLogin {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
+    margin-bottom: 15px;
+    justify-content: center;   /* horizontal center */
+    align-items: center;       /* vertical alignment */
+    text-align: center;        /* centers label text */
+}
+
+.inline-group-capacity {
+    display: flex;
+    gap: 15px;
+    padding-left: 12px;
+
+    margin-bottom: 15px;
+    justify-content: center;   /* horizontal center */
+    align-items: center;       /* vertical alignment */
+    text-align: center;        /* centers label text */
+}
+
+.inline-group-capacity > div {
+    display: flex;
     align-items: center;
+    gap: 8px;
+
+    width: 160px; /* keeps all equal */
+}
+
+.inline-group-capacity label {
+    font-weight: 600;
+    color: #ccc; /* softer UI tone */
+    width: 90px;         /* fixed label width = alignment */
+    text-align: right;   /* clean alignment */
+}
+
+.inline-group-capacity input {
+    width: 50px;
+    text-align: center;
+}
+
+.icon-slot {
+    width: 16px;
+    height: 16px;
+    margin-left: auto;
 }
 
 .input-small {
     width: 80px;
 }
 
+
+
 .troop-grid {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
+    margin-bottom: 15px;
+    justify-content: center;   /* horizontal center */
+    align-items: center;       /* vertical alignment */
+    text-align: center;        /* centers label text */
 }
 
 .troop-card {
