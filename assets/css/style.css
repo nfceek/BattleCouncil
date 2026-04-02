@@ -912,3 +912,45 @@ form#registerForm.active #switchToLogin {
     padding: 10px;
     border-radius: 6px;
 }
+
+.input-block {
+    margin-bottom: 15px;
+}
+
+.inline-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.input-small {
+    width: 80px;
+}
+
+.troop-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.troop-card {
+    border: 1px solid #333;
+    padding: 10px;
+    width: 140px;
+    border-radius: 6px;
+}
+
+.troop-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.troop-enable {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.troop-levels.disabled {
+    opacity: 0.4;
+}

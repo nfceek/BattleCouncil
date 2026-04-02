@@ -136,3 +136,29 @@ document.querySelectorAll('.layer-block').forEach(block => {
     });
 
 });
+
+document.querySelectorAll('.troop-card').forEach(card => {
+
+    const checkbox = card.querySelector('input[type="checkbox"]');
+    const radios   = card.querySelectorAll('input[type="radio"]');
+    const levels   = card.querySelector('.troop-levels');
+
+    if (!checkbox || !levels) return;
+
+    const updateState = () => {
+        const enabled = checkbox.checked;
+
+        // toggle radio inputs
+        radios.forEach(r => r.disabled = !enabled);
+
+        // toggle visual state
+        levels.classList.toggle('disabled', !enabled);
+    };
+
+    // run on load (important)
+    updateState();
+
+    // run on change
+    checkbox.addEventListener('change', updateState);
+
+});
