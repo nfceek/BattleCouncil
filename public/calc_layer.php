@@ -191,8 +191,8 @@ require_once __DIR__ . '/../includes/header.php';
                         <!-- Enable -->
                         <label class="troop-enable">
                             <input type="checkbox"
-                                class="troop-enable-checkbox"
-                                data-type="<?= $key ?>"
+                                class="troop-checkbox"
+                                data-troop-type="<?= $key ?>"
                                 name="troops[<?= $key ?>][enabled]">
                                 Use
                         </label>
@@ -202,7 +202,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <label>
                                 <input type="radio"
                                     class="troop-level-radio"
-                                    data-type="<?= $key ?>"
+                                    data-troop-type="<?= $key ?>"
                                     name="troops[<?= $key ?>][level]"
                                     value="<?= $i ?>"> <!-- MUST have value -->
                                 <?= $i ?>
@@ -297,11 +297,16 @@ require_once __DIR__ . '/../includes/header.php';
 <script>
     console.log('LayerEngine test snippet running');
 
-    // Optional: auto-check some troops for quick testing
-    document.querySelector('.troop-checkbox[data-troop-type="mtd"]').checked = true;
-    document.querySelector('.troop-level-radio[data-troop-type="mtd"][value="6"]').checked = true;
-    document.querySelector('.troop-checkbox[data-troop-type="rng"]').checked = true;
-    document.querySelector('.troop-level-radio[data-troop-type="rng"][value="7"]').checked = true;
+function checkInput(input) {
+    input.checked = true;
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+}
+
+// Example
+checkInput(document.querySelector('.troop-checkbox[data-troop-type="mtd"]'));
+checkInput(document.querySelector('.troop-level-radio[data-troop-type="mtd"][value="6"]'));
+checkInput(document.querySelector('.troop-checkbox[data-troop-type="rng"]'));
+checkInput(document.querySelector('.troop-level-radio[data-troop-type="rng"][value="7"]'));
 </script>
                 </div>
             </div>
@@ -388,23 +393,23 @@ require_once __DIR__ . '/../includes/header.php';
                                     <div class="unit-round">
 
                                         <div class="unit-round-label"><strong>Attack 1</strong></div>
-<select name="layers[<?= $layer ?>][unit1]" class="unit-select">
+                                            <select name="layers[<?= $layer ?>][unit1]" class="unit-select">
 
-    <option value="">-- Select Unit --</option>
+                                                <option value="">-- Select Unit --</option>
 
-    <?php foreach ($fighterOptions as $f): ?>
+                                                <?php foreach ($fighterOptions as $f): ?>
 
-        <option value="<?= $f['id'] ?>"
-            <?= ($selectedUnit1 == $f['id'] ? 'selected' : '') ?>>
+                                                    <option value="<?= $f['id'] ?>"
+                                                        <?= ($selectedUnit1 == $f['id'] ? 'selected' : '') ?>>
 
-            <?= htmlspecialchars($f['name']) ?>
-            (<?= strtoupper($f['type']) ?> L<?= $f['level'] ?>)
+                                                        <?= htmlspecialchars($f['name']) ?>
+                                                        (<?= strtoupper($f['type']) ?> L<?= $f['level'] ?>)
 
-        </option>
+                                                    </option>
 
-    <?php endforeach; ?>
+                                                <?php endforeach; ?>
 
-</select>
+                                            </select>
                                     </div>
 
                                     <!-- Round 2 -->
