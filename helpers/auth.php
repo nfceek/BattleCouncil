@@ -19,9 +19,9 @@ if (!function_exists('isLoggedIn')) {
 if (!function_exists('requireLogin')) {
     function requireLogin() {
         if (!isLoggedIn()) {
-            //header("Location: " . BASE_URL . "/login.php");
-            exit;
+            return false; // 👈 don’t kill page
         }
+        return true;
     }
 }
 

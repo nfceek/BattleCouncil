@@ -19,4 +19,7 @@ $squads = fetchAll($pdo, "
     $config['minLevel']
 ]);
 
+echo '<pre>';
+var_dump($squads);
+echo '</pre>';
 echo json_encode($squads);

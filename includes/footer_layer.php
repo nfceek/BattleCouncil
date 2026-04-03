@@ -6,6 +6,6 @@
     const bonusMatrix = <?= json_encode($bonusMatrix ?? []) ?>;
   </script>
   <script src="<?= BASE_URL ?>/../assets/js/layer.js"></script>
-
+  <script type="module" src="<?= BASE_URL ?>/../assets/js/LayerEngine.js"></script>
 </body>
 </html>

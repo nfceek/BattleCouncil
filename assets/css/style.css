@@ -943,18 +943,18 @@ form#registerForm.active #switchToLogin {
     align-items: center;
     gap: 8px;
 
-    width: 160px; /* keeps all equal */
+    width: 185px; /* keeps all equal */
 }
 
 .inline-group-capacity label {
     font-weight: 600;
     color: #ccc; /* softer UI tone */
-    width: 90px;         /* fixed label width = alignment */
+    width: 250px;         /* fixed label width = alignment */
     text-align: right;   /* clean alignment */
 }
 
 .inline-group-capacity input {
-    width: 50px;
+    width: 95px;
     text-align: center;
 }
 
@@ -967,8 +967,6 @@ form#registerForm.active #switchToLogin {
 .input-small {
     width: 80px;
 }
-
-
 
 .troop-grid {
     display: flex;
@@ -999,4 +997,18 @@ form#registerForm.active #switchToLogin {
 
 .troop-levels.disabled {
     opacity: 0.4;
+}
+
+.inline-attack-header {
+    font-weight: 600;
+    display:block;
+    margin-bottom: 12px;
+
+}
+
+.troop-global-controls > * {
+        font-weight: 100;
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 12px;
 }

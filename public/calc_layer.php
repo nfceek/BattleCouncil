@@ -25,7 +25,7 @@ $data = layerController($pdo);
 
 /*
 echo '<pre>';
-print_r($monsters);
+print_r($squads);
 echo '</pre>';
 */
 // ==============================
@@ -89,7 +89,7 @@ require_once __DIR__ . '/../includes/header.php';
 
         <!-- Leadership Type -->
         <div class="input-block">
-            <label class=inline-attack-header>Leadership of Attack</label>
+            <label class="inline-attack-header">Leadership of Attack</label>
 
             <div class="inline-group">
                 <?php
@@ -115,7 +115,7 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </div>
         <!-- Command Capacity -->        
-        <label><strong>Command Capacity</strong></label>
+        <label class="inline-attack-header">Command Capacity</label>
             <div class="inline-group-capacity">
                 <div>
                     <label>Leadership</label>
@@ -146,13 +146,30 @@ require_once __DIR__ . '/../includes/header.php';
 
             </div>
   
-
         <!-- Troop Selection -->
         <div class="input-block">
-            <label><strong>Available Troops</strong></label>
+            <label class="inline-attack-header">Available Troops</label>
+            <div class="troop-global-controls">
 
+                <!-- Select All -->
+                <label class="global-toggle">
+                    <input type="checkbox" id="selectAllTroops">
+                    Select All 
+                </label>
+
+                <!-- Global Level -->
+                <div class="global-level">
+
+                    <?php for ($i=6;$i<=9;$i++): ?>
+                        <label>
+                            <input type="radio" name="globalLevel" value="<?= $i ?>">
+                            <?= $i ?>
+                        </label>
+                    <?php endfor; ?>
+                </div>
+
+            </div>
             <div class="troop-grid">
-
                 <?php
                 $troops = [
                     'mtd' => 'Mounted',
@@ -161,9 +178,7 @@ require_once __DIR__ . '/../includes/header.php';
                     'fly' => 'Flying'
                 ];
                 ?>
-
                 <?php foreach ($troops as $key => $label): ?>
-
                     <?php
                     $enabled = !empty($inputs['troops'][$key]['enabled']);
                     $level   = $inputs['troops'][$key]['level'] ?? null;
@@ -176,26 +191,24 @@ require_once __DIR__ . '/../includes/header.php';
                         <!-- Enable -->
                         <label class="troop-enable">
                             <input type="checkbox"
-                                name="troops[<?= $key ?>][enabled]"
-                                value="1"
-                                <?= $enabled ? 'checked' : '' ?>>
-                            Use
+                                class="troop-enable-checkbox"
+                                data-type="<?= $key ?>"
+                                name="troops[<?= $key ?>][enabled]">
+                                Use
                         </label>
 
-                        <!-- Levels -->
-                        <div class="troop-levels <?= !$enabled ? 'disabled' : '' ?>">
-                            <?php for ($i=6;$i<=9;$i++): ?>
-                                <label>
-                                    <input type="radio"
-                                        name="troops[<?= $key ?>][level]"
-                                        value="<?= $i ?>"
-                                        <?= ($level == $i ? 'checked' : '') ?>
-                                        <?= !$enabled ? 'disabled' : '' ?>>
-                                    <?= $i ?>
-                                </label>
-                            <?php endfor; ?>
-                        </div>
-
+                    <div class="troop-levels <?= !$enabled ? 'disabled' : '' ?>">
+                        <?php for ($i = 6; $i <= 9; $i++): ?>
+                            <label>
+                                <input type="radio"
+                                    class="troop-level-radio"
+                                    data-type="<?= $key ?>"
+                                    name="troops[<?= $key ?>][level]"
+                                    value="<?= $i ?>"> <!-- MUST have value -->
+                                <?= $i ?>
+                            </label>
+                        <?php endfor; ?>
+                    </div>
                     </div>
 
                 <?php endforeach; ?>
@@ -264,6 +277,32 @@ require_once __DIR__ . '/../includes/header.php';
                             >
                         ⚔ Generate Attack Plan
                     </button>
+                    <!-- LayerEngine Test Snippet -->
+<button id="generatePlanBtn">Generate Attack Plan</button>
+
+<div>
+    <label><input type="checkbox" class="troop-checkbox" data-troop-type="mtd"> Mounted</label>
+    <label><input type="radio" class="troop-level-radio" data-troop-type="mtd" value="6"> 6</label>
+    <label><input type="radio" class="troop-level-radio" data-troop-type="mtd" value="7"> 7</label>
+</div>
+
+<div>
+    <label><input type="checkbox" class="troop-checkbox" data-troop-type="rng"> Archers</label>
+    <label><input type="radio" class="troop-level-radio" data-troop-type="rng" value="6"> 6</label>
+    <label><input type="radio" class="troop-level-radio" data-troop-type="rng" value="7"> 7</label>
+</div>
+
+<script src="<?= BASE_URL ?>/../assets/js/LayerEngine.js"></script>
+
+<script>
+    console.log('LayerEngine test snippet running');
+
+    // Optional: auto-check some troops for quick testing
+    document.querySelector('.troop-checkbox[data-troop-type="mtd"]').checked = true;
+    document.querySelector('.troop-level-radio[data-troop-type="mtd"][value="6"]').checked = true;
+    document.querySelector('.troop-checkbox[data-troop-type="rng"]').checked = true;
+    document.querySelector('.troop-level-radio[data-troop-type="rng"][value="7"]').checked = true;
+</script>
                 </div>
             </div>
         </div>
@@ -349,36 +388,28 @@ require_once __DIR__ . '/../includes/header.php';
                                     <div class="unit-round">
 
                                         <div class="unit-round-label"><strong>Attack 1</strong></div>
+<select name="layers[<?= $layer ?>][unit1]" class="unit-select">
 
-                                        <select name="layers[<?= $layer ?>][unit1]" class="unit-select">
-                                            <option value="">-- Select Unit --</option>
-                                            <?php foreach ($units as $key => $label): ?>
-                                                <option value="<?= $key ?>"
-                                                    <?= ($selectedUnit1 === $key ? 'selected' : '') ?>>
-                                                    <?= $label ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
+    <option value="">-- Select Unit --</option>
 
-                                        <div class="unit-levels">
-                                            <?php for ($i=6;$i<=9;$i++): ?>
-                                                <label>
-                                                    <input type="radio"
-                                                        name="layers[<?= $layer ?>][level1]"
-                                                        value="<?= $i ?>"
-                                                        <?= ($selectedLevel1 == $i ? 'checked' : '') ?>>
-                                                    <?= $i ?>
-                                                </label>
-                                            <?php endfor; ?>
-                                        </div>
+    <?php foreach ($fighterOptions as $f): ?>
 
+        <option value="<?= $f['id'] ?>"
+            <?= ($selectedUnit1 == $f['id'] ? 'selected' : '') ?>>
+
+            <?= htmlspecialchars($f['name']) ?>
+            (<?= strtoupper($f['type']) ?> L<?= $f['level'] ?>)
+
+        </option>
+
+    <?php endforeach; ?>
+
+</select>
                                     </div>
 
                                     <!-- Round 2 -->
                                     <div class="unit-round">
-
                                         <div class="unit-round-label"><strong>Attack 2</strong></div>
-
                                         <select name="layers[<?= $layer ?>][unit2]"
                                                 class="unit-select round2"
                                                 disabled>
@@ -390,18 +421,6 @@ require_once __DIR__ . '/../includes/header.php';
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
-                                        <div class="unit-levels">
-                                            <?php for ($i=6;$i<=9;$i++): ?>
-                                                <label>
-                                                    <input type="radio"
-                                                        name="layers[<?= $layer ?>][level2]"
-                                                        value="<?= $i ?>"
-                                                        <?= ($selectedLevel2 == $i ? 'checked' : '') ?>
-                                                        disabled>
-                                                    <?= $i ?>
-                                                </label>
-                                            <?php endfor; ?>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -418,8 +437,9 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="bc-layer-card">
             <div class="bc-content">
                 <button type="submit" name="buildPlan" value="1" class="btn btn-primary">
-                    ⚔ Build Attack Plan
+                    ⚔ Build Attack Plan 2
                 </button>
+                <button id="clear-selection">Clear Selection</button>
             </div>
         </div>
 

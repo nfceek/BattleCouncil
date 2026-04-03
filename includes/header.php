@@ -31,7 +31,7 @@ require_once __DIR__ . '/../helpers/auth.php';
 -->
 <!-- HEADER IMAGE -->
 <?php 
-//requireLogin(); 
+$userLoggedIn = requireLogin();
 /*print_r($user);
 
   if(hasRole('admin')){

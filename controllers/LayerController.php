@@ -103,21 +103,123 @@ function layerController(PDO $pdo): array {
         ", [$selectedSquad]);
     }
 
+
     /* -----------------------------
-       Final Return (CLEAN)
+    Fighters (BATCHED QUERY)
+    ------------------------------*/
+    $fighters = [];
+
+    if ($buildLayerPlan && !empty($_GET['troops'])) {
+
+        $conditions = [];
+        $params     = [];
+
+        foreach ($_GET['troops'] as $type => $data) {
+
+            if (empty($data['enabled']) || empty($data['level'])) {
+                continue;
+            }
+
+            $conditions[] = "(f.type = ? AND f.level = ? AND f.unit = 'Reg')";
+            $params[] = $type;
+            $params[] = (int)$data['level'];
+        }
+
+        if (!empty($conditions)) {
+
+            $sql = "
+                SELECT 
+                    f.fighterID,
+                    f.name,
+                    f.type,
+                    f.level,
+                    f.strength,
+                    f.health,
+                    f.imgpath, 
+                    f.unit
+                FROM fighter f
+
+                LEFT JOIN fighter_bonus fb 
+                    ON fb.fighterID = f.fighterID
+                    AND fb.bonus_against IS NOT NULL
+
+                WHERE " . implode(' OR ', $conditions) . "
+                GROUP BY f.fighterID
+                ORDER BY f.type, f.strength DESC
+                            ";
+
+            $fighters = fetchAll($pdo, $sql, $params);
+
+            foreach ($fighters as &$f) {
+                $f['category'] = 'fighter';
+                $f['bonuses'] = [];
+
+            }
+            unset($f);
+        }
+    }
+
+    /* -----------------------------
+    Fighter Prep / Algorithm Layer
+    ------------------------------*/
+    $fighterOptions = [];
+
+    if ($buildLayerPlan && !empty($fighters)) {
+
+        foreach ($fighters as $f) {
+
+            // default score
+            $score = $f['strength'] ?? 0;
+
+            // simple future-proof structure
+            $fighterOptions[] = [
+                'id'       => $f['fighterID'],
+                'name'     => $f['name'],
+                'type'     => $f['type'],
+                'level'    => $f['level'],
+                'strength' => $f['strength'],
+                'health'   => $f['health'],
+                'unit'     => $f['unit'],
+                'img'      => $f['imgpath'] ?? '',
+                'score'    => $score, // will evolve later
+            ];
+        }
+
+        // sort strongest first (baseline behavior)
+        usort($fighterOptions, fn($a,$b) => $b['score'] <=> $a['score']);
+    }
+
+    echo '<pre>';
+    echo "=== FIGHTER OPTIONS ===\n";
+    print_r($fighterOptions);
+    echo '</pre>';
+
+    /* -----------------------------
+    Final Return (CLEAN + COMPLETE)
     ------------------------------*/
     return [
-        'inputs'     => [
-            'difficulty'   => $difficulty,
-            'selectedSquad'=> $selectedSquad,
-            'playerLevel'  => $playerLevel,
-            'buildLayerPlan'    => $buildLayerPlan
+        'inputs' => [
+            'difficulty'     => $difficulty,
+            'selectedSquad'  => $selectedSquad,
+            'playerLevel'    => $playerLevel,
+            'buildLayerPlan' => $buildLayerPlan
         ],
+
+        // UI data
         'squads'     => $squads,
         'monsters'   => $monsters,
         'squadStats' => $squadStats,
-        'layerCount' => $config['layers'] ?? 3,   // 👈 if you add layers to config
-        'config'     => $config,                  // 👈 FIX
-        'bonusMatrix'=> []                        // 👈 placeholder (safe for now)
+
+        // config
+        'layerCount' => $config['layers'] ?? 3,
+        'config'     => $config,
+
+        // NEW: unit pools
+        'fighters'   => $fighters ?? [],
+        'creatures'  => $creatures ?? [],
+        'units'      => $units ?? [],
+
+        // future engine output
+        'bonusMatrix'=> [] // placeholder (safe)
     ];
 }
