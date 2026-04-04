@@ -378,22 +378,22 @@ require_once __DIR__ . '/../includes/header.php';
 
                                 </div>
 
-  <div class="unit-round">
+                                    <div class="unit-round">
 
-    <div class="unit-round-label"><strong>Attack 1</strong></div>
-<?php
-echo '<pre>';
-print_r($fighterOptions);
-echo '</pre>';
-?>
-                                    <select name="layers[<?= $layer ?>][unit1]" class="unit-select">
-                                        <option value="">-- Select Unit --</option>
-                                        <?php foreach ($fighterOptions as $f): ?>
-                                            <option value="<?= $f['id'] ?>">
-                                                <?= htmlspecialchars($f['name']) ?> (<?= strtoupper($f['unit']) ?> L<?= $f['level'] ?>)
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                        <div class="unit-round-label"><strong>Attack 1</strong></div>
+                                        <?php
+                                        echo '<pre>';
+                                        print_r($fighterOptions);
+                                        echo '</pre>';
+                                        ?>
+                                        <select name="layers[<?= $layer ?>][unit1]" class="unit-select">
+                                            <option value="">-- Select Unit --</option>
+                                            <?php foreach ($fighterOptions as $f): ?>
+                                                <option value="<?= $f['id'] ?>">
+                                                    <?= htmlspecialchars($f['name']) ?> (<?= strtoupper($f['unit']) ?> L<?= $f['level'] ?>)
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
 
                                     </div>
 
