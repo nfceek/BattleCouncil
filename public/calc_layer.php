@@ -24,11 +24,12 @@ $data = layerController($pdo);
     $monsters       = $data['monsters'] ?? [];
     $fighterOptions = $data['fighterOptions'] ?? [];
 
-    echo '<pre>';
+/*
+echo '<pre>';
 print_r($fighterOptions);
 echo '</pre>';
 
-/*
+
 echo '<pre>';
 print_r($squads);
 echo '</pre>';
@@ -169,6 +170,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <label>
                             <input type="radio" class="global-level-radio" name="globalLevel" value="<?= $i ?>">
                             <?= $i ?>
+
                         </label>
                     <?php endfor; ?>
                 </div>
@@ -180,7 +182,8 @@ require_once __DIR__ . '/../includes/header.php';
                     'mtd' => 'Mounted',
                     'rng' => 'Archers',
                     'mel' => 'Melee',
-                    'fly' => 'Flying'
+                    'fly' => 'Flying',
+                    'bst' => 'Creature'
                 ];
                 ?>
                 <?php foreach ($troops as $key => $label): ?>
@@ -282,20 +285,6 @@ require_once __DIR__ . '/../includes/header.php';
                             >
                         ⚔ Generate Attack Plan
                     </button>
-                    <!-- LayerEngine Test Snippet -->
-<button id="generatePlanBtn">Generate Attack Plan</button>
-
-
-
-<script>
-    console.log('LayerEngine test snippet running');
-
-function checkInput(input) {
-    input.checked = true;
-    input.dispatchEvent(new Event('change', { bubbles: true }));
-}
-
-</script>
                 </div>
             </div>
         </div>
@@ -397,33 +386,16 @@ echo '<pre>';
 print_r($fighterOptions);
 echo '</pre>';
 ?>
-    <select name="layers[<?= $layer ?>][unit1]" class="unit-select">
+                                    <select name="layers[<?= $layer ?>][unit1]" class="unit-select">
+                                        <option value="">-- Select Unit --</option>
+                                        <?php foreach ($fighterOptions as $f): ?>
+                                            <option value="<?= $f['id'] ?>">
+                                                <?= htmlspecialchars($f['name']) ?> (<?= strtoupper($f['unit']) ?> L<?= $f['level'] ?>)
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
 
-        <option value="">-- Select Unit --</option>
-
-        <?php foreach ($fighterOptions as $f): ?>
-
-            <?php
-                $id    = $f['id'] ?? null;
-                $name  = $f['name'] ?? 'Unknown';
-                $type  = strtoupper($f['type'] ?? '?');
-                $level = $f['level'] ?? '?';
-            ?>
-
-            <?php if ($id): ?>
-                <option value="<?= $id ?>"
-                    <?= ($selectedUnit1 == $id ? 'selected' : '') ?>>
-
-                    <?= htmlspecialchars($name) ?> (<?= $type ?> L<?= $level ?>)
-
-                </option>
-            <?php endif; ?>
-
-        <?php endforeach; ?>
-
-    </select>
-
-</div>
+                                    </div>
 
                                     <!-- Round 2 -->
                                     <div class="unit-round">

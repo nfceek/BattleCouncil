@@ -171,7 +171,7 @@ document.querySelectorAll('.global-level-radio').forEach(globalRadio => {
         });
     }
 
-    /*----------------------
+    //----------------------
     // Clear Selection Button
     // ----------------------
     const clearBtn = document.getElementById('clear-selection');
@@ -183,10 +183,10 @@ document.querySelectorAll('.global-level-radio').forEach(globalRadio => {
                 r.disabled = true;
             });
             if (globalEnable) globalEnable.checked = false;
-            //globalLevelRadios.forEach(r => r.checked = false);
+            globalLevelRadios.forEach(r => r.checked = false);
         });
     }
-*/
+
 // ----------------------
 // Select All Troops (FIXED)
 // ----------------------
