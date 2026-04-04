@@ -188,12 +188,12 @@ function layerController(PDO $pdo): array {
         // sort strongest first (baseline behavior)
         usort($fighterOptions, fn($a,$b) => $b['score'] <=> $a['score']);
     }
-
+/*
     echo '<pre>';
     echo "=== FIGHTER OPTIONS ===\n";
     print_r($fighterOptions);
     echo '</pre>';
-
+*/
     /* -----------------------------
     Final Return (CLEAN + COMPLETE)
     ------------------------------*/
@@ -203,6 +203,7 @@ function layerController(PDO $pdo): array {
             'selectedSquad'  => $selectedSquad,
             'playerLevel'    => $playerLevel,
             'buildLayerPlan' => $buildLayerPlan
+            
         ],
 
         // UI data
@@ -218,6 +219,7 @@ function layerController(PDO $pdo): array {
         'fighters'   => $fighters ?? [],
         'creatures'  => $creatures ?? [],
         'units'      => $units ?? [],
+        'fighterOptions' => $fighterOptions, // <-- ADD THIS
 
         // future engine output
         'bonusMatrix'=> [] // placeholder (safe)

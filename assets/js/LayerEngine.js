@@ -1,6 +1,6 @@
 // LayerEngine.js
-
-export const LayerEngine = (() => {
+console.log('LayerEngine.js LOADED');
+const LayerEngine = (() => {
 
     /**
      * Validate selected fighters against monster squad
@@ -50,6 +50,7 @@ export const LayerEngine = (() => {
      * Example debug runner
      */
     function runDebug() {
+        console.log('debug.js LOADED');
         const selectedFighters = [
             { type: 'mtd', level: 6 },
             { type: 'rng', level: 7 }

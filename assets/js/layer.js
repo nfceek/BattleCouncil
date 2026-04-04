@@ -77,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Troop / Attack Plan
     // ----------------------
     const globalEnable = document.getElementById('global-enable');
-    const globalLevelRadios = document.querySelectorAll('.global-level-radio');
     const troopCards = document.querySelectorAll('.troop-card');
     const troopCheckboxes = document.querySelectorAll('.troop-checkbox');
 
@@ -113,21 +112,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Global level radios
-    globalLevelRadios.forEach(gr => {
-        gr.addEventListener('change', () => {
-            const level = gr.value;
-            troopCheckboxes.forEach(cb => {
-                if (!cb.checked) return;
-                const type = cb.dataset.troopType;
-                const radios = document.querySelectorAll(`.troop-level-radio[data-troop-type="${type}"]`);
-                radios.forEach(r => {
-                    if (r.value === level) r.checked = true;
-                });
+ // Global level radios (FIXED)
+document.querySelectorAll('.global-level-radio').forEach(globalRadio => {
+    globalRadio.addEventListener('change', () => {
+
+        const level = globalRadio.value;
+
+        document.querySelectorAll('.troop-card').forEach(card => {
+
+            const checkbox = card.querySelector('.troop-checkbox');
+            if (!checkbox || !checkbox.checked) return;
+
+            const radios = card.querySelectorAll('.troop-level-radio');
+
+            radios.forEach(r => {
+
+                // enable radios if needed
+                r.disabled = false;
+
+                if (r.value === level) {
+                    r.checked = true;
+
+                    // 🔥 REQUIRED — triggers all other listeners
+                    r.dispatchEvent(new Event('change', { bubbles: true }));
+                }
             });
+
         });
+
     });
 
+});
     // Individual troop radio feedback (optional)
     document.querySelectorAll('.troop-level-radio').forEach(radio => {
         radio.addEventListener('change', () => {
@@ -156,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ----------------------
+    /*----------------------
     // Clear Selection Button
     // ----------------------
     const clearBtn = document.getElementById('clear-selection');
@@ -168,29 +183,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 r.disabled = true;
             });
             if (globalEnable) globalEnable.checked = false;
-            globalLevelRadios.forEach(r => r.checked = false);
+            //globalLevelRadios.forEach(r => r.checked = false);
         });
     }
+*/
+// ----------------------
+// Select All Troops (FIXED)
+// ----------------------
+const selectAll = document.getElementById('selectAllTroops');
 
-    // ----------------------
-    // Select All Troops
-    // ----------------------
-    const selectAll = document.getElementById('selectAllTroops');
-    if (selectAll) {
-        selectAll.addEventListener('change', () => {
-            troopCheckboxes.forEach(cb => {
-                cb.checked = selectAll.checked;
-                const card = cb.closest('.troop-card');
-                const levels = card.querySelector('.troop-levels');
-                if (levels) {
-                    levels.classList.toggle('disabled', !cb.checked);
-                    levels.querySelectorAll('input[type="radio"]').forEach(r => {
-                        r.disabled = !cb.checked;
-                    });
-                }
+if (selectAll) {
+    selectAll.addEventListener('change', () => {
+
+        troopCheckboxes.forEach(cb => {
+
+            cb.checked = selectAll.checked;
+
+            const card = cb.closest('.troop-card');
+            const levels = card.querySelector('.troop-levels');
+
+            if (!levels) return;
+
+            levels.classList.toggle('disabled', !cb.checked);
+
+            const radios = levels.querySelectorAll('.troop-level-radio');
+
+            radios.forEach(r => {
+                r.disabled = !cb.checked;
+
+                // 🔥 Optional but powerful:
+                if (!cb.checked) r.checked = false;
             });
+
         });
-    }
+
+    });
+}
 
     // ----------------------
     // Layer Blocks (Round 2 logic)
@@ -287,6 +315,9 @@ document.addEventListener('DOMContentLoaded', () => {
          */
         function hookGenerateButton() {
             const generateBtn = document.getElementById('generatePlanBtn');
+
+            console.log('Hooking generate button...', generateBtn); // ✅ now safe
+
             if (!generateBtn) return;
 
             generateBtn.addEventListener('click', () => {

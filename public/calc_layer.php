@@ -16,12 +16,17 @@ require_once __DIR__ . '/../controllers/LayerController.php';
 
 $data = layerController($pdo);
 
-    $inputs      = $data['inputs'];
-    $squads      = $data['squads'];
-    $layerCount  = $data['layerCount'];   
-    $config      = $data['config'];
-    $bonusMatrix = $data['bonusMatrix'];
+    $inputs         = $data['inputs'];
+    $squads         = $data['squads'];
+    $layerCount     = $data['layerCount'];   
+    $config         = $data['config'];
+    $bonusMatrix    = $data['bonusMatrix'];
     $monsters       = $data['monsters'] ?? [];
+    $fighterOptions = $data['fighterOptions'] ?? [];
+
+    echo '<pre>';
+print_r($fighterOptions);
+echo '</pre>';
 
 /*
 echo '<pre>';
@@ -160,9 +165,9 @@ require_once __DIR__ . '/../includes/header.php';
                 <!-- Global Level -->
                 <div class="global-level">
 
-                    <?php for ($i=6;$i<=9;$i++): ?>
+                    <?php for ($i=5;$i<=9;$i++): ?>
                         <label>
-                            <input type="radio" name="globalLevel" value="<?= $i ?>">
+                            <input type="radio" class="global-level-radio" name="globalLevel" value="<?= $i ?>">
                             <?= $i ?>
                         </label>
                     <?php endfor; ?>
@@ -198,7 +203,7 @@ require_once __DIR__ . '/../includes/header.php';
                         </label>
 
                     <div class="troop-levels <?= !$enabled ? 'disabled' : '' ?>">
-                        <?php for ($i = 6; $i <= 9; $i++): ?>
+                        <?php for ($i = 5; $i <= 9; $i++): ?>
                             <label>
                                 <input type="radio"
                                     class="troop-level-radio"
@@ -280,19 +285,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <!-- LayerEngine Test Snippet -->
 <button id="generatePlanBtn">Generate Attack Plan</button>
 
-<div>
-    <label><input type="checkbox" class="troop-checkbox" data-troop-type="mtd"> Mounted</label>
-    <label><input type="radio" class="troop-level-radio" data-troop-type="mtd" value="6"> 6</label>
-    <label><input type="radio" class="troop-level-radio" data-troop-type="mtd" value="7"> 7</label>
-</div>
 
-<div>
-    <label><input type="checkbox" class="troop-checkbox" data-troop-type="rng"> Archers</label>
-    <label><input type="radio" class="troop-level-radio" data-troop-type="rng" value="6"> 6</label>
-    <label><input type="radio" class="troop-level-radio" data-troop-type="rng" value="7"> 7</label>
-</div>
-
-<script src="<?= BASE_URL ?>/../assets/js/LayerEngine.js"></script>
 
 <script>
     console.log('LayerEngine test snippet running');
@@ -302,11 +295,6 @@ function checkInput(input) {
     input.dispatchEvent(new Event('change', { bubbles: true }));
 }
 
-// Example
-checkInput(document.querySelector('.troop-checkbox[data-troop-type="mtd"]'));
-checkInput(document.querySelector('.troop-level-radio[data-troop-type="mtd"][value="6"]'));
-checkInput(document.querySelector('.troop-checkbox[data-troop-type="rng"]'));
-checkInput(document.querySelector('.troop-level-radio[data-troop-type="rng"][value="7"]'));
 </script>
                 </div>
             </div>
@@ -370,47 +358,72 @@ checkInput(document.querySelector('.troop-level-radio[data-troop-type="rng"][val
 
                                     <?php if ($monster): ?>
                                         <div class="monster-name">
-                                            <strong><?= htmlspecialchars($monster['name']) ?></strong>
-                                        </div>
-
-                                        <div class="monster-meta">
-                                            Type: <?= htmlspecialchars($monster['type']) ?>
+                                            <strong><?= htmlspecialchars($monster['name']) ?></strong>  ( <?= htmlspecialchars($monster['type']) ?>  )
                                         </div>
 
                                         <div class="monster-meta">
                                             Qty: <?= (int)$monster['quantity'] ?>
                                         </div>
+
+                                        <div class="monster-meta">
+                                            Str: <?= (int)$monster['strength'] ?>
+                                        </div>
+
+                                        <div class="monster-meta">
+                                            ttl Str: <?= (int)$monster['total_strength'] ?>
+                                        </div>
+
+                                        <div class="monster-meta">
+                                            ttl Hlh: <?= (int)$monster['total_health'] ?>
+                                        </div>
+
+                                                                                
+                                        <div class="monster-meta">
+                                            Id: <?= (int)$monster['monsterID'] ?>
+                                        </div>
+
+
                                     <?php else: ?>
                                         <div class="monster-meta">No monster</div>
                                     <?php endif; ?>
 
                                 </div>
 
-                                <!-- RIGHT: FIGHTERS -->
-                                <div class="layer-fighters">
+  <div class="unit-round">
 
-                                    <!-- Round 1 -->
-                                    <div class="unit-round">
+    <div class="unit-round-label"><strong>Attack 1</strong></div>
+<?php
+echo '<pre>';
+print_r($fighterOptions);
+echo '</pre>';
+?>
+    <select name="layers[<?= $layer ?>][unit1]" class="unit-select">
 
-                                        <div class="unit-round-label"><strong>Attack 1</strong></div>
-                                            <select name="layers[<?= $layer ?>][unit1]" class="unit-select">
+        <option value="">-- Select Unit --</option>
 
-                                                <option value="">-- Select Unit --</option>
+        <?php foreach ($fighterOptions as $f): ?>
 
-                                                <?php foreach ($fighterOptions as $f): ?>
+            <?php
+                $id    = $f['id'] ?? null;
+                $name  = $f['name'] ?? 'Unknown';
+                $type  = strtoupper($f['type'] ?? '?');
+                $level = $f['level'] ?? '?';
+            ?>
 
-                                                    <option value="<?= $f['id'] ?>"
-                                                        <?= ($selectedUnit1 == $f['id'] ? 'selected' : '') ?>>
+            <?php if ($id): ?>
+                <option value="<?= $id ?>"
+                    <?= ($selectedUnit1 == $id ? 'selected' : '') ?>>
 
-                                                        <?= htmlspecialchars($f['name']) ?>
-                                                        (<?= strtoupper($f['type']) ?> L<?= $f['level'] ?>)
+                    <?= htmlspecialchars($name) ?> (<?= $type ?> L<?= $level ?>)
 
-                                                    </option>
+                </option>
+            <?php endif; ?>
 
-                                                <?php endforeach; ?>
+        <?php endforeach; ?>
 
-                                            </select>
-                                    </div>
+    </select>
+
+</div>
 
                                     <!-- Round 2 -->
                                     <div class="unit-round">
