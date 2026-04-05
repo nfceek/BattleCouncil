@@ -35,19 +35,42 @@ function getDifficultyConfig(string $difficulty): array {
 
 function layerController(PDO $pdo): array {
 
+// 🔥 SUPPORT JSON API INPUT
+$rawInput = file_get_contents('php://input');
+$json = json_decode($rawInput, true);
+
+if (is_array($json)) {
+    $_GET = array_merge($_GET, $json);
+}
+
     /* -----------------------------
        Inputs
     ------------------------------*/
-    $difficulty = $_GET['difficulty'] ?? 'rare';
+    
+    $troops       = $_GET['troops'] ?? [];
+    $playerLevel  = (int)($_GET['playerLevel'] ?? 6);
+    $difficulty   = $_GET['difficulty'] ?? 'rare';
+    $selectedSquad= (int)($_GET['squadID'] ?? 0);
+
+    $useCreatures = !empty($_GET['useCreatures']);
+    $useFighters  = !empty($_GET['useFighters']);
+    // $buildLayerPlan = isset($_GET['buildLayerPlan']);    v2.13.0
     $config = getDifficultyConfig($difficulty);
-
-    $selectedSquad = isset($_GET['squadID']) ? (int)$_GET['squadID'] : 0;
-    $playerLevel   = isset($_GET['playerLevel']) ? (int)$_GET['playerLevel'] : 6;
-
-    $useFighters  = isset($_GET['useFighters']);
-    $useCreatures = isset($_GET['useCreatures']);
-    $buildLayerPlan = isset($_GET['buildLayerPlan']);
-
+    
+/*  
+echo '<pre>';
+echo "=== INPUT DEBUG ===\n";
+print_r([
+    'troops' => $troops,
+    'playerLevel' => $playerLevel,
+    'difficulty' => $difficulty,
+    'squadID' => $selectedSquad,
+    'useCreatures' => $useCreatures,
+    'useFighters' => $useFighters
+]);
+echo '</pre>';
+exit;
+*/
     /* -----------------------------
        Squads (FIXED QUERY)
     ------------------------------*/
@@ -112,7 +135,10 @@ $creatures = [];
 $fighterOptions = []; // initialize once
 
 // --- Creatures ---
-if (!empty($_GET['troops']['bst']['enabled'])) {
+if (!empty($troops['bst']['enabled']) && $useCreatures) {
+
+    $creatureLevel = (int)($troops['bst']['level'] ?? $playerLevel);
+
     $creatures = fetchAll($pdo, "
         SELECT 
             c.creatureID AS id,
@@ -127,19 +153,18 @@ if (!empty($_GET['troops']['bst']['enabled'])) {
         WHERE c.level = ?
         ORDER BY c.strength DESC
         LIMIT 12
-    ", [$playerLevel]);
+    ", [$creatureLevel]);
 
-    // merge into units
     $units = array_merge($units, $creatures);
 }
 
-// --- Fighters ---
-if ($buildLayerPlan && !empty($_GET['troops'])) {
-
+// --- Fighters --- v2.13.0
+//if ($buildLayerPlan && !empty($_GET['troops'])) {
+if ($useFighters && !empty($troops)) {
     $conditions = [];
     $params     = [];
 
-    foreach ($_GET['troops'] as $type => $data) {
+    foreach ($troops as $type => $data) {
         if ($type === 'bst') continue; // already handled
         if (empty($data['enabled']) || empty($data['level'])) continue;
 
@@ -205,7 +230,7 @@ if (!empty($units)) {
             'difficulty'     => $difficulty,
             'selectedSquad'  => $selectedSquad,
             'playerLevel'    => $playerLevel,
-            'buildLayerPlan' => $buildLayerPlan
+            //'buildLayerPlan' => $buildLayerPlan
             
         ],
 

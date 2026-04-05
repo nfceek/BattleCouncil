@@ -9,7 +9,7 @@ function squadController($pdo) {
     if (!in_array($rarity, ['Common','Rare'])) $rarity = 'Common';
 
     $selectedSquad = isset($_GET['squadID']) ? (int)$_GET['squadID'] : 0;
-    $playerLevel   = isset($_GET['playerLevel']) ? (int)$_GET['playerLevel'] : 6;
+    $playerLevel   = isset($_GET['playerLevel']) ? (int)$_GET['playerLevel'] : 8;
 
     $useFighters  = isset($_GET['useFighters']);
     $useCreatures = isset($_GET['useCreatures']);

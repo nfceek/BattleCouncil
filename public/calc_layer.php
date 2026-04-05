@@ -280,12 +280,10 @@ require_once __DIR__ . '/../includes/header.php';
 
                 <!-- Generate -->
                 <div class="layer-generate-btn">
-                    <button type="submit"
-                            name="buildLayerPlan"
-                            value="1"
-                            id="generatePlanBtn"
-                            class="btn btn-primary"
-                            >
+                    <button 
+                        type="button" 
+                        id="generatePlanBtn"
+                        class="btn btn-primary">
                         ⚔ Generate Attack Plan
                     </button>
                 </div>

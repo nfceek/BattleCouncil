@@ -1,83 +1,49 @@
 // LayerEngine.js
-//console.log('LayerEngine.js LOADED');
-const LayerEngine = (() => {
 
-    /**
-     * Validate selected fighters against monster squad
-     * @param {Array} selectedFighters - [{ type, level }]
-     * @param {Number} monsterGroups - number of monster groups
-     * @returns {{ valid: boolean, message: string|null }}
-     */
-    function validateAttackGroups(selectedFighters, monsterGroups) {
-        console.log("see me");
-        const selectedCount = selectedFighters.length;
+console.log('LayerEngine LOADED');
 
-        if (selectedCount < monsterGroups) {
+window.LayerEngine = (() => {
+
+    function validateAttackGroups(fighters, monsters) {
+        if (!fighters || fighters.length === 0) {
+            return { valid: false, message: 'No fighters selected.' };
+        }
+
+        if (fighters.length < monsters.length) {
             return {
                 valid: false,
-                message: `Not enough attack groups: ${selectedCount} selected, but monster squad has ${monsterGroups} groups.`
+                message: `Not enough fighters (${fighters.length}) for ${monsters.length} monster groups.`
             };
         }
 
         return { valid: true, message: null };
     }
 
-    /**
-     * Build an attack plan
-     * @param {Array} selectedFighters - [{ type, level }]
-     * @param {Array} monsterGroups - [{ groupID, name }]
-     * @returns {Object} - attack plan mapping fighters to monster groups
-     */
-    function buildAttackPlan(selectedFighters, monsterGroups) {
-        console.log("feel me");
-        const validation = validateAttackGroups(selectedFighters, monsterGroups.length);
-        if (!validation.valid) return { error: validation.message };
+    function buildAttackPlan(fighters, monsters) {
+        const check = validateAttackGroups(fighters, monsters);
 
-        // Simple assignment: map fighters to monster groups one-to-one
-        const plan = monsterGroups.map((group, i) => {
-            const fighter = selectedFighters[i % selectedFighters.length]; // wrap around if more groups than fighters
+        if (!check.valid) {
+            return { error: check.message };
+        }
+
+        const plan = monsters.map((m, i) => {
+            const f = fighters[i % fighters.length];
+
             return {
-                groupID: group.groupID,
-                groupName: group.name,
-                fighterType: fighter.type,
-                fighterLevel: fighter.level
+                groupID: m.monsterID ?? i + 1,
+                groupName: m.name,
+                fighterName: f.name,
+                fighterType: f.type,
+                fighterLevel: f.level
             };
         });
 
-        return { 
-            runDebug }
-            //plan };
-    }
-
-
-    /**
-     * Example debug runner
-     */
-    function runDebug() {
-        console.log('debug.js LOADED');
-        const selectedFighters = [
-            { type: 'mtd', level: 6 },
-            { type: 'rng', level: 7 }
-        ];
-        const monsterGroups = [
-            { groupID: 1, name: 'Monsters A' },
-            { groupID: 2, name: 'Monsters B' },
-            { groupID: 3, name: 'Monsters C' }
-        ];
-
-        const result = buildAttackPlan(selectedFighters, monsterGroups);
-
-        if (result.error) {
-            console.warn(result.error);
-        } else {
-            console.log('Attack Plan:', result.plan);
-        }
+        return { plan };
     }
 
     return {
         validateAttackGroups,
-        buildAttackPlan,
-        runDebug
+        buildAttackPlan
     };
 
 })();
