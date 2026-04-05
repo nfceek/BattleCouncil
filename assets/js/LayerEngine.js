@@ -1,5 +1,5 @@
 // LayerEngine.js
-console.log('LayerEngine.js LOADED');
+//console.log('LayerEngine.js LOADED');
 const LayerEngine = (() => {
 
     /**
@@ -9,6 +9,7 @@ const LayerEngine = (() => {
      * @returns {{ valid: boolean, message: string|null }}
      */
     function validateAttackGroups(selectedFighters, monsterGroups) {
+        console.log("see me");
         const selectedCount = selectedFighters.length;
 
         if (selectedCount < monsterGroups) {
@@ -28,6 +29,7 @@ const LayerEngine = (() => {
      * @returns {Object} - attack plan mapping fighters to monster groups
      */
     function buildAttackPlan(selectedFighters, monsterGroups) {
+        console.log("feel me");
         const validation = validateAttackGroups(selectedFighters, monsterGroups.length);
         if (!validation.valid) return { error: validation.message };
 
@@ -42,7 +44,9 @@ const LayerEngine = (() => {
             };
         });
 
-        return { plan };
+        return { 
+            runDebug }
+            //plan };
     }
 
 

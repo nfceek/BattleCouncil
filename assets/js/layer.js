@@ -187,6 +187,30 @@ document.querySelectorAll('.global-level-radio').forEach(globalRadio => {
         });
     }
 */
+/* ----------------------
+// generate plan btn
+// ---------------------
+generateBtn.addEventListener('click', (e) => {
+    e.preventDefault(); // 🔥 stops form submission
+
+    const selectedTroops = Array.from(troopCheckboxes)
+        .filter(cb => cb.checked)
+        .map(cb => {
+            const type = cb.dataset.troopType;
+            const levelRadio = document.querySelector(
+                `.troop-level-radio[data-troop-type="${type}"]:checked`
+            );
+
+            return {
+                type,
+                level: levelRadio ? levelRadio.value : null
+            };
+        });
+
+    console.log('Building attack plan with:', selectedTroops);
+});
+*/
+
 // ----------------------
 // Select All Troops (FIXED)
 // ----------------------
@@ -211,8 +235,10 @@ if (selectAll) {
             radios.forEach(r => {
                 r.disabled = !cb.checked;
 
-                // 🔥 Optional but powerful:
-                if (!cb.checked) r.checked = false;
+                // only clear if explicitly unchecking via UI
+                if (!cb.checked && selectAll.matches(':focus')) {
+                    r.checked = false;
+                }
             });
 
         });
@@ -316,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function hookGenerateButton() {
             const generateBtn = document.getElementById('generatePlanBtn');
 
-            console.log('Hooking generate button...', generateBtn); // ✅ now safe
+            //console.log('Hooking generate button...', generateBtn); // ✅ now safe
 
             if (!generateBtn) return;
 
@@ -341,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
             validateAttackGroups,
             buildAttackPlan,
             getSelectedFighters,
-            getMonsterGroups
+            //getMonsterGroups
         };
 
     })();
