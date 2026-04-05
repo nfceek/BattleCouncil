@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../../app/controllers/LayerController.php';
-require_once __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../controllers/LayerController.php';
+require_once __DIR__ . '/../../core/bootstrap.php';
 
 header('Content-Type: application/json');
 
@@ -19,7 +19,5 @@ $squads = fetchAll($pdo, "
     $config['minLevel']
 ]);
 
-echo '<pre>';
-var_dump($squads);
-echo '</pre>';
 echo json_encode($squads);
+exit;

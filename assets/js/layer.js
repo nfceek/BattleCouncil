@@ -46,12 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const difficulty = radio.value;
 
                 // lock UI while loading
-                squadSelect.disabled = true;
+                //squadSelect.disabled = true;
                 squadSelect.innerHTML = `<option>Loading...</option>`;
-                generateBtn.disabled = true;
+                //generateBtn.disabled = true;
 
                 try {
-                    const res = await fetch(`/api/getSquads.php?difficulty=${difficulty}`);
+                    const res = await fetch(`${BASE_URL}/public/api/getSquads.php?difficulty=${difficulty}`);
                     const squads = await res.json();
 
                     let options = `<option value="">-- Choose Squad --</option>`;

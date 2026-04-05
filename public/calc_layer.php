@@ -67,6 +67,9 @@ $pageClass = 'Layering Calculator';
 require_once __DIR__ . '/../includes/header.php';
 
 ?>
+<script>
+    const BASE_URL = "<?= BASE_URL ?>";
+</script>
 
 <!-- MAIN CONTENT -->
 <div class="container">
