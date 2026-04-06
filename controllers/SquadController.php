@@ -48,7 +48,7 @@ function squadController($pdo) {
                 m.health,
                 m.strength,
 
-                (sm.quantity * m.health)   AS total_health,
+                ((sm.quantity * m.strength)*3)   AS total_health,
                 (sm.quantity * m.strength) AS total_strength,
 
                 COALESCE(MAX(CASE WHEN mb.bonus_against='Mel' THEN mb.bonus_percent END),0) AS bonus_mel,
