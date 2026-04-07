@@ -537,11 +537,18 @@ form#registerForm.active #switchToLogin {
   color: inherit;                   /* remove link color */
 }
 
-.layer-header {
+.layer-header-round {
   background: #7984a3;
   text-align: left;
   padding:8px;
 }
+
+.layer-header-layer {
+  background: #555;
+  text-align: left;
+  padding:8px;
+}
+
 
 .layer-block {
   margin:8px;
@@ -910,7 +917,7 @@ form#registerForm.active #switchToLogin {
 .layer-block {
     margin-bottom: 15px;
     border: 1px solid #333;
-    padding: 10px;
+    padding-bottom: 10px;
     border-radius: 6px;
 }
 

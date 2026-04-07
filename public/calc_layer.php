@@ -228,20 +228,19 @@ require_once __DIR__ . '/../includes/header.php';
                                 Use
                         </label>
 
-                    <div class="troop-levels <?= !$enabled ? 'disabled' : '' ?>">
-                        <?php for ($i = 5; $i <= 9; $i++): ?>
-                            <label>
-                                <input type="radio"
-                                    class="troop-level-radio"
-                                    data-troop-type="<?= $key ?>"
-                                    name="troops[<?= $key ?>][level]"
-                                    value="<?= $i ?>"> <!-- MUST have value -->
-                                <?= $i ?>
-                            </label>
-                        <?php endfor; ?>
+                        <div class="troop-levels <?= !$enabled ? 'disabled' : '' ?>">
+                            <?php for ($i = 5; $i <= 9; $i++): ?>
+                                <label>
+                                    <input type="radio"
+                                        class="troop-level-radio"
+                                        data-troop-type="<?= $key ?>"
+                                        name="troops[<?= $key ?>][level]"
+                                        value="<?= $i ?>"> <!-- MUST have value -->
+                                    <?= $i ?>
+                                </label>
+                            <?php endfor; ?>
+                        </div>
                     </div>
-                    </div>
-
                 <?php endforeach; ?>
 
             </div>
@@ -341,7 +340,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                 <?php for ($layer = 1; $layer <= $layerCount; $layer++): ?>
                     <div class="layer-block" data-layer="<?= $layer ?>">
-                        <div class="layer-header">
+                        <div class="layer-header-round">
                             <strong>Round <?= $layer ?></strong>
                         </div>
                     <div class="layer-section">
@@ -357,7 +356,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <div class="layer-block">
 
                             <!-- Layer Header -->
-                            <div class="layer-header">
+                            <div class="layer-header-layer">
                                 <strong>Layer <?= $layer ?></strong>
                             </div>
 

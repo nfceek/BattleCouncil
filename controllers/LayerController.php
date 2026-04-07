@@ -218,12 +218,7 @@ if (!empty($units)) {
     // strongest first
     usort($fighterOptions, fn($a,$b) => $b['score'] <=> $a['score']);
 }
-    /*
-    echo '<pre>';
-    echo "=== FIGHTER OPTIONS ===\n";
-    print_r($fighterOptions);
-    echo '</pre>';
-    */
+
     /* -----------------------------
     Final Return (CLEAN + COMPLETE)
     ------------------------------*/

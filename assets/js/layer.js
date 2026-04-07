@@ -1,11 +1,10 @@
-// layer.js
-
 document.addEventListener('DOMContentLoaded', () => {
 
     const generateBtn = document.getElementById('generatePlanBtn');
     const troopCards = document.querySelectorAll('.troop-card');
     const troopCheckboxes = document.querySelectorAll('.troop-checkbox');
     const selectAll = document.getElementById('selectAllTroops');
+    const globalRadios = document.querySelectorAll('.global-level-radio');
 
     /* ======================
        TROOP CARD STATE
@@ -20,13 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const update = () => {
             const enabled = checkbox.checked;
 
-            radios.forEach(r => {
-                r.disabled = !enabled;
-            });
+            radios.forEach(r => r.disabled = !enabled);
 
-            if (levels) {
-                levels.classList.toggle('disabled', !enabled);
-            }
+            if (levels) levels.classList.toggle('disabled', !enabled);
         };
 
         checkbox.addEventListener('change', update);
@@ -34,11 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ======================
-       SELECT ALL (SAFE)
+       SELECT ALL
     ====================== */
     if (selectAll) {
         selectAll.addEventListener('change', () => {
-
             troopCheckboxes.forEach(cb => {
                 cb.checked = selectAll.checked;
 
@@ -46,15 +40,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 const radios = card.querySelectorAll('.troop-level-radio');
                 const levels = card.querySelector('.troop-levels');
 
-                radios.forEach(r => {
-                    r.disabled = !cb.checked;
-                });
-
-                if (levels) {
-                    levels.classList.toggle('disabled', !cb.checked);
-                }
+                radios.forEach(r => r.disabled = !cb.checked);
+                if (levels) levels.classList.toggle('disabled', !cb.checked);
             });
+        });
+    }
 
+    /* ======================
+       GLOBAL LEVEL RADIO SYNC
+    ====================== */
+    if (globalRadios.length) {
+        globalRadios.forEach(gr => {
+            gr.addEventListener('change', () => {
+                const globalValue = gr.value;
+
+                troopCards.forEach(card => {
+                    const checkbox = card.querySelector('.troop-checkbox');
+                    if (!checkbox || !checkbox.checked) return; // only enabled troops
+
+                    const radios = card.querySelectorAll('.troop-level-radio');
+                    radios.forEach(r => r.checked = r.value === globalValue);
+                });
+            });
         });
     }
 
@@ -118,10 +125,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
                 const data = await res.json();
-
                 console.log('API RESPONSE:', data);
 
-                // 🔥 Pass ONLY API data into engine
+                // Pass ONLY API data into engine
                 const result = LayerEngine.buildAttackPlan(
                     data.fighterOptions,
                     data.monsters

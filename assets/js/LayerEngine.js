@@ -21,161 +21,162 @@ window.LayerEngine = (() => {
         return { valid: true, message: null };
     }
 
+// =========================
+// BUILD ATTACK PLAN
+// =========================
+function buildAttackPlan(fighters, monsters, options = {}) {
+    const check = validateAttackGroups(fighters, monsters);
+    if (!check.valid) return { error: check.message };
+
     // =========================
-    // BUILD ATTACK PLAN
+    // CONFIG
     // =========================
-    function buildAttackPlan(fighters, monsters, options = {}) {
-        const check = validateAttackGroups(fighters, monsters);
-        if (!check.valid) return { error: check.message };
+    const CONFIG = {
+        typeBlockThreshold: options.typeBlockThreshold ?? 25,
+        fighterStrBonus: options.fighterStrBonus ?? 1,
+        monsterStrBonus: options.monsterStrBonus ?? 1
+    };
 
-        // =========================
-        // CONFIG
-        // =========================
-        const CONFIG = {
-            typeBlockThreshold: options.typeBlockThreshold ?? 25,
-            fighterStrBonus: options.fighterStrBonus ?? 1,
-            fighterHlhBonus: options.fighterHlhBonus ?? 1,
-            monsterStrBonus: options.monsterStrBonus ?? 1,
-            monsterHlhBonus: options.monsterHlhBonus ?? 1
-        };
+    // =========================
+    // HELPERS
+    // =========================
+    function calcMonsterHlh(m) {
+        return (m.strength * 3) * m.quantity * CONFIG.monsterStrBonus;
+    }
 
-        // =========================
-        // HELPERS
-        // =========================
-        function calcMonsterHlh(m) {
-            return ((m.strength * m.quantity) * 3) * CONFIG.monsterHlhBonus;
+    function calcFighterHlh(f) {
+        return f.strength * 3 * CONFIG.fighterStrBonus;
+    }
+
+    function isCreature(f) {
+        return (f.type ?? '').toLowerCase() === 'bst';
+    }
+
+    // =========================
+    // PREP MONSTERS
+    // =========================
+    const preparedMonsters = monsters.map((m, i) => ({
+        ...m,
+        monsterID: m.monsterID ?? i + 1,
+        monsterHlh: calcMonsterHlh(m),
+        monsterClass: {
+            mel: m.bonus_mel ?? 0,
+            mtd: m.bonus_Mtd ?? 0,
+            rng: m.bonus_Rng ?? 0,
+            fly: m.bonus_Fly ?? 0,
+            oth: m.bonus_Oth ?? 0
         }
+    }));
 
-        function calcFighterHlh(f) {
-            return (f.strength * 3) * CONFIG.fighterHlhBonus;
-        }
+    // SORT by HLH DESC
+    preparedMonsters.sort((a, b) => b.monsterHlh - a.monsterHlh);
 
-        // =========================
-        // PREP MONSTERS
-        // =========================
-        const preparedMonsters = monsters.map((m, i) => ({
-            ...m,
-            monsterID: m.monsterID ?? i + 1,
-            monsterHlh: calcMonsterHlh(m),
-            monsterClass: {
-                mel: m.bonus_mel ?? 0,
-                mtd: m.bonus_Mtd ?? 0,
-                rng: m.bonus_Rng ?? 0,
-                fly: m.bonus_Fly ?? 0,
-                oth: m.bonus_Oth ?? 0
-            }
-        }));
+    // =========================
+    // PLAN VARIABLES
+    // =========================
+    const fightersPool = [...fighters]; // shallow copy
+    let creatureUsed = 0;
+    const CREATURE_LIMIT = 1;
 
-        // SORT by HLH DESC
-        preparedMonsters.sort((a, b) => b.monsterHlh - a.monsterHlh);
+    // =========================
+    // PICK BEST FIGHTER
+    // =========================
+    function pickBestFighter(monster, fighters) {
+        const normal = [];
+        const creatures = [];
 
-        // =========================
-        // PLAN VARIABLES
-        // =========================
-        const fightersPool = [...fighters]; // shallow copy
-        let creatureUsed = 0;
-        const CREATURE_LIMIT = 1; // max bst in round 1
+        fighters.forEach(f => {
+            if (isCreature(f)) creatures.push(f);
+            else normal.push(f);
+        });
 
-        // =========================
-        // PICK BEST FIGHTER
-        // =========================
-        function pickBestFighter(monster, fighters) {
-            const normal = [];
-            const creatures = [];
+        // Filter viable fighters respecting monster bonus
+        const filterViable = (list) =>
+            list.filter(f => (monster.monsterClass[f.class ?? f.type] ?? 0) <= CONFIG.typeBlockThreshold);
 
-            fighters.forEach(f => {
-                const fighterClass = f.class ?? f.type;
-                if (fighterClass === 'bst') creatures.push(f);
-                else normal.push(f);
-            });
+        let viableNormal = filterViable(normal);
+        let viableCreatures = filterViable(creatures);
 
-            // Filter viable fighters respecting monster bonus
-            const filterViable = (list) => list.filter(f => {
-                const fighterClass = f.class ?? f.type;
-                return (monster.monsterClass[fighterClass] ?? 0) <= CONFIG.typeBlockThreshold;
-            });
+        if (viableNormal.length === 0) viableNormal = normal;
+        if (viableCreatures.length === 0) viableCreatures = creatures;
 
-            let viableNormal = filterViable(normal);
-            let viableCreatures = filterViable(creatures);
+        // Sort by health
+        viableNormal.sort((a, b) => calcFighterHlh(b) - calcFighterHlh(a));
+        viableCreatures.sort((a, b) => calcFighterHlh(b) - calcFighterHlh(a));
 
-            if (viableNormal.length === 0) viableNormal = normal;
-            if (viableCreatures.length === 0) viableCreatures = creatures;
+        // Decide
+        let chosen;
 
-            // Sort by health
-            viableNormal.sort((a, b) => calcFighterHlh(b) - calcFighterHlh(a));
-            viableCreatures.sort((a, b) => calcFighterHlh(b) - calcFighterHlh(a));
+        if (creatureUsed < CREATURE_LIMIT && viableCreatures.length > 0) {
+            const bestCreature = viableCreatures[0];
+            const bestNormal = viableNormal[0];
 
-            let chosen;
-
-            if (creatureUsed < CREATURE_LIMIT && viableCreatures.length > 0) {
-                const bestCreature = viableCreatures[0];
-                const bestNormal = viableNormal[0];
-
-                if (!bestNormal || calcFighterHlh(bestCreature) > calcFighterHlh(bestNormal)) {
-                    chosen = bestCreature;
-                    creatureUsed++;
-                } else {
-                    chosen = bestNormal;
-                }
+            if (!bestNormal || calcFighterHlh(bestCreature) > calcFighterHlh(bestNormal)) {
+                chosen = bestCreature;
+                creatureUsed++;
             } else {
-                chosen = viableNormal[0] ?? viableCreatures[0];
+                chosen = bestNormal;
             }
-
-            return chosen;
+        } else {
+            chosen = viableNormal[0] ?? viableCreatures[0];
         }
 
-        // =========================
-        // BUILD PLAN
-        // =========================
-const plan = preparedMonsters.map((m, i) => {
-    const f = pickBestFighter(m, fightersPool);
+        return chosen;
+    }
 
-    // remove fighter from pool
-    const idx = fightersPool.indexOf(f);
-    if (idx > -1) fightersPool.splice(idx, 1);
+    // =========================
+    // BUILD PLAN
+    // =========================
+    const plan = preparedMonsters.map((m, i) => {
+        const f = pickBestFighter(m, fightersPool);
 
-    const fighterHlh = calcFighterHlh(f);
-    const fighterClass = f?.class ?? f?.type;
-    const bonusVsFighter = m.monsterClass[fighterClass] ?? 0;
-    const blocked = bonusVsFighter > CONFIG.typeBlockThreshold;
+        // remove fighter from pool
+        const idx = fightersPool.indexOf(f);
+        if (idx > -1) fightersPool.splice(idx, 1);
 
-    // ===== NEW: units calculation =====
-    const boosted = f.strength * CONFIG.fighterStrBonus;
-    const unitsNeeded = Math.ceil(m.monsterHlh / boosted);
-    const fighterMaxHealth = (fighterHlh * unitsNeeded); // if monster strikes first
+        const fighterHlh = calcFighterHlh(f);
+        const fighterClass = f.class ?? f.type;
+        const bonusVsFighter = m.monsterClass[fighterClass] ?? 0;
+        const blocked = bonusVsFighter > CONFIG.typeBlockThreshold;
 
-    console.log(`Mapping [${i}] →`, {
-        monster: m.name,
-        fighter: f.name,
-        unitsNeeded,
-        fighterMaxHealth,
-        boosted,
-        monsterHlh: m.monsterHlh
+        // Calculate number of units needed
+        const boosted = f.strength * CONFIG.fighterStrBonus;
+        const unitsNeeded = Math.ceil(m.monsterHlh / boosted);
+        const fighterMaxHealth = fighterHlh * unitsNeeded;
+
+        console.log(`Mapping [${i}] →`, {
+            monster: m.name,
+            fighter: f.name,
+            unitsNeeded,
+            fighterMaxHealth,
+            boosted,
+            monsterHlh: m.monsterHlh,
+            blockedMatch: blocked
+        });
+
+        return {
+            monsterID: m.monsterID,
+            monsterName: m.name,
+            monsterQty: m.quantity,
+            monsterStr: m.strength,
+            monsterHlh: m.monsterHlh,
+
+            fighterName: f.name,
+            fighterType: f.type,
+            fighterClass,
+            fighterLevel: f.level,
+            fighterStr: boosted,
+            fighterHlh,
+            unitsNeeded,
+            fighterMaxHealth,
+
+            vsFighterBonus: bonusVsFighter,
+            blockedMatch: blocked
+        };
     });
 
-    return {
-        monsterID: m.monsterID,
-        monsterName: m.name,
-        monsterQty: m.quantity,
-        monsterStr: m.strength,
-        monsterHlh: m.monsterHlh,
-
-        fighterName: f.name,
-        fighterType: f.type,
-        fighterClass,
-        fighterLevel: f.level,
-        fighterStr: boosted,
-        fighterHlh,
-        unitsNeeded,
-        fighterMaxHealth,
-
-        vsFighterBonus: bonusVsFighter,
-        blockedMatch: blocked
-    };
-});
-
-        return { plan };
-    }
+    return { plan };
+}
 
     // =========================
     // EXPORT
