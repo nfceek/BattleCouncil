@@ -25,7 +25,7 @@ $_GET['squadID']       = $input['squadID'] ?? 0;
 $_GET['useCreatures']  = !empty($input['useCreatures']) ? 1 : null;
 $_GET['useFighters']   = !empty($input['useFighters']) ? 1 : null;
 
-// 🔥 DEBUG (TEMP — REMOVE AFTER)
+/* 🔥 DEBUG (TEMP — REMOVE AFTER)
 if (empty($_GET['troops'])) {
     echo json_encode([
         'error' => 'Troops missing after injection',
@@ -33,6 +33,7 @@ if (empty($_GET['troops'])) {
     ]);
     exit;
 }
+*/
 
 // ✅ RUN CONTROLLER
 $result = layerController($pdo);

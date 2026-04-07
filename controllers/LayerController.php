@@ -144,6 +144,7 @@ if (!empty($troops['bst']['enabled']) && $useCreatures) {
             c.creatureID AS id,
             c.name,
             'bst' AS type,
+            c.type AS class,
             c.level,
             c.strength,
             c.health,
@@ -210,6 +211,7 @@ if (!empty($units)) {
             'unit'     => $u['unit'] ?? $u['source'] ?? 'creature',
             'img'      => $u['imgpath'] ?? '',
             'score'    => $u['strength'] ?? 0,
+            'class'    => $u['class'] ?? 'bst'
         ];
     }
 
