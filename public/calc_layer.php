@@ -97,8 +97,8 @@ require_once __DIR__ . '/../includes/header.php';
     <div class="bc-content">
 
         <!-- Leadership Type -->
-        <div class="input-block">
-            <label class="inline-attack-header">Leadership of Attack</label>
+        <div class="input-block-leadership">
+            <label class="inline-attack-header">Leadership of Attack* <small>Optional -- in testing</small></label>
 
             <div class="inline-group">
                 <?php
@@ -123,9 +123,10 @@ require_once __DIR__ . '/../includes/header.php';
                 <?php endforeach; ?>
             </div>
         </div>
+        <div class="input-block-capacity">
         <!-- Command Capacity -->        
-        <label class="inline-attack-header">Command Capacity</label>
-            <div class="inline-group-capacity">
+        <label class="inline-attack-header">Command Capacity* <small>Optional -- in testing</small></label>
+            <div class="inline-group-capacity1">
                 <div>
                     <label>Leadership</label>
                     <input type="number"
@@ -154,9 +155,28 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
 
             </div>
-  
+            <div class="inline-group-capacity2">
+                <div>
+                    <label>Strength Bonus</label>
+                    <input type="number"
+                        name="bonusStr"
+                        value="<?= $inputs['bonusStr'] ?? '' ?>"
+                        class="input-small">
+                        <span class="icon-slot"></span>
+                </div>
+
+                                <div>
+                    <label>Health Bonus</label>
+                    <input type="number"
+                        name="bonusHlh"
+                        value="<?= $inputs['bonusHlh'] ?? '' ?>"
+                        class="input-small">
+                        <span class="icon-slot"></span>
+                </div>
+            </div>
+        </div>
         <!-- Troop Selection -->
-        <div class="input-block">
+        <div class="input-block-troops">
             <label class="inline-attack-header">Available Troops</label>
             <div class="troop-global-controls">
 
@@ -241,43 +261,44 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="bc-content">
                 <!-- Difficulty -->
                 <div class="layer-rarity-select">
-                    <label><strong>Monster Squad to Attack:</strong></label>
-                    <?php $difficulty = $inputs['difficulty'] ?? ''; ?>
-                    <div class="difficulty-group">
+                    <div class="input-block-squad">
+                        <div class="inline-attack-header">Monster Squad to Attack</div>
+                        <?php $difficulty = $inputs['difficulty'] ?? ''; ?>
+                        <div class="difficulty-group">
 
-                        <label>
-                            <input type="radio" name="difficulty" value="common"
-                                <?= $difficulty === 'common' ? 'checked' : '' ?>>
-                            Common
-                        </label>
+                            <label>
+                                <input type="radio" name="difficulty" value="common"
+                                    <?= $difficulty === 'common' ? 'checked' : '' ?>>
+                                Common
+                            </label>
 
-                        <label>
-                            <input type="radio" name="difficulty" value="rare"
-                                <?= $difficulty === 'rare' ? 'checked' : '' ?>>
-                            Rare
-                        </label>
-                        <label>
-                            <input type="radio" name="difficulty" value="epic"
-                                <?= $difficulty === 'epic' ? 'checked' : '' ?>>
-                            Epic
-                        </label>
+                            <label>
+                                <input type="radio" name="difficulty" value="rare"
+                                    <?= $difficulty === 'rare' ? 'checked' : '' ?>>
+                                Rare
+                            </label>
+                            <label>
+                                <input type="radio" name="difficulty" value="epic"
+                                    <?= $difficulty === 'epic' ? 'checked' : '' ?>>
+                                Epic
+                            </label>
+                        </div>
+
+                        <!-- Squad -->
+                        <div class="layer-squad-select">
+                            <label><strong>Choose Squad:</strong></label>
+                            <select name="squadID" id="squadSelect" >
+                                <option value="">-- Choose Squad --</option>
+                                <?php foreach ($squads as $squad): ?>
+                                    <option value="<?= $squad['squadID'] ?>"
+                                        <?= ($inputs['selectedSquad'] == $squad['squadID']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($squad['name']) ?> (Lvl <?= $squad['level'] ?>)
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Squad -->
-                <div class="layer-squad-select">
-                    <label><strong>Choose Squad:</strong></label>
-                    <select name="squadID" id="squadSelect" >
-                        <option value="">-- Choose Squad --</option>
-                        <?php foreach ($squads as $squad): ?>
-                            <option value="<?= $squad['squadID'] ?>"
-                                <?= ($inputs['selectedSquad'] == $squad['squadID']) ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($squad['name']) ?> (Lvl <?= $squad['level'] ?>)
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
                 <!-- Generate -->
                 <div class="layer-generate-btn">
                     <button 

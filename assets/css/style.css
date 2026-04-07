@@ -538,7 +538,7 @@ form#registerForm.active #switchToLogin {
 }
 
 .layer-header {
-  background: #555; /* default */
+  background: #7984a3;
   text-align: left;
   padding:8px;
 }
@@ -555,7 +555,8 @@ form#registerForm.active #switchToLogin {
 
 .layer-rarity-select, .layer-squad-select,
 .layer-generate-btn { 
-  margin-bottom: 12px;
+    padding:15px;
+    margin-bottom: 12px;
 }
 
 /* ==============================
@@ -913,8 +914,15 @@ form#registerForm.active #switchToLogin {
     border-radius: 6px;
 }
 
-.input-block {
-    margin-bottom: 15px;
+.input-block-leadership,
+.input-block-capacity,
+.input-block-troops,
+.input-block-squad {
+    margin-bottom: 8px; 
+    border: 1px solid #333;
+    padding-bottom: 10px;
+    width: 100%;
+    border-radius: 6px;
 }
 
 .inline-group {
@@ -927,7 +935,7 @@ form#registerForm.active #switchToLogin {
     text-align: center;        /* centers label text */
 }
 
-.inline-group-capacity {
+.inline-group-capacity1 {
     display: flex;
     gap: 15px;
     padding-left: 12px;
@@ -938,7 +946,7 @@ form#registerForm.active #switchToLogin {
     text-align: center;        /* centers label text */
 }
 
-.inline-group-capacity > div {
+.inline-group-capacity1 > div {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -946,18 +954,48 @@ form#registerForm.active #switchToLogin {
     width: 185px; /* keeps all equal */
 }
 
-.inline-group-capacity label {
+.inline-group-capacity1 label {
     font-weight: 600;
     color: #ccc; /* softer UI tone */
     width: 250px;         /* fixed label width = alignment */
     text-align: right;   /* clean alignment */
 }
 
-.inline-group-capacity input {
+.inline-group-capacity1 input {
     width: 95px;
     text-align: center;
 }
 
+.inline-group-capacity2 {
+    display: flex;
+    gap: 15px;
+    padding-left: 12px;
+
+    margin-bottom: 15px;
+    justify-content: center;   /* horizontal center */
+    align-items: center;       /* vertical alignment */
+    text-align: center;        /* centers label text */
+}
+
+.inline-group-capacity2 > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    width: 250px; /* keeps all equal */
+}
+
+.inline-group-capacity2 label {
+    font-weight: 600;
+    color: #ccc; /* softer UI tone */
+    width: 350px;         /* fixed label width = alignment */
+    text-align: right;   /* clean alignment */
+}
+
+.inline-group-capacity2 input {
+    width: 95px;
+    text-align: center;
+}
 .icon-slot {
     width: 16px;
     height: 16px;
@@ -1002,12 +1040,21 @@ form#registerForm.active #switchToLogin {
 .inline-attack-header {
     font-weight: 600;
     display:block;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
+    background: #555;
+    padding: 8px;
+}
+
+
+.troop-global-controls {
+    padding: 10px;
+    margin: 12px;
 
 }
 
+
 .troop-global-controls > * {
-        font-weight: 100;
+    font-weight: 100;
     display: inline-block;
     margin-right: 10px;
     margin-bottom: 12px;
