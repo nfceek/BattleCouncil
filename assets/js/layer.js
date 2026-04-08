@@ -1,5 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('layer.js INIT');
 
+    if (!window.LayerEngine) {
+        console.error('LayerEngine NOT loaded');
+        return;
+    }
+
+    initLayerPage();
+});
+
+/* ======================
+   INIT (MAIN CONTROLLER)
+====================== */
+function initLayerPage() {
     const generateBtn = document.getElementById('generatePlanBtn');
     const troopCards = document.querySelectorAll('.troop-card');
     const troopCheckboxes = document.querySelectorAll('.troop-checkbox');
@@ -20,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const enabled = checkbox.checked;
 
             radios.forEach(r => r.disabled = !enabled);
-
             if (levels) levels.classList.toggle('disabled', !enabled);
         };
 
@@ -47,102 +59,133 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ======================
-       GLOBAL LEVEL RADIO SYNC
+       GLOBAL LEVEL SYNC
     ====================== */
-    if (globalRadios.length) {
-        globalRadios.forEach(gr => {
-            gr.addEventListener('change', () => {
-                const globalValue = gr.value;
+    globalRadios.forEach(gr => {
+        gr.addEventListener('change', () => {
+            const globalValue = gr.value;
 
-                troopCards.forEach(card => {
-                    const checkbox = card.querySelector('.troop-checkbox');
-                    if (!checkbox || !checkbox.checked) return; // only enabled troops
+            troopCards.forEach(card => {
+                const checkbox = card.querySelector('.troop-checkbox');
+                if (!checkbox || !checkbox.checked) return;
 
-                    const radios = card.querySelectorAll('.troop-level-radio');
-                    radios.forEach(r => r.checked = r.value === globalValue);
-                });
+                const radios = card.querySelectorAll('.troop-level-radio');
+                radios.forEach(r => r.checked = r.value === globalValue);
             });
         });
-    }
+    });
 
     /* ======================
-       BUILD PAYLOAD (SOURCE OF TRUTH)
+       GENERATE PLAN
     ====================== */
-    function buildPayload() {
-        const payload = {
-            troops: {},
-            playerLevel: parseInt(document.querySelector('[name="playerLevel"]')?.value || 6),
-            difficulty: document.querySelector('input[name="difficulty"]:checked')?.value || 'rare',
-            squadID: document.getElementById('squadSelect')?.value || null,
-            useCreatures: true,
-            useFighters: true
-        };
+    if (!generateBtn) return;
 
-        troopCheckboxes.forEach(cb => {
-            const type = cb.dataset.troopType;
+    generateBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
 
-            const levelRadio = document.querySelector(
-                `.troop-level-radio[data-troop-type="${type}"]:checked`
+        const payload = buildPayload(troopCheckboxes);
+
+        const selected = Object.values(payload.troops)
+            .filter(t => t.enabled && t.level);
+
+        if (selected.length === 0) {
+            console.warn('No fighters selected.');
+            return;
+        }
+
+        try {
+            console.log('CALLING API...');
+
+            const res = await fetch(`${BASE_URL}/public/api/buildLayerPlan.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const data = await res.json();
+            console.log('API RESPONSE:', data);
+
+            const result = LayerEngine.buildAttackPlan(
+                data.fighterOptions,
+                data.monsters
             );
 
-            payload.troops[type] = {
-                enabled: cb.checked ? 'on' : null,
-                level: levelRadio ? levelRadio.value : null
-            };
-        });
-
-        console.log('PAYLOAD:', payload);
-        return payload;
-    }
-
-    /* ======================
-       GENERATE PLAN (API)
-    ====================== */
-    if (generateBtn) {
-        generateBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-
-            const payload = buildPayload();
-
-            // quick validation BEFORE API
-            const selected = Object.values(payload.troops)
-                .filter(t => t.enabled && t.level);
-
-            if (selected.length === 0) {
-                console.warn('No fighters selected.');
+            if (result.error) {
+                console.warn(result.error);
                 return;
             }
 
-            try {
-                console.log('CALLING API...');
+            console.log('ATTACK PLAN:', result.plan);
 
-                const res = await fetch(`${BASE_URL}/public/api/buildLayerPlan.php`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+            renderPlan(result.plan); // ✅ THIS WAS MISSING
 
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        } catch (err) {
+            console.error('API ERROR:', err);
+        }
+    });
+}
 
-                const data = await res.json();
-                console.log('API RESPONSE:', data);
+/* ======================
+   BUILD PAYLOAD
+====================== */
+function buildPayload(troopCheckboxes) {
+    const payload = {
+        troops: {},
+        playerLevel: parseInt(document.querySelector('[name="playerLevel"]')?.value || 6),
+        difficulty: document.querySelector('input[name="difficulty"]:checked')?.value || 'rare',
+        squadID: document.getElementById('squadSelect')?.value || null,
+        useCreatures: true,
+        useFighters: true
+    };
 
-                // Pass ONLY API data into engine
-                const result = LayerEngine.buildAttackPlan(
-                    data.fighterOptions,
-                    data.monsters
-                );
+    troopCheckboxes.forEach(cb => {
+        const type = cb.dataset.troopType;
 
-                if (result.error) {
-                    console.warn(result.error);
-                } else {
-                    console.log('ATTACK PLAN:', result.plan);
-                }
+        const levelRadio = document.querySelector(
+            `.troop-level-radio[data-troop-type="${type}"]:checked`
+        );
 
-            } catch (err) {
-                console.error('API ERROR:', err);
-            }
-        });
-    }
+        payload.troops[type] = {
+            enabled: cb.checked ? 'on' : null,
+            level: levelRadio ? levelRadio.value : null
+        };
+    });
 
-});
+    console.log('PAYLOAD:', payload);
+    return payload;
+}
+
+/* ======================
+   RENDER PLAN
+====================== */
+function renderPlan(plan) {
+    plan.forEach((row, i) => {
+        const block = document.querySelector(`[data-layer="${i+1}"]`);
+        if (!block) return;
+
+        // MONSTER
+        const monsterEl = block.querySelector('.layer-monster');
+        if (monsterEl) {
+            monsterEl.innerHTML = `
+                <div class="monster-name"><strong>${row.monsterName}</strong></div>
+                <div class="monster-meta">Qty: ${row.monsterQty}</div>
+                <div class="monster-meta">Str: ${row.monsterStr}</div>
+                <div class="monster-meta">HLH: ${row.monsterHlh}</div>
+            `;
+        }
+
+        // ATTACK 1
+        const attack1 = block.querySelector('.attack1');
+        if (attack1) {
+            attack1.innerHTML = `
+                <div class="unit-round-label"><strong>Attack 1</strong></div>
+                <div>
+                    ${row.fighterName} (${row.fighterClass})<br>
+                    Units: ${row.unitsNeeded}
+                </div>
+            `;
+        }
+    });
+}

@@ -24,12 +24,18 @@ $data = layerController($pdo);
     $monsters       = $data['monsters'] ?? [];
     $fighterOptions = $data['fighterOptions'] ?? [];
 
+    /*
+    $plan = [];
+
+    if (!empty($_GET['attackPlan'])) {
+        $plan = json_decode($_GET['attackPlan'], true);
+
+        echo '<pre>';
+        print_r($plan);
+        echo '</pre>';
+    }
+
 /*
-echo '<pre>';
-print_r($fighterOptions);
-echo '</pre>';
-
-
 echo '<pre>';
 print_r($squads);
 echo '</pre>';
@@ -335,114 +341,46 @@ require_once __DIR__ . '/../includes/header.php';
                     </select>
                 </div>
 
-                <!-- Layers -->
-                <div class="layer-section">
+<!-- Layers -->
+<div class="layer-section">
 
-                <?php for ($layer = 1; $layer <= $layerCount; $layer++): ?>
-                    <div class="layer-block" data-layer="<?= $layer ?>">
-                        <div class="layer-header-round">
-                            <strong>Round <?= $layer ?></strong>
-                        </div>
-                    <div class="layer-section">
-                    <?php for ($layer = 1; $layer <= $layerCount; $layer++): ?>
-                        <?php
-                        // Map monster to layer
-                        $monster = $monsters[$layer - 1] ?? null;
-                        $selectedUnit1  = $inputs['layers'][$layer]['unit1'] ?? '';
-                        $selectedLevel1 = $inputs['layers'][$layer]['level1'] ?? null;
-                        $selectedUnit2  = $inputs['layers'][$layer]['unit2'] ?? '';
-                        $selectedLevel2 = $inputs['layers'][$layer]['level2'] ?? null;
-                        ?>
-                        <div class="layer-block">
+<?php for ($layer = 1; $layer <= $layerCount; $layer++): ?>
+    <div class="layer-block" data-layer="<?= $layer ?>">
 
-                            <!-- Layer Header -->
-                            <div class="layer-header-layer">
-                                <strong>Layer <?= $layer ?></strong>
-                            </div>
-
-                            <!-- Monster vs Fighter Split -->
-                            <div class="layer-row">
-
-                                <!-- LEFT: MONSTER -->
-                                <div class="layer-monster">
-
-                                    <?php if ($monster): ?>
-                                        <div class="monster-name">
-                                            <strong><?= htmlspecialchars($monster['name']) ?></strong>  ( <?= htmlspecialchars($monster['type']) ?>  )
-                                        </div>
-
-                                        <div class="monster-meta">
-                                            Qty: <?= (int)$monster['quantity'] ?>
-                                        </div>
-
-                                        <div class="monster-meta">
-                                            Str: <?= (int)$monster['strength'] ?>
-                                        </div>
-
-                                        <div class="monster-meta">
-                                            ttl Str: <?= (int)$monster['total_strength'] ?>
-                                        </div>
-
-                                        <div class="monster-meta">
-                                            ttl Hlh: <?= (int)$monster['total_health'] ?>
-                                        </div>
-
-                                                                                
-                                        <div class="monster-meta">
-                                            Id: <?= (int)$monster['monsterID'] ?>
-                                        </div>
-
-
-                                    <?php else: ?>
-                                        <div class="monster-meta">No monster</div>
-                                    <?php endif; ?>
-
-                                </div>
-
-                                    <div class="unit-round">
-
-                                        <div class="unit-round-label"><strong>Attack 1</strong></div>
-                                        <?php
-                                        echo '<pre>';
-                                        print_r($fighterOptions);
-                                        echo '</pre>';
-                                        ?>
-                                        <select name="layers[<?= $layer ?>][unit1]" class="unit-select">
-                                            <option value="">-- Select Unit --</option>
-                                            <?php foreach ($fighterOptions as $f): ?>
-                                                <option value="<?= $f['id'] ?>">
-                                                    <?= htmlspecialchars($f['name']) ?> (<?= strtoupper($f['unit']) ?> L<?= $f['level'] ?>)
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-
-                                    </div>
-
-                                    <!-- Round 2 -->
-                                    <div class="unit-round">
-                                        <div class="unit-round-label"><strong>Attack 2</strong></div>
-                                        <select name="layers[<?= $layer ?>][unit2]"
-                                                class="unit-select round2"
-                                                disabled>
-                                            <option value="">-- Select Unit --</option>
-                                            <?php foreach ($units as $key => $label): ?>
-                                                <option value="<?= $key ?>"
-                                                    <?= ($selectedUnit2 === $key ? 'selected' : '') ?>>
-                                                    <?= $label ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <?php endfor; ?>
-                        </div>
-                    </div>
-                <?php endfor; ?>
-                </div>
-            </div>
+        <!-- Header -->
+        <div class="layer-header-round">
+            <strong>Round <?= $layer ?></strong>
         </div>
+
+        <div class="layer-row">
+
+            <!-- LEFT: MONSTER (placeholder, JS will overwrite) -->
+            <div class="layer-monster">
+                <div class="monster-meta">Waiting for plan...</div>
+            </div>
+
+            <!-- RIGHT: FIGHTERS -->
+            <div class="layer-fighters">
+
+                <!-- Attack 1 -->
+                <div class="unit-round attack1">
+                    <div class="unit-round-label"><strong>Attack 1</strong></div>
+                    <div class="unit-placeholder">--</div>
+                </div>
+
+                <!-- Attack 2 -->
+                <div class="unit-round attack2">
+                    <div class="unit-round-label"><strong>Attack 2</strong></div>
+                    <div class="unit-placeholder">--</div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+<?php endfor; ?>
+
+</div>
 
         <!-- Final Action -->
         <div class="bc-layer-card">
@@ -454,65 +392,21 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </div>
 
-
-
-<!--
-        <div class="bc-layer-card"> 
-            <a href="#" class="bc-layer-card">
-                
-                <div class="bc-img" style="height: 220px;">
-                <img src="<?= BASE_URL ?>/../images/cards/gear_info.png" alt="The Realm">
-                </div>    
-
-                <div class="bc-content">
-                <div class="bc-content-leader" style="text-align:center">
-                    <h2>Finery & Armory</h2>
-                </div>
-
-                <div class="bc-content-inner" style="padding: 15px;">  
-                    <p>
-                    Learn what to wear in the Realm? Learn about<br />
-                    gear for your Hero & Captains
-                    </p>
-                </div>
-                </div>
-             </a>   
-        </div>
-            
-
-            <div class="bc-layer-card"> 
-                <a href="<?= BASE_URL ?>/public/ledger.php" class="bc-layer-card">
-                
-                <div class="bc-img" style="height: 220px;">
-                <img src="<?= BASE_URL ?>/../images/cards/ledger1.png" alt="The Ledger">
-                </div>    
-
-                <div class="bc-content">
-                <div class="bc-content-leader" style="text-align:center">
-                    <h2>The Ledger</h2>
-                </div>
-
-                <div class="bc-content-inner" style="padding: 15px;">  
-                    <p>
-                    Help out BattleCouncil and get rewards<br />
-                    This is the reward points info page
-                    </p>
-                </div>
-                </div>
-                </a>
-        </div>
--->
-
     </div> <!-- mh-grid -->
 
 </div> <!-- container -->
 
 <script>
-window.attackGroups = <?= json_encode($attackGroups ?? [], JSON_UNESCAPED_UNICODE) ?>;
+    window.attackGroups = <?= json_encode($attackGroups ?? [], JSON_UNESCAPED_UNICODE) ?>;
+    const bonusMatrix = <?= json_encode($bonusMatrix ?? []) ?>;
 </script>
+
+<script src="<?= BASE_URL ?>/assets/js/LayerEngine.js"></script>
+<script src="<?= BASE_URL ?>/assets/js/layer.js"></script>
 
 <?php
 // ==============================
 // FOOTER
 // ==============================
+
 require_once __DIR__ . '/../includes/footer_layer.php';

@@ -464,7 +464,7 @@
     <script>
     window.attackGroups = <?= json_encode($attackGroups ?? [], JSON_UNESCAPED_UNICODE) ?>;
     </script>
-
+    <script src="<?= BASE_URL ?>/../assets/js/app.js"></script>
 <?php
 // ==============================
 // FOOTER
