@@ -151,7 +151,9 @@ function buildAttackPlan(fighters, monsters, options = {}) {
             fighterMaxHealth,
             boosted,
             monsterHlh: m.monsterHlh,
+            fighterImg: f.img,
             blockedMatch: blocked
+
         });
 
         return {
@@ -169,6 +171,7 @@ function buildAttackPlan(fighters, monsters, options = {}) {
             fighterHlh,
             unitsNeeded,
             fighterMaxHealth,
+            fighterImg: f.img,
 
             vsFighterBonus: bonusVsFighter,
             blockedMatch: blocked
