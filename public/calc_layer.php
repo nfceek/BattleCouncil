@@ -364,7 +364,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                 <!-- Attack 1 -->
                 <div class="unit-round attack1">
-                    <div class="unit-round-label"><strong>Attack 1</strong></div>
+                    
                     <div class="unit-placeholder">--</div>
                 </div>
 

@@ -169,10 +169,23 @@ function renderPlan(plan) {
         const monsterEl = block.querySelector('.layer-monster');
         if (monsterEl) {
             monsterEl.innerHTML = `
-                <div class="monster-name"><strong>${row.monsterName}</strong></div>
-                <div class="monster-meta">Qty: ${row.monsterQty}</div>
-                <div class="monster-meta">Strength: ${row.monsterStr}</div>
-                <div class="monster-meta">Health: ${row.monsterHlh}</div>
+                <div class="layer-header-round unit-round-label"><strong>${row.unitsNeeded} ${row.fighterName} V. ${row.monsterQty} ${row.monsterName}</strong></div>
+                    <div class="monster-text-block" style="display:flex; gap:15px; align-items:flex-start; padding-left:8px;">
+                        <div class="fighter-image-container">
+                            <img src="${row.fighterImg}" class="fighter-img">
+                        </div>
+
+                        <div class="monster-image-container">
+                            <img src="${row.monsterImg}" class="monster-img">
+                        </div>
+                        <div style="flex-grow:1;">
+                            <div class="monster-text-middle" style="padding-top:8px;padding-bottom:8px;">
+                                <div class="monster-info-container">
+                                <div class="unit-round-label"><strong>Qty: ${row.monsterQty} ${row.monsterName}</strong> <small>(${row.monsterType})</small></div>
+                            </div
+                        </div>
+                    </div>                
+                </div>
             `;
         }
 
@@ -182,17 +195,15 @@ function renderPlan(plan) {
             attack1.innerHTML = `
                 <div class="fighter-text-block" style="display:flex; gap:15px; align-items:flex-start; padding-left:8px;">
                     <div class="fighter-image-container">
-                        <img src="${row.fighterImg}" class="fighter-img" style="max-width:120px;">
+                        <img src="${row.fighterImg}" class="fighter-img">
                     </div>
                     <div style="flex-grow:1;">
                         <div class="fighter-info-container">
                             <div class="unit-round-label"><strong>${row.unitsNeeded} ${row.fighterName}</strong> <small>(${row.fighterType})</small></div>
                         </div
                         <div class="fighter-text-middle" style="padding-top:8px;padding-bottom:8px;">
-
                         </div>
-                    </div>
-                
+                    </div>                
                 </div>
             `;
         }

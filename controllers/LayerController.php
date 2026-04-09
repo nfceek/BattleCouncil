@@ -107,7 +107,7 @@ exit;
                 sm.quantity,
                 m.health,
                 m.strength,
-
+                m.imgpath,
                 ((sm.quantity * m.strength)*3)   AS total_health,
                 (sm.quantity * m.strength) AS total_strength,
 

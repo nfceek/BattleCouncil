@@ -152,6 +152,7 @@ function buildAttackPlan(fighters, monsters, options = {}) {
             fighterMaxHealth,
             boosted,
             monsterHlh: m.monsterHlh,
+            monsterImg: m.img || m.imgpath || null,
             fighterImg: f.img || f.imgpath || null,
             blockedMatch: blocked
 
@@ -163,6 +164,7 @@ function buildAttackPlan(fighters, monsters, options = {}) {
             monsterQty: m.quantity,
             monsterStr: m.strength,
             monsterHlh: m.monsterHlh,
+            monsterImg: m.img || m.imgpath || null,
 
             fighterName: f.name,
             fighterType: f.type,
@@ -173,7 +175,7 @@ function buildAttackPlan(fighters, monsters, options = {}) {
             unitsNeeded,
             fighterMaxHealth,
             fighterImg: f.img || f.imgpath || null,
-            
+
             vsFighterBonus: bonusVsFighter,
             blockedMatch: blocked
         };
