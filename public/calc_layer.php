@@ -407,4 +407,4 @@ require_once __DIR__ . '/../includes/header.php';
 // FOOTER
 // ==============================
 
-require_once __DIR__ . '/../includes/footer_layer.php';
+require_once __DIR__ . '/../includes/footer.php';

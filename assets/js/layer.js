@@ -171,8 +171,8 @@ function renderPlan(plan) {
             monsterEl.innerHTML = `
                 <div class="monster-name"><strong>${row.monsterName}</strong></div>
                 <div class="monster-meta">Qty: ${row.monsterQty}</div>
-                <div class="monster-meta">Str: ${row.monsterStr}</div>
-                <div class="monster-meta">HLH: ${row.monsterHlh}</div>
+                <div class="monster-meta">Strength: ${row.monsterStr}</div>
+                <div class="monster-meta">Health: ${row.monsterHlh}</div>
             `;
         }
 
@@ -180,10 +180,19 @@ function renderPlan(plan) {
         const attack1 = block.querySelector('.attack1');
         if (attack1) {
             attack1.innerHTML = `
-                <div class="unit-round-label"><strong>Attack 1</strong></div>
-                <div>
-                    ${row.fighterName} (${row.fighterClass})<br>
-                    Units: ${row.unitsNeeded}
+                <div class="fighter-text-block" style="display:flex; gap:15px; align-items:flex-start; padding-left:8px;">
+                    <div class="fighter-image-container">
+                        <img src="${row.fighterImg}" class="fighter-img" style="max-width:120px;">
+                    </div>
+                    <div style="flex-grow:1;">
+                        <div class="fighter-info-container">
+                            <div class="unit-round-label"><strong>${row.unitsNeeded} ${row.fighterName}</strong> <small>(${row.fighterType})</small></div>
+                        </div
+                        <div class="fighter-text-middle" style="padding-top:8px;padding-bottom:8px;">
+
+                        </div>
+                    </div>
+                
                 </div>
             `;
         }

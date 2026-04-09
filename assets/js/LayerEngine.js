@@ -128,6 +128,7 @@ function buildAttackPlan(fighters, monsters, options = {}) {
     // BUILD PLAN
     // =========================
     const plan = preparedMonsters.map((m, i) => {
+
         const f = pickBestFighter(m, fightersPool);
 
         // remove fighter from pool
@@ -151,7 +152,7 @@ function buildAttackPlan(fighters, monsters, options = {}) {
             fighterMaxHealth,
             boosted,
             monsterHlh: m.monsterHlh,
-            fighterImg: f.img,
+            fighterImg: f.img || f.imgpath || null,
             blockedMatch: blocked
 
         });
@@ -171,8 +172,8 @@ function buildAttackPlan(fighters, monsters, options = {}) {
             fighterHlh,
             unitsNeeded,
             fighterMaxHealth,
-            fighterImg: f.img,
-
+            fighterImg: f.img || f.imgpath || null,
+            
             vsFighterBonus: bonusVsFighter,
             blockedMatch: blocked
         };
