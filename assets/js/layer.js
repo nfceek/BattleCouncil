@@ -119,12 +119,24 @@ function initLayerPage() {
 
             console.log('ATTACK PLAN:', result.plan);
 
-            renderPlan(result.plan); // ✅ THIS WAS MISSING
+            renderPlan(result.plan); 
+
+            updateTotals(result.totals);
 
         } catch (err) {
             console.error('API ERROR:', err);
         }
     });
+}
+
+function updateTotals(totals) {
+    const domInput = document.querySelector('[name="dominance"]');
+    const leadInput = document.querySelector('[name="leadership"]');
+
+    if (domInput) domInput.value = totals.dominance;
+    if (leadInput) leadInput.value = totals.leadership;
+
+    console.log('TOTALS:', totals);
 }
 
 /* ======================

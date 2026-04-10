@@ -130,37 +130,8 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </div>
         <div class="input-block-capacity">
-        <!-- Command Capacity -->        
-        <label class="inline-attack-header">Command Capacity* <small>Optional -- in testing</small></label>
-            <div class="inline-group-capacity1">
-                <div>
-                    <label>Leadership</label>
-                    <input type="number"
-                        name="leadership"
-                        value="<?= $inputs['leadership'] ?? '' ?>"
-                        class="input-small">
-                        <span class="icon-slot"></span>
-                </div>
-
-                <div>
-                    <label>Authority</label>
-                    <input type="number"
-                        name="authority"
-                        value="<?= $inputs['authority'] ?? '' ?>"
-                        class="input-small">
-                        <span class="icon-slot"></span>
-                </div>
-
-                <div>
-                    <label>Dominance</label>
-                    <input type="number"
-                        name="dominance"
-                        value="<?= $inputs['dominance'] ?? '' ?>"
-                        class="input-small">
-                        <span class="icon-slot"></span>
-                </div>
-
-            </div>
+        <!-- Modifiers -->        
+        <label class="inline-attack-header">Bonus Modifiers* <small>Optional -- in testing</small></label>
             <div class="inline-group-capacity2">
                 <div>
                     <label>Strength Bonus</label>
@@ -171,7 +142,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <span class="icon-slot"></span>
                 </div>
 
-                                <div>
+                <div>
                     <label>Health Bonus</label>
                     <input type="number"
                         name="bonusHlh"
@@ -389,7 +360,32 @@ require_once __DIR__ . '/../includes/header.php';
                 <button id="clear-selection" class="btn btn-primary">Clear Selection</button>
             </div>
         </div>
+        
+               <div class="input-block-capacity">
+        <!-- Command Capacity -->        
+        <label class="inline-attack-header">Command Capacity* <small>-- in testing</small></label>
+            <div class="inline-group-capacity1">
+                <div>
+                    <label>Leadership</label>
+                    <input type="number"
+                        name="leadership"
+                        value="<?= $inputs['leadership'] ?? '' ?>"
+                        class="input-small">
+                        <span class="icon-slot"></span>
+                </div>
 
+                <div>
+                    <label>Dominance</label>
+                    <input type="number"
+                        name="dominance"
+                        value="<?= $inputs['dominance'] ?? '' ?>"
+                        class="input-small">
+                        <span class="icon-slot"></span>
+                </div>
+
+            </div>
+
+        </div>
     </div> <!-- mh-grid -->
 
 </div> <!-- container -->

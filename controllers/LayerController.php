@@ -145,6 +145,7 @@ if (!empty($troops['bst']['enabled']) && $useCreatures) {
             c.name,
             'bst' AS type,
             c.type AS class,
+            c.dominance,
             c.level,
             c.strength,
             c.health,
@@ -185,6 +186,7 @@ if ($useFighters && !empty($troops)) {
                 f.health,
                 f.imgpath,
                 f.unit,
+                f.leadership,
                 'fighter' AS source
             FROM fighter f
             WHERE " . implode(' OR ', $conditions) . "
@@ -202,14 +204,17 @@ if ($useFighters && !empty($troops)) {
 if (!empty($units)) {
     foreach ($units as $u) {
         $fighterOptions[] = [
-            'id'       => $u['id'] ?? null,
-            'name'     => $u['name'] ?? 'Unknown',
-            'type'     => $u['type'] ?? 'unk',
-            'level'    => $u['level'] ?? 0,
-            'strength' => $u['strength'] ?? 0,
-            'health'   => $u['health'] ?? 0,
-            'unit'     => $u['unit'] ?? $u['source'] ?? 'creature',
-            'img'      => $u['imgpath'] ?? '',
+            'id'            => $u['id'] ?? null,
+            'name'          => $u['name'] ?? 'Unknown',
+            'type'          => $u['type'] ?? 'unk',
+            'level'         => $u['level'] ?? 0,
+            'strength'      => $u['strength'] ?? 0,
+            'health'        => $u['health'] ?? 0,
+            'unit'          => $u['unit'] ?? $u['source'] ?? 'creature',
+            'dominance'     => $u['dominance'] ?? 0,
+            'leadership'    => $u['leadership'] ?? 0,
+            'img'           => $u['imgpath'] ?? '',
+
             'score'    => $u['strength'] ?? 0,
             'class'    => $u['class'] ?? 'bst'
         ];
