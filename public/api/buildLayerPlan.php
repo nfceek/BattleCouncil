@@ -8,7 +8,7 @@ header('Content-Type: application/json');
 $raw = file_get_contents('php://input');
 $input = json_decode($raw, true);
 
-// 🔥 FAIL FAST (critical debug)
+// 🔥 FAIL FAST
 if (!$input) {
     echo json_encode([
         'error' => 'No JSON payload received',
@@ -17,7 +17,9 @@ if (!$input) {
     exit;
 }
 
-// 🔥 INJECT INTO $_GET (so controller works unchanged)
+// =========================
+// MAP INPUT → GET (legacy controller compatibility)
+// =========================
 $_GET['troops']        = $input['troops'] ?? [];
 $_GET['playerLevel']   = $input['playerLevel'] ?? 6;
 $_GET['difficulty']    = $input['difficulty'] ?? 'rare';
@@ -25,13 +27,27 @@ $_GET['squadID']       = $input['squadID'] ?? 0;
 $_GET['useCreatures']  = !empty($input['useCreatures']) ? 1 : null;
 $_GET['useFighters']   = !empty($input['useFighters']) ? 1 : null;
 
+// ✅ IMPORTANT: BONUS VALUES (FIX)
+$bonusStr = (int)($input['bonusStr'] ?? 100);
+$bonusHlh = (int)($input['bonusHlh'] ?? 100);
 
-// ✅ RUN CONTROLLER
+$_GET['bonusStr'] = $bonusStr;
+$_GET['bonusHlh'] = $bonusHlh;
+
+// =========================
+// RUN CONTROLLER
+// =========================
 $result = layerController($pdo);
 
-// ✅ RETURN ONLY WHAT JS NEEDS
+// =========================
+// RETURN JSON (INCLUDE BONUSES)
+// =========================
 echo json_encode([
     'fighterOptions' => $result['fighterOptions'] ?? [],
     'monsters'       => $result['monsters'] ?? [],
-    'layerCount'     => $result['layerCount'] ?? 3
+    'layerCount'     => $result['layerCount'] ?? 3,
+
+    // ✅ ADD THIS (CRITICAL FIX)
+    'bonusStr'       => $bonusStr,
+    'bonusHlh'       => $bonusHlh
 ]);

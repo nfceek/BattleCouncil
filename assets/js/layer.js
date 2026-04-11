@@ -95,7 +95,13 @@ function initLayerPage() {
 
         try {
             console.log('CALLING API...');
+        const payload = buildPayload();
 
+        console.log('FINAL PAYLOAD OUT →', payload);
+        console.log('BONUS CHECK →', {
+            bonusStr: payload.bonusStr,
+            bonusHlh: payload.bonusHlh
+        });
             const res = await fetch(`${BASE_URL}/public/api/buildLayerPlan.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -105,11 +111,20 @@ function initLayerPage() {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
             const data = await res.json();
+
             console.log('API RESPONSE:', data);
+            console.log('BONUS CHECK:', {
+                bonusStr: data.bonusStr,
+                bonusHlh: data.bonusHlh
+            });
 
             const result = LayerEngine.buildAttackPlan(
                 data.fighterOptions,
-                data.monsters
+                data.monsters,
+                {
+                    fighterStrBonus: data.bonusStr,
+                    fighterHlhBonus: data.bonusHlh
+                }
             );
 
             if (result.error) {
@@ -130,11 +145,11 @@ function initLayerPage() {
 }
 
 function updateTotals(totals) {
-    const domInput = document.querySelector('[name="dominance"]');
-    const leadInput = document.querySelector('[name="leadership"]');
+    const domInput = document.querySelector('.dominance-value');
+    const leadInput = document.querySelector('.leadership-value');
 
-    if (domInput) domInput.value = totals.dominance;
-    if (leadInput) leadInput.value = totals.leadership;
+    if (domInput) domInput.textContent = totals.dominance ?? 0;
+    if (leadInput) leadInput.textContent = totals.leadership ?? 0;
 
     console.log('TOTALS:', totals);
 }
@@ -142,15 +157,27 @@ function updateTotals(totals) {
 /* ======================
    BUILD PAYLOAD
 ====================== */
-function buildPayload(troopCheckboxes) {
+function buildPayload() {
+
+    const troopCheckboxes = document.querySelectorAll('.troop-checkbox');
+
     const payload = {
         troops: {},
         playerLevel: parseInt(document.querySelector('[name="playerLevel"]')?.value || 6),
         difficulty: document.querySelector('input[name="difficulty"]:checked')?.value || 'rare',
         squadID: document.getElementById('squadSelect')?.value || null,
         useCreatures: true,
-        useFighters: true
+        useFighters: true,
+
+        // ✅ bonuses (confirmed working source of truth)
+        bonusStr: parseInt(document.querySelector('[name="bonusStr"]')?.value || 100),
+        bonusHlh: parseInt(document.querySelector('[name="bonusHlh"]')?.value || 100)
     };
+
+    console.log('BONUS SELECT RAW:', {
+        bonusStrEl: payload.bonusStr,
+        bonusHlhEl: payload.bonusHlh
+    });
 
     troopCheckboxes.forEach(cb => {
         const type = cb.dataset.troopType;
@@ -165,7 +192,6 @@ function buildPayload(troopCheckboxes) {
         };
     });
 
-    console.log('PAYLOAD:', payload);
     return payload;
 }
 

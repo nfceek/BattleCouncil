@@ -130,28 +130,52 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </div>
         <div class="input-block-capacity">
-        <!-- Modifiers -->        
-        <label class="inline-attack-header">Bonus Modifiers* <small>Optional -- in testing</small></label>
+            <!-- Modifiers -->        
+            <label class="inline-attack-header">
+                Bonus Modifiers* <small>Optional -- in testing</small>
+            </label>
+
             <div class="inline-group-capacity2">
-                <div>
-                    <label>Strength Bonus</label>
-                    <input type="number"
-                        name="bonusStr"
-                        value="<?= $inputs['bonusStr'] ?? '' ?>"
-                        class="input-small">
-                        <span class="icon-slot"></span>
-                </div>
+
+                <!-- Strength Bonus -->
+                <?php $bonusStr = $inputs['bonusStr'] ?? 100; ?>
 
                 <div>
-                    <label>Health Bonus</label>
-                    <input type="number"
-                        name="bonusHlh"
-                        value="<?= $inputs['bonusHlh'] ?? '' ?>"
-                        class="input-small">
-                        <span class="icon-slot"></span>
+                    <label>Strength Bonus</label>
+
+<?php $bonusStr = $inputs['bonusStr'] ?? 100; ?>
+
+<select name="bonusStr" class="input-small">
+    <?php for ($i = 100; $i <= 1200; $i += 100): ?>
+        <option value="<?= $i ?>" <?= ((int)$bonusStr === $i) ? 'selected' : '' ?>>
+            <?= $i ?>%
+        </option>
+    <?php endfor; ?>
+</select>
+
+                    <span class="icon-slot"></span>
                 </div>
+
+                <!-- Health Bonus -->
+                <div>
+                    <label>Health Bonus</label>
+
+                    <?php $bonusHlh = $inputs['bonusHlh'] ?? 100; ?>
+
+                    <select name="bonusHlh" class="input-small">
+                        <option value="100" <?= $bonusHlh == 100 ? 'selected' : '' ?>>100%</option>
+
+                        <?php for ($i = 200; $i <= 1200; $i += 100): ?>
+                            <option value="<?= $i ?>" <?= $bonusHlh == $i ? 'selected' : '' ?>>
+                                <?= $i ?>%
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+
+                    <span class="icon-slot"></span>
+                </div>
+
             </div>
-        </div>
         <!-- Troop Selection -->
         <div class="input-block-troops">
             <label class="inline-attack-header">Available Troops</label>
@@ -360,32 +384,31 @@ require_once __DIR__ . '/../includes/header.php';
                 <button id="clear-selection" class="btn btn-primary">Clear Selection</button>
             </div>
         </div>
-        
-               <div class="input-block-capacity">
-        <!-- Command Capacity -->        
-        <label class="inline-attack-header">Command Capacity* <small>-- in testing</small></label>
+
+         <!-- Command Capacity --> 
+        <div class="input-block-capacity">
+            <label class="inline-attack-header">Command Capacity</label>
             <div class="inline-group-capacity1">
-                <div>
-                    <label>Leadership</label>
-                    <input type="number"
-                        name="leadership"
-                        value="<?= $inputs['leadership'] ?? '' ?>"
-                        class="input-small">
-                        <span class="icon-slot"></span>
+                <div class="capacity-item">
+                    <label class="capacity-label">
+                        <img src="/images/icons/leadership.png" class="capacity-icon" style="width:15px; height:15px;">
+                        Leadership
+                    </label>
+                    <div class="capacity-value leadership-value">0
+                    </div>
                 </div>
 
-                <div>
-                    <label>Dominance</label>
-                    <input type="number"
-                        name="dominance"
-                        value="<?= $inputs['dominance'] ?? '' ?>"
-                        class="input-small">
-                        <span class="icon-slot"></span>
+                <div class="capacity-item">
+                    <label class="capacity-label">
+                        <img src="/images/icons/dominance.png" class="capacity-icon" style="width:15px; height:15px;">
+                        Dominance
+                    </label>
+                    <div class="capacity-value dominance-value">0
+                    </div>
                 </div>
-
             </div>
-
         </div>
+
     </div> <!-- mh-grid -->
 
 </div> <!-- container -->
