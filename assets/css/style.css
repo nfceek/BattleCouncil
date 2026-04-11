@@ -65,6 +65,13 @@ body {
 /* =========================
    HEADER IMAGE
 ========================= */
+.site-header {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .site-header img {
   width: 100%;
   height: auto;
@@ -167,15 +174,17 @@ body {
 /* =========================
    DESKTOP VIEW
 ========================= */
-@media (min-width: 768px) {
-  .mobile-menu {
-    display: none !important;
-  }
-  .menu-toggle {
-    display: none;
-  }
+@media (max-width: 768px) {
+    .container,
+    .mh-grid,
+    .bc-content {
+        width: 100%;
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+        margin: 0;
+    }
 }
-
 /* =========================
    AUTH FORMS
    ========================= */
@@ -538,6 +547,7 @@ form#registerForm.active #switchToLogin {
 }
 
 .layer-header-round {
+  font-weight: 600;
   background: #7984a3;
   text-align: left;
   padding:8px;
@@ -548,7 +558,6 @@ form#registerForm.active #switchToLogin {
   text-align: left;
   padding:8px;
 }
-
 
 .layer-block {
   margin:8px;
@@ -564,6 +573,11 @@ form#registerForm.active #switchToLogin {
 .layer-generate-btn { 
     padding:15px;
     margin-bottom: 12px;
+
+}
+
+#squadSelect {
+    width:210px;
 }
 
 /* ==============================
@@ -867,13 +881,6 @@ form#registerForm.active #switchToLogin {
     cursor: pointer;
 }
 
-.difficulty-group {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-}
-
 .btn-reset-inline {
     background: #2e7d32;   /* green */
     color: #fff;
@@ -896,12 +903,6 @@ form#registerForm.active #switchToLogin {
     display: flex;
     gap: 20px;
     padding: 10px 0;
-}
-
-.layer-monster {
-    width: 35%;
-    border-right: 1px solid #444;
-    padding-right: 10px;
 }
 
 .layer-fighters {
@@ -1084,4 +1085,136 @@ form#registerForm.active #switchToLogin {
     object-fit: contain;
     display: block;
     margin: 0 auto;
+}
+
+/* =========================
+   LAYER SECTION (CENTERED ROW)
+========================= */
+
+.layer-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;   /* ✅ centers the row */
+    align-items: stretch;
+
+    gap: 12px;
+    width: 100%;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    -webkit-overflow-scrolling: touch;
+
+    padding: 10px 0;
+}
+
+/* =========================
+   CARD FIX (prevents uneven alignment)
+========================= */
+
+.layer-block {
+    flex: 0 0 320px;
+    max-width: 320px;
+
+    display: flex;
+    flex-direction: column;
+
+    margin: 0 auto; /* extra safety centering */
+
+    background: #1a1a1a;
+    border-radius: 10px;
+    padding: 10px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+}
+
+/* =========================
+   MAIN ROW INSIDE CARD
+========================= */
+
+.layer-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* =========================
+   MONSTER BLOCK
+========================= */
+
+.layer-monster {
+    border-right: 1px solid #444;
+    padding-right: 10px;
+}
+
+.monster-text-block {
+    display: flex;
+    gap: 15px;
+
+    align-items: center;        /* vertical alignment baseline */
+    justify-content: center;
+
+    width: 100%;
+}
+
+/* force both images to behave consistently */
+.monster-text-block img {
+    width: 105px;
+    height: 105px;
+    object-fit: contain;
+    display: block;
+}
+
+/* 🔥 KEY FIX: middle column must stretch + center itself */
+.layer-versus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    align-self: stretch;        /* gives it full row height reference */
+
+    font-weight: bold;
+    font-size: 18px;
+
+    min-width: 40px;
+}
+/* =========================
+   FIGHTERS BLOCK
+========================= */
+
+.layer-fighters {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* attack slots */
+.unit-round {
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    padding: 8px;
+    min-height: 60px;
+}
+
+/* placeholder styling */
+.unit-placeholder {
+    opacity: 0.6;
+    font-size: 12px;
+}
+
+/* =========================
+   MOBILE STACK FALLBACK
+========================= */
+
+@media (max-width: 768px) {
+    .layer-section {
+        flex-direction: column;
+        overflow-x: visible;
+    }
+
+    .layer-block {
+        flex: 1 1 auto;
+        max-width: 100%;
+        width: 100%;
+    }
 }

@@ -132,7 +132,7 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="input-block-capacity">
             <!-- Modifiers -->        
             <label class="inline-attack-header">
-                Bonus Modifiers* <small>Optional -- in testing</small>
+                Bonus Modifiers
             </label>
 
             <div class="inline-group-capacity2">
@@ -143,15 +143,15 @@ require_once __DIR__ . '/../includes/header.php';
                 <div>
                     <label>Strength Bonus</label>
 
-<?php $bonusStr = $inputs['bonusStr'] ?? 100; ?>
+                    <?php $bonusStr = $inputs['bonusStr'] ?? 100; ?>
 
-<select name="bonusStr" class="input-small">
-    <?php for ($i = 100; $i <= 1200; $i += 100): ?>
-        <option value="<?= $i ?>" <?= ((int)$bonusStr === $i) ? 'selected' : '' ?>>
-            <?= $i ?>%
-        </option>
-    <?php endfor; ?>
-</select>
+                    <select name="bonusStr" class="input-small">
+                        <?php for ($i = 100; $i <= 1200; $i += 100): ?>
+                            <option value="<?= $i ?>" <?= ((int)$bonusStr === $i) ? 'selected' : '' ?>>
+                                <?= $i ?>%
+                            </option>
+                        <?php endfor; ?>
+                    </select>
 
                     <span class="icon-slot"></span>
                 </div>
@@ -267,19 +267,19 @@ require_once __DIR__ . '/../includes/header.php';
                         <div class="difficulty-group">
 
                             <label>
-                                <input type="radio" name="difficulty" value="common"
-                                    <?= $difficulty === 'common' ? 'checked' : '' ?>>
+                                <input type="radio" name="difficulty" value="Common"
+                                    <?= $difficulty === 'Common' ? 'checked' : '' ?>>
                                 Common
                             </label>
 
                             <label>
-                                <input type="radio" name="difficulty" value="rare"
-                                    <?= $difficulty === 'rare' ? 'checked' : '' ?>>
+                                <input type="radio" name="difficulty" value="Rare"
+                                    <?= $difficulty === 'Rare' ? 'checked' : '' ?>>
                                 Rare
                             </label>
                             <label>
-                                <input type="radio" name="difficulty" value="epic"
-                                    <?= $difficulty === 'epic' ? 'checked' : '' ?>>
+                                <input type="radio" name="difficulty" value="Epic"
+                                    <?= $difficulty === 'Epic' ? 'checked' : '' ?>>
                                 Epic
                             </label>
                         </div>
@@ -292,7 +292,7 @@ require_once __DIR__ . '/../includes/header.php';
                                 <?php foreach ($squads as $squad): ?>
                                     <option value="<?= $squad['squadID'] ?>"
                                         <?= ($inputs['selectedSquad'] == $squad['squadID']) ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($squad['name']) ?> (Lvl <?= $squad['level'] ?>)
+                                        <?= htmlspecialchars($difficulty) ?> <?= htmlspecialchars($squad['name']) ?> (Lvl <?= $squad['level'] ?>)
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -326,56 +326,31 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="bc-content">
                 <!-- Layer Count -->
                 <div class="layer-control">
-                    <label><strong>Layers:</strong></label>
-                    <select name="layerCount" id="layerCount">
-                        <?php for ($i=1;$i<=4;$i++): ?>
-                            <option value="<?= $i ?>" <?= ($layerCount == $i ? 'selected' : '') ?>>
-                                <?= $i ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
+
                 </div>
 
-<!-- Layers -->
-<div class="layer-section">
+        <!-- Layers -->
+        <div class="layer-section">
 
-<?php for ($layer = 1; $layer <= $layerCount; $layer++): ?>
-    <div class="layer-block" data-layer="<?= $layer ?>">
+        <?php for ($layer = 1; $layer <= $layerCount; $layer++): ?>
+            <div class="layer-block" data-layer="<?= $layer ?>">
 
-        <!-- Header -->
-        <div class="layer-header-round">
-            <strong>Round <?= $layer ?></strong>
-        </div>
+                <!-- Header -->
+                <div class="layer-header-round">            
+                </div>
 
-        <div class="layer-row">
+                <div class="layer-row">
 
-            <!-- LEFT: MONSTER (placeholder, JS will overwrite) -->
-            <div class="layer-monster">
-                <div class="monster-meta">Waiting for plan...</div>
+                    <!-- MONSTER (placeholder, JS will overwrite) -->
+                    <div class="layer-monster">
+                        <div class="monster-meta">Waiting for plan...</div>
+                    </div>
+
+                </div>
             </div>
-
-            <!-- RIGHT: FIGHTERS -->
-            <div class="layer-fighters">
-
-                <!-- Attack 1 -->
-                <div class="unit-round attack1">
-                    
-                    <div class="unit-placeholder">--</div>
-                </div>
-
-                <!-- Attack 2 -->
-                <div class="unit-round attack2">
-                    <div class="unit-round-label"><strong>Attack 2</strong></div>
-                    <div class="unit-placeholder">--</div>
-                </div>
-
-            </div>
+        <?php endfor; ?>
 
         </div>
-    </div>
-<?php endfor; ?>
-
-</div>
 
         <!-- Final Action -->
         <div class="bc-layer-card">

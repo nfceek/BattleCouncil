@@ -6,6 +6,29 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    document.querySelectorAll('input[name="difficulty"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+
+            const selected = document.querySelector('input[name="difficulty"]:checked')?.value;
+            const squadSelect = document.getElementById('squadSelect');
+
+            if (!squadSelect || !selected) return;
+
+            [...squadSelect.options].forEach(opt => {
+
+                if (!opt.value) return; // skip placeholder
+
+                // store original name once (prevents double prefixing)
+                if (!opt.dataset.baseName) {
+                    const parts = opt.textContent.split(' ');
+                    opt.dataset.baseName = parts.slice(1).join(' ') || opt.textContent;
+                }
+
+                opt.textContent = `${selected} ${opt.dataset.baseName}`;
+            });
+        });
+    });
+
     initLayerPage();
 });
 
@@ -203,47 +226,31 @@ function renderPlan(plan) {
         const block = document.querySelector(`[data-layer="${i+1}"]`);
         if (!block) return;
 
-        // MONSTER
+        // header
+        const monsterHead = block.querySelector('.layer-header-round');
+        if (monsterHead) {
+                    monsterHead.innerHTML = `
+                        <div class="layer-header-round unit-round-label">
+                            ${row.unitsNeeded} ${row.fighterName} V. ${row.monsterQty} ${row.monsterName}
+                        </div>
+                    `;
+        }
+                // figher v monster
         const monsterEl = block.querySelector('.layer-monster');
         if (monsterEl) {
-            monsterEl.innerHTML = `
-                <div class="layer-header-round unit-round-label"><strong>${row.unitsNeeded} ${row.fighterName} V. ${row.monsterQty} ${row.monsterName}</strong></div>
+            monsterEl.innerHTML = `           
                     <div class="monster-text-block" style="display:flex; gap:15px; align-items:flex-start; padding-left:8px;">
                         <div class="fighter-image-container">
                             <img src="${row.fighterImg}" class="fighter-img">
                         </div>
-
+                        <div class="layer-versus">V.</div>
                         <div class="monster-image-container">
                             <img src="${row.monsterImg}" class="monster-img">
                         </div>
-                        <div style="flex-grow:1;">
-                            <div class="monster-text-middle" style="padding-top:8px;padding-bottom:8px;">
-                                <div class="monster-info-container">
-                                <div class="unit-round-label"><strong>Qty: ${row.monsterQty} ${row.monsterName}</strong> <small>(${row.monsterType})</small></div>
-                            </div
-                        </div>
                     </div>                
-                </div>
             `;
         }
 
-        // ATTACK 1
-        const attack1 = block.querySelector('.attack1');
-        if (attack1) {
-            attack1.innerHTML = `
-                <div class="fighter-text-block" style="display:flex; gap:15px; align-items:flex-start; padding-left:8px;">
-                    <div class="fighter-image-container">
-                        <img src="${row.fighterImg}" class="fighter-img">
-                    </div>
-                    <div style="flex-grow:1;">
-                        <div class="fighter-info-container">
-                            <div class="unit-round-label"><strong>${row.unitsNeeded} ${row.fighterName}</strong> <small>(${row.fighterType})</small></div>
-                        </div
-                        <div class="fighter-text-middle" style="padding-top:8px;padding-bottom:8px;">
-                        </div>
-                    </div>                
-                </div>
-            `;
-        }
+
     });
 }

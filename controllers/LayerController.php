@@ -14,19 +14,19 @@ function getDifficultyConfig(string $difficulty): array {
     return match ($difficulty) {
 
         'common' => [
-            'rarity'   => 'common',
+            'rarity'   => 'Common',
             'minLevel' => 20,
             'layers'   => 2
         ],
 
         'epic' => [
-            'rarity'   => 'epic',
+            'rarity'   => 'Epic',
             'minLevel' => 20,
             'layers'   => 4
         ],
 
         default => [ // rare
-            'rarity'   => 'rare',
+            'rarity'   => 'Rare',
             'minLevel' => 5,
             'layers'   => 3
         ]
