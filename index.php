@@ -16,12 +16,12 @@ $pageClass = 'page-index';
 // ==============================
 require_once __DIR__ . '/includes/header.php';
 
-/* page protected
+/* page protected */
 requireLogin(); 
   if(hasRole('veteran')){
       // show veteran+ content
   }
-*/
+
 
   ?>
 

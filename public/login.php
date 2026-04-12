@@ -1,6 +1,6 @@
 <?php
-    require_once __DIR__ . '/config/config.php';
-    include __DIR__ . '/includes/header.php'; 
+    require_once __DIR__ . '/../config/config.php';
+    include __DIR__ . '/../includes/header.php'; 
 
     /* page protected
     requireLogin(); 
@@ -35,7 +35,7 @@
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['username'] = $user['username'];
                     $_SESSION['role'] = $user['role'];
-                    redirect(__DIR__ . '/index.php');
+                    redirect('/../index.php');
                     /* future use
                         redirect('/member_dashboard.php');
                     */
@@ -67,18 +67,10 @@
     }
     ?>
 
-<!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Login / Register - <?= APP_NAME ?></title>
-            <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/styles.css">
-        </head>
         <body class="container">
-
-            <h1><?= APP_NAME ?></h1>
-
+            <div class="title-login">
+                <?= APP_NAME ?> Login
+            </div>
             <?php if($errors): ?>
                 <div class="errors">
                     <?php foreach($errors as $err) echo "<p>" . e($err) . "</p>"; ?>
@@ -153,4 +145,9 @@
                 showLogin();
                 </script>
         </body>
-    </html>
+
+<?php
+// ==============================
+// FOOTER
+// ==============================
+require_once __DIR__ . '/../includes/footer.php';        

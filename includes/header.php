@@ -20,83 +20,73 @@ require_once __DIR__ . '/../helpers/auth.php';
 
 <body class="<?= $pageClass ?? 'page-default' ?>">
 
-<!-- future login directed menu
-<?php //if (isLoggedIn()): ?>
-    <a href="/member_dashboard.php">Dashboard</a>
-    <a href="/logout.php">Logout</a>
-<?php //else: ?>
-    <a href="/login.php">Login</a>
-    <a href="/register.php">Register</a>
-<?php //endif; ?>
--->
-<!-- HEADER IMAGE -->
-<?php 
-$userLoggedIn = requireLogin();
-/*print_r($user);
 
-  if(hasRole('admin')){
-    echo '<div class="site-header">';
-    echo '<img src="<?= BASE_URL ?>/images/site-header-admin.png" alt="Admin Battle Council">';
-    echo '</div>';
-  }else{
-    echo '<div class="site-header">';
-    echo '<img src="<?= BASE_URL ?>/images/site-header.png" alt="Battle Council">';
-    echo '</div>'; 
-  }
-    */
-?>
+  <!-- HEADER IMAGE -->
+  <?php 
+  $userLoggedIn = requireLogin();
 
-<div class="site-header">
-  <img src="<?= BASE_URL ?>/images/site-header.png" alt="Battle Council">
-</div>
+  $headerImg = BASE_URL . "/images/site-header.png";
+  $headerAlt = "Battle Council";
 
-<!-- NAVBAR BAND -->
-<nav class="navbar">
-  <div class="nav-inner">
+    if (hasRole('admin')) {
+        $headerImg = BASE_URL . "/images/site-header-admin.png";
+        $headerAlt = "Admin Battle Council";
+    }
+  ?>
 
-    <!-- LEFT: HAMBURGER -->
-    <button class="menu-toggle" id="menuToggle">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-
-    <!-- CENTER: HOME -->
-    <a href="<?= BASE_URL ?>/index.php" class="nav-home">
-      <i class="fa-solid fa-house"></i>
-    </a>
-
-    <!-- RIGHT: LOGIN / USER 
-    <?php //if (isLoggedIn()): ?>
-        <a href="#" class="nav-login">
-  
-          <a href="/member_dashboard.php" class="nav-login">
-        
-            <i class="fa-solid fa-user"></i>
-            <? //e($_SESSION['username'] ?? 'User') ?>
-        </a>
-    <?php //else: ?>
-        <a href="/login.php" class="nav-login">
-            <i class="fa-solid fa-user"></i>
-            Login
-        </a>
-    <?php //endif; ?>
--->
+  <div class="site-header">
+    <img src="<?= $headerImg ?>" alt="<?= $headerAlt ?>">
   </div>
 
-  <!-- MOBILE MENU -->
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="<?= BASE_URL ?>/index.php"><i class="fa-solid fa-house"></i> Home</a>
-    
-    <a href="<?= BASE_URL ?>/calc_squad.php">⚔️ Monster Hunt</a>
-    <a href="#">👹 Monster Editor</a>
-    <a href="#">🪖 Squad Editor</a>
-    <a href="#">🐲 Matrix Data</a>
-    <a href="#">👥 Members</a>
-    <a href="#">Log out</a>
+  <!-- NAVBAR BAND -->
+  <nav class="navbar">
+    <div class="nav-inner">
 
-    <hr>
+      <!-- LEFT: HAMBURGER -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>        
 
-    <!-- AUTH -->
-    <a href="<?= BASE_URL ?>/login.php"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
-    <a href="<?= BASE_URL ?>/register.php"><i class="fa-solid fa-user-plus"></i> Register</a>
+      <!-- CENTER: HOME -->
+      <a href="<?= BASE_URL ?>/index.php" class="nav-home">
+        <i class="fa-solid fa-house"></i>
+      </a>
+
+  <?php if (isLoggedIn()): ?>
+    <?php $username = $_SESSION['username'] ?? 'User'; ?>
+
+    <div class="title-name">
+
+        <div class="title-user">
+            <?= htmlspecialchars($username) ?>
+        </div>
+
+        <div class="title-logout">
+            <a href="/public/logout.php">( Logout )</a>
+        </div>
+
+    </div>
   </div>
+
+  <?php else: ?>
+
+      <a href="/public/login.php">Login</a>
+
+  <?php endif; ?>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="<?= BASE_URL ?>/index.php"><i class="fa-solid fa-house"></i> Home</a>
+
+      <a href="<?= BASE_URL ?>/calc_squad.php">⚔️ Monster Hunt</a>
+      <a href="#">👹 Monster Editor</a>
+      <a href="#">🪖 Squad Editor</a>
+      <a href="#">🐲 Matrix Data</a>
+      <a href="#">👥 Members</a>
+
+      <hr>
+
+      <a href="<?= BASE_URL ?>/public/login.php"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+      <a href="<?= BASE_URL ?>/register.php"><i class="fa-solid fa-user-plus"></i> Register</a>
+    </div>
 </nav>

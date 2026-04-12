@@ -1,28 +1,32 @@
 
-window.renderGroup = renderCreature;
+if (typeof renderCreature === "function") {
+    window.renderGroup = renderCreature;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  initMobileMenu();
+  //initMobileMenu();
 
   if (document.body.classList.contains('page-monster-hunt')) {
     initMonsterHunt();
   }
-});
 
 /* =========================
    GLOBAL: Mobile Menu
 ========================= */
-function initMobileMenu() {
-  const toggle = document.getElementById('menuToggle');
-  const menu = document.getElementById('mobileMenu');
+    const toggle = document.getElementById("menuToggle");
+    const menu = document.getElementById("mobileMenu");
 
-  if (!toggle || !menu) return;
+    if (!toggle || !menu) {
+        console.warn("Menu elements not found");
+        return;
+    }
 
-  toggle.addEventListener('click', () => {
-    menu.classList.toggle('active');
-  });
-}
+    toggle.addEventListener("click", () => {
+        menu.classList.toggle("active");
+    });
+});
+
 
 /* =========================
    PAGE: Monster Hunt

@@ -67,7 +67,7 @@
                             <label><strong>Choose Squad: </strong></label>
                             <!-- Squad Dropdown -->
                             <select name="squadID">
-                                <option value="">-- Choose Squad --</option>
+                                <option value="">-- Monster Squad --</option>
                                 <?php foreach ($squads as $squad): ?>
                                     <option value="<?= $squad['squadID'] ?>"
                                         <?= ($inputs['selectedSquad'] == $squad['squadID']) ? 'selected' : '' ?>>
@@ -80,9 +80,11 @@
                         <!-- Player Level -->
                         <div class="planner-section" style="margin-bottom:10px;">
                             <label><strong>Creature Level: </strong></label>
+                            <?php $selectedLevel = $inputs['playerLevel'] ?? 6; ?>
+
                             <select name="playerLevel" class="selectLevel">
-                                <?php for($i=3;$i<=9;$i++): ?>
-                                    <option value="<?= $i ?>" <?= ($inputs['playerLevel']==$i)?'selected':'' ?>>
+                                <?php for ($i = 3; $i <= 9; $i++): ?>
+                                    <option value="<?= $i ?>" <?= $i == $selectedLevel ? 'selected' : '' ?>>
                                         Level <?= $i ?>
                                     </option>
                                 <?php endfor; ?>
@@ -90,7 +92,7 @@
                         </div>
 
                         <!-- Unit Types -->
-                        <div class="bonus-section" style="margin-bottom:12px;">
+                        <div class="bonus-section" style="margin-bottom:12px;" hidden>
                             <label><strong>Troops: </strong></label>
                             <!--<label>
                                 <input type="checkbox" name="useFighters" value="1" 
