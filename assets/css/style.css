@@ -549,7 +549,7 @@ form#registerForm.active #switchToLogin {
 .layer-header-round {
   font-weight: 600;
   background: #7984a3;
-  text-align: left;
+  text-align: center;
   padding:8px;
 }
 
