@@ -47,7 +47,8 @@ echo json_encode([
     'monsters'       => $result['monsters'] ?? [],
     'layerCount'     => $result['layerCount'] ?? 3,
 
-    // ✅ ADD THIS (CRITICAL FIX)
+    'squads'         => $result['squads'] ?? [],
+
     'bonusStr'       => $bonusStr,
     'bonusHlh'       => $bonusHlh
 ]);

@@ -35,13 +35,13 @@ function getDifficultyConfig(string $difficulty): array {
 
 function layerController(PDO $pdo): array {
 
-// 🔥 SUPPORT JSON API INPUT
-$rawInput = file_get_contents('php://input');
-$json = json_decode($rawInput, true);
+    // 🔥 SUPPORT JSON API INPUT
+    $rawInput = file_get_contents('php://input');
+    $json = json_decode($rawInput, true);
 
-if (is_array($json)) {
-    $_GET = array_merge($_GET, $json);
-}
+    if (is_array($json)) {
+        $_GET = array_merge($_GET, $json);
+    }
 
     /* -----------------------------
        Inputs
@@ -57,20 +57,20 @@ if (is_array($json)) {
     // $buildLayerPlan = isset($_GET['buildLayerPlan']);    v2.13.0
     $config = getDifficultyConfig($difficulty);
     
-/*  
-echo '<pre>';
-echo "=== INPUT DEBUG ===\n";
-print_r([
-    'troops' => $troops,
-    'playerLevel' => $playerLevel,
-    'difficulty' => $difficulty,
-    'squadID' => $selectedSquad,
-    'useCreatures' => $useCreatures,
-    'useFighters' => $useFighters
-]);
-echo '</pre>';
-exit;
-*/
+    /*  
+    echo '<pre>';
+    echo "=== INPUT DEBUG ===\n";
+    print_r([
+        'troops' => $troops,
+        'playerLevel' => $playerLevel,
+        'difficulty' => $difficulty,
+        'squadID' => $selectedSquad,
+        'useCreatures' => $useCreatures,
+        'useFighters' => $useFighters
+    ]);
+    echo '</pre>';
+    exit;
+    */
     /* -----------------------------
        Squads (FIXED QUERY)
     ------------------------------*/
