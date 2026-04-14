@@ -1,0 +1,225 @@
+
+
+.pricing-wrap {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.pricing-header h2 {
+  color: var(--gold);
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.pricing-header p {
+  opacity: 0.7;
+  margin-bottom: 40px;
+}
+
+/* GRID */
+.pricing-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* CARD BASE */
+.pricing-card {
+  width: 300px;
+  background: #111;
+  border: 2px solid var(--gold);
+  border-left: 6px solid var(--purple);
+  border-radius: 14px;
+  padding: 25px;
+  position: relative;
+  transition: 0.3s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+}
+
+.pricing-card h3 {
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.price {
+  font-size: 32px;
+  margin: 10px 0;
+  color: white;
+}
+
+.price span {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.tagline {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 15px;
+}
+
+ul {
+  text-align: left;
+  padding-left: 18px;
+  margin-bottom: 20px;
+}
+
+ul li {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* BUTTON */
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: var(--gold);
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #f2d36b;
+}
+
+/* FEATURED (OFFICER) */
+.featured {
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 25px rgba(75, 0, 130, 0.3);
+  transform: scale(1.05);
+}
+
+.badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--purple);
+  color: white;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .pricing-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .featured {
+    transform: none;
+  }
+}
+
+.battlecouncil-intro {
+  padding: 70px 20px 30px;
+  text-align: center;
+  background: radial-gradient(circle at top, rgba(75,0,130,0.15), transparent 60%);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.intro-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.battlecouncil-intro h1 {
+  font-size: 42px;
+  color: #d4af37;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.battlecouncil-intro p {
+  font-size: 16px;
+  opacity: 0.85;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+/* INTRO LIST FIX */
+.battlecouncil-intro ul {
+  list-style: none;
+  margin: 25px auto;
+  padding: 0;
+  max-width: 520px;   /* controls centering width */
+  text-align: left;   /* keeps text left aligned */
+}
+
+.battlecouncil-intro ul li {
+  position: relative;
+  padding-left: 22px;
+  margin: 10px 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* YELLOW BULLETS */
+.battlecouncil-intro ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #d4af37; /* gold */
+  font-size: 18px;
+  line-height: 1;
+}
+
+.battlecouncil-intro ul li::before {
+    content: "⚔";
+    color: #d4af37;
+    font-size: 12px;
+    top: 2px;
+}
+
+.intro-cta {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #d4af37;
+  opacity: 0.9;
+  letter-spacing: 0.5px;
+}
+
+/* PRICING BUTTONS - FORCE VISIBILITY */
+.pricing-card button {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #d4af37;
+  border-radius: 8px;
+
+  background: #d4af37;   /* GOLD DEFAULT */
+  color: #000;           /* BLACK TEXT FOR CONTRAST */
+
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.pricing-card button:hover {
+  background: #f2d36b;
+  border-color: #f2d36b;
+  transform: translateY(-1px);
+}
+
+.pricing-card button:active {
+  transform: translateY(0);
+  background: #c9a227;
+}
+
+.pricing-card.superior button {
+  background: linear-gradient(135deg, #d4af37, #f2d36b);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+}

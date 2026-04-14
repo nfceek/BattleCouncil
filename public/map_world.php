@@ -8,6 +8,6 @@
 const BASE_URL = "<?= BASE_URL ?>";
 </script>
 
-<script src="<?= BASE_URL ?>/assets/js/map_all.js"></script>
+<script src="<?= BASE_URL ?>/assets/js/map_world.js"></script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

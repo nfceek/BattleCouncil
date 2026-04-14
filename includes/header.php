@@ -12,10 +12,33 @@ require_once __DIR__ . '/../helpers/auth.php';
 
   <title><?= $pageTitle ?? APP_NAME ?></title>
 
-  <link rel="stylesheet" href="<?= BASE_URL ?>/../assets/css/style.css">
+  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='https://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
+    <?php
+    if (!empty($pageCss)) {
+
+        switch ($pageCss) {
+
+            case 'pricing':
+                echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/pricing.css">';
+                break;
+
+            case 'map':
+                echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/map.css">';
+                break;
+
+            case 'battle':
+                echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/battle.css">';
+                break;
+
+            default:
+                echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/' . $pageCss . '.css">';
+                break;
+        }
+    }
+    ?>
+
 </head>
 
 <body class="<?= $pageClass ?? 'page-default' ?>">

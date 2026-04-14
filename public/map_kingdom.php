@@ -6,7 +6,7 @@ $kingdomId = $_GET['k'] ?? 274;
 <html>
 <head>
     <title>Kingdom Atlas</title>
-    <link rel="stylesheet" href="/public/map.css">
+
 </head>
 <body>
 

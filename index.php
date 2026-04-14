@@ -40,36 +40,21 @@ requireLogin();
                 Your browser does not support the video tag.
               </video>
             </div>    
-            <div class="bc-content">
-              <div class="bc-content-leader" style="text-align:center">
-                <h2>Command the Hunt</h2>
-                <h2>Control the Outcome.</h2>
-              </div>
-              <div class="bc-content-inner" style="padding: 15px;">              
-                <p>
-                    <div style="padding-bottom: 10px;">For players who don’t guess -> they calculate.</div>
-                    <div style="padding-bottom: 10px;">Every Epic, Squad, Citiadel hunt -> matters.</div>
-                    <div style="padding-bottom: 10px;">Scattered data points -> repeatable wins.</div>
-                </p>
-                <!--
-                <p>
-                    Plan smarter attacks using real matchup logic, creature bonuses, and survivability math. 
-                    Instead of over-sending or guessing losses, you’ll know exactly what to deploy — and why it works.
-                </p>
+              <div class="bc-content">
+                <a href="<?= BASE_URL ?>/public/pricing.php" class="bc-card">
+                <div class="bc-content-leader" style="text-align:center">
+                  <h2>Command the Hunt</h2>
+                  <h2>Control the Outcome.</h2>
+                </div>
+                <div class="bc-content-inner" style="padding: 15px;">              
+                  <p>
+                      <div style="padding-bottom: 10px;">For players who don’t guess -> they calculate.</div>
+                      <div style="padding-bottom: 10px;">Every Epic, Squad, Citiadel hunt -> matters.</div>
+                      <div style="padding-bottom: 10px;">Scattered data points -> repeatable wins.</div>
+                  </p>
 
-                <p>
-                    Whether you’re optimizing monster hunts, testing formations, or scaling your efficiency, 
-                    this is your command layer above the game.
-                </p>
-
-                <ul>
-                    <li>Creature vs monster optimization</li>
-                    <li>Attack formation builder</li>
-                    <li>Loss + efficiency calculations</li>
-                    <li>Scalable strategy tools (in progress)</li>
-                </ul>
-                -->
-              </div>
+                </div>
+              </a>
             </div>
           </div>
 
