@@ -38,7 +38,7 @@ class ClanServices {
                     kingdom_id, clan_name, clan_abbr,
                     capital_x, capital_y,
                     roe, follows_roe,
-                    member_count, clan_leader,
+                    member_count, 
                     default_language, clan_size,
                     created_by
                 )
@@ -54,7 +54,6 @@ class ClanServices {
                 $data['roe'] ?? null,
                 $data['follows_roe'] ?? null,
                 $data['members'] ?? null,
-                $data['leader'] ?? null,
                 $data['language'] ?? null,
                 $data['size'] ?? null,
                 $userId

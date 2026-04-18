@@ -98,14 +98,13 @@ requireLogin();
           </div>
 
           <div class="bc-card">
-            <a href="<?= BASE_URL ?>/public/kingdom.php" class="bc-card">
+            <a href="<?= BASE_URL ?>/public/map.php" class="bc-card">
             <div class="bc-img" style="height: 220px;">
               <img src="<?= BASE_URL ?>/images/cards/kingdom.png" alt="The Kingdom">
             </div>    
             <div class="bc-content">
               <div class="bc-content-leader" style="text-align:center">
-                <h2 class="future-header">Clans & Kingdom</h2>
-                <h3 class="future">Future Use</h3>
+                <h2 >Clans & Kingdom</h2>
               </div>
               <div class="bc-content-inner" style="padding: 15px;">  
                 <p>looking for details on another realm...</p>
