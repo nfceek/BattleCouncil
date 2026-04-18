@@ -1,8 +1,4 @@
 
-if (typeof renderCreature === "function") {
-    window.renderGroup = renderCreature;
-}
-
 document.addEventListener('DOMContentLoaded', () => {
 
   //initMobileMenu();

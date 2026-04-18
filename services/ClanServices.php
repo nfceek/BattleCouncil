@@ -22,13 +22,13 @@ class ClanServices {
 
             // Ensure kingdom exists
             $stmt = $pdo->prepare("
-                INSERT INTO kingdoms (kingdom_number)
+                INSERT INTO kingdoms (kingdomID)
                 VALUES (?)
                 ON DUPLICATE KEY UPDATE id=id
             ");
             $stmt->execute([$kingdomNumber]);
 
-            $stmt = $pdo->prepare("SELECT id FROM kingdoms WHERE kingdom_number = ?");
+            $stmt = $pdo->prepare("SELECT id FROM kingdoms WHERE kingdomID = ?");
             $stmt->execute([$kingdomNumber]);
             $kingdomId = (int)$stmt->fetchColumn();
 

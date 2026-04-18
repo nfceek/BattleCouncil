@@ -16,6 +16,7 @@ require_once __DIR__ . '/../helpers/auth.php';
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='https://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
     <?php
+    /*
     if (!empty($pageCss)) {
 
         switch ($pageCss) {
@@ -37,7 +38,35 @@ require_once __DIR__ . '/../helpers/auth.php';
                 break;
         }
     }
+  */    
+
+    $cssMap = [
+        'pricing'     => 'pricing.css',
+        'map'         => 'map.css',
+        'clanCreate'  => 'clanCreate.css',
+    ];
+
+    if (!empty($pageCss) && isset($cssMap[$pageCss])) {
+        $file = "/assets/css/" . $cssMap[$pageCss];
+        $fullPath = $_SERVER['DOCUMENT_ROOT'] . $file;
+
+        echo '<link rel="stylesheet" href="' . $file . '?v=' . filemtime($fullPath) . '">';
+    }
+
+    $jsMap = [
+      'clanCreate' => ['kingdomPicker.js', 'languagePicker.js']
+  ];
+
+  if (!empty($pageCss) && isset($jsMap[$pageCss])) {
+      foreach ($jsMap[$pageCss] as $file) {
+          echo '<script src="/assets/js/' . $file . '" defer></script>';
+      }
+  }
+
     ?>
+
+  <meta name="base-url" content="<?= BASE_URL ?>">
+  <script src="/assets/js/core.js"></script>
 
 </head>
 

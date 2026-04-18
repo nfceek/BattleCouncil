@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let kingdomData = []; // local safe store
 
-    fetch('/../public/api/map_all.php')
+    fetch(`${BASE_URL}/public/api/map_world.php`)
         .then(res => res.json())
         .then(data => {
 
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         el.style.left = (k.capital_x / 992 * 100) + '%';
         el.style.top  = (k.capital_y / 989 * 100) + '%';
 
-        el.title = `K${k.kingdom_number} - ${k.capital_bldg}`;
+        el.title = `K${k.kingdomID} - ${k.capital_bldg}`;
 
         map.appendChild(el);
     }

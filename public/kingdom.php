@@ -68,7 +68,7 @@ require_once __DIR__ . '/../includes/header.php';
             
 
             <div class="bc-card"> 
-                <a href="<?= BASE_URL ?>/public/ledger.php" class="bc-card">
+                <a href="<?= BASE_URL ?>/public/clan_create.php" class="bc-card">
                 
                 <div class="bc-img" style="height: 220px;">
                 <img src="<?= BASE_URL ?>/../images/cards/ledger1.png" alt="The Ledger">

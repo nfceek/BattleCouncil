@@ -1,0 +1,55 @@
+/* FORM LAYOUT */
+.bc-form {
+  display: grid;
+  gap: 10px;
+}
+
+.bc-form input,
+.bc-form select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #111;
+  color: #eee;
+}
+
+/* BUTTON */
+.bc-form button {
+  margin-top: 10px;
+  background: #d4af37;
+  color: #000;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.bc-form button:hover {
+  background: #f2d36b;
+}
+
+/* LEDGER */
+.ledger-row {
+  font-size: 13px;
+  margin-bottom: 6px;
+  opacity: 0.85;
+}
+
+.search-results {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 5px;
+}
+
+.result-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.result-item:hover {
+  background: #4b0082;
+}

@@ -57,7 +57,7 @@ async function refreshLayerData() {
 
     console.log('REFRESH PAYLOAD:', payload);
 
-    const res = await fetch(`${BASE_URL}/public/api/buildLayerPlan.php`, {
+    const res = await fetch(`/public/api/buildLayerPlan.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
