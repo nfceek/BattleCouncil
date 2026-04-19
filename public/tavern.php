@@ -31,39 +31,23 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
 
             <!-- ================= CENTER: TAVERN CORE ================= -->
-          <div class="bc-card tavern-core">
-                <div class="bc-img-soon" style="height: 220px;">
-                <img src="<?= BASE_URL ?>/images/cards/tavern_stage.jpg" alt="Player Archive">
-                </div>    
-                <div class="bc-content">
-                    <div class="bc-content-leader" style="text-align:center">
-                        <h2 class="header">Tavern Stage</h2>
+            <div class="bc-card tavern-core">
+                <a href="<?= BASE_URL ?>/public/tavern_stage.php" class="bc-card">
+                    <div class="bc-img" style="height: 220px;">
+                        <img src="<?= BASE_URL ?>/images/cards/tavern_stage.jpg">
                     </div>
-                    <div class="bc-content-inner" style="padding: 15px;">  
-                        <div class="bc-card-body tavern-floor">
 
-                            <!-- STAGE -->
-                            <div class="tavern-stage" id="tavernStage">
+                    <div class="bc-content">
+                        <div class="bc-content-leader" style="text-align:center">
+                            <h2>Tavern Stage</h2>
+                        </div>
 
-                                <img src="/images/tavern/bg.png" class="tavern-bg" alt="Tavern Background">
-
-                                <div id="talkingHeadZone"></div>
-
-                            </div>
-
-                            <!-- ACTION BAR -->
-                            <div class="tavern-actions">
-                                <button class="bc-btn" id="btnSpeak">Speak</button>
-                                <button class="bc-btn" id="btnListen">Listen</button>
-                                <button class="bc-btn" id="btnDrink">Order Drink</button>
-                            </div>
-
+                        <div class="bc-content-inner" style="padding: 15px;">
+                            C'mon Over Here — interact with NPCs, Talking Heads, and Monsters.
                         </div>
                     </div>
-                </div>
-
+                </a>
             </div>
-
             <!-- ================= RIGHT: BAR + RUMORS ================= -->
             <div class="bc-card tavern-core">
                 <div class="bc-img-soon" style="height: 220px;">

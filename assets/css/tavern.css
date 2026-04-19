@@ -1,11 +1,14 @@
 .tavern-container {
     padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 /* central stage */
 .tavern-stage {
     position: relative;
-    height: 420px;
+    height: 620px;
     overflow: hidden;
     border-radius: 12px;
 }
@@ -16,12 +19,35 @@
     object-fit: cover;
 }
 
+.tavern-actions {
+    padding: 10px;
+}
 /* talking heads layer */
 #talkingHeadZone {
     position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.talking-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px;
+}
+
+.talking-head img {
+    height: 120px;
+}
+
+.talking-bubble {
+    background: rgba(0,0,0,0.75);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    max-width: 300px;
 }
 
 /* bar NPC */
@@ -34,3 +60,4 @@
     margin-top: 8px;
     font-style: italic;
 }
+
