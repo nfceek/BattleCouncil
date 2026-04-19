@@ -31,6 +31,7 @@ $cssMap = [
     'map'         => 'map.css',
     'battle'      => 'battle.css',
     'clanCreate'  => 'clanCreate.css',
+    'tavern'      => 'tavern.css'
 ];
 
 if (!empty($pageCss) && isset($cssMap[$pageCss])) {
@@ -60,6 +61,7 @@ if (!empty($pageCss) && isset($cssMap[$pageCss])) {
 $jsMap = [
     'clanCreate' => ['kingdomPicker.js', 'languagePicker.js'],
     'map'        => ['map.js'], // 🔥 unified map engine
+    'tavern'     => ['tavern.js'],
 ];
 
 if (!empty($pageCss) && isset($jsMap[$pageCss])) {

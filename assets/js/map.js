@@ -306,8 +306,9 @@ renderPins(clans) {
                             <p>Abbr: ${clan.shortname || ""}</p>
                             <p>Leader: ${clan.leader || ""}</p>
                             <p>Language: ${clan.language || ""}</p>
-                            <p>ROE: ${clan.roe || ""}</p>
+                            <br />
                             <p>Location:<strong> k: ${clan.kingdom || ""} x: ${rawX || ""} y: ${rawY || ""}</strong></p>
+                            <br />
                         </div>
                     </div>
                 `;

@@ -101,18 +101,20 @@ requireLogin();
           </div>
 
           <div class="bc-card">
-            <div class="bc-img" style="height: 220px;">
-              <img src="<?= BASE_URL ?>/images/cards/tavern.jpg" alt="tavern">
-            </div>    
-            <div class="bc-content">
-              <div class="bc-content-leader" style="text-align:center">
-                <h2 class="future-header">Player Tavern</h2>
-                <h3 class="future">Future Use</h3>
+            <a href="<?= BASE_URL ?>/public/tavern.php" class="bc-card">
+              <div class="bc-img" style="height: 220px;">
+                <img src="<?= BASE_URL ?>/images/cards/tavern.jpg" alt="tavern">
+              </div>    
+              <div class="bc-content">
+                <div class="bc-content-leader" style="text-align:center">
+                  <h2 class="future-header">Player Tavern</h2>
+                  <h3 class="future">Future Use</h3>
+                </div>
+                <div class="bc-content-inner" style="padding: 15px;">  
+                  <p>Come in! Grab An ale and swap lies about your conquests</p>
+                </div>
               </div>
-              <div class="bc-content-inner" style="padding: 15px;">  
-                <p>Come in! Grab An ale and swap lies about your conquests</p>
-              </div>
-            </div>
+            </a>
           </div>
 
           <div class="bc-card">
