@@ -50,7 +50,7 @@ requireLogin();
                   <p>
                       <div style="padding-bottom: 10px;">For players who don’t guess -> they calculate.</div>
                       <div style="padding-bottom: 10px;">Every Epic, Squad, Citiadel hunt -> matters.</div>
-                      <div style="padding-bottom: 10px;">Scattered data points -> repeatable wins.</div>
+                      <div style="padding-bottom: 10px;">Focused data points -> repeatable wins.</div>
                   </p>
 
                 </div>
@@ -72,10 +72,28 @@ requireLogin();
                 </div>
 
                 <div class="bc-content-inner" style="padding: 15px;">  
-                  <p>
-                    This is NOT a regular stacking calculator. This is for efficiency
-                    of hunting monster squads on the world map.
-                  </p>
+                  <div class="lead-section">
+                    <p class="lead-warning">
+                      These are NOT regular stacking calculators.
+                    </p>
+
+                    <div class="lead-list">
+                      <div class="lead-item">
+                        <span class="icon">👹</span>
+                        <span>Use Creatures to Hunt Calculator</span>
+                      </div>
+
+                      <div class="lead-item">
+                        <span class="icon">📊</span>
+                        <span>Advanced Layered Calculator</span>
+                      </div>
+
+                      <div class="lead-item">
+                        <span class="icon">🏰</span>
+                        <span>Citadel Cracker Calculator</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -114,7 +132,7 @@ requireLogin();
           </div>
 
           <div class="bc-card">
-            <div class="bc-img" style="height: 220px;">
+            <div class="bc-img-soon" style="height: 220px;">
               <img src="<?= BASE_URL ?>/images/cards/beast_codex.jpg" alt="Beast Codex">
             </div>    
             <div class="bc-content">
@@ -129,7 +147,7 @@ requireLogin();
           </div>
 
           <div class="bc-card">
-            <div class="bc-img" style="height: 220px;">
+            <div class="bc-img-soon" style="height: 220px;">
               <img src="<?= BASE_URL ?>/images/cards/captain_archive.jpg" alt="Player Archive">
             </div>    
             <div class="bc-content">

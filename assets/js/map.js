@@ -303,11 +303,11 @@ renderPins(clans) {
                             <h3>${clan.name || ""}</h3>
                         </div>
                         <div class="pin-datapoints">
-                            <p><strong>Abbr:</strong> ${clan.shortname || ""}</p>
-                            <p><strong>Leader:</strong> ${clan.leader || ""}</p>
-                            <p><strong>Language:</strong> ${clan.language || ""}</p>
-                            <p><strong>ROE:</strong> ${clan.roe || ""}</p>
-                            <p><strong>Location:</strong> k: ${clan.kingdom || ""}x: ${rawX || ""} y: ${rawY || ""}</p>
+                            <p>Abbr: ${clan.shortname || ""}</p>
+                            <p>Leader: ${clan.leader || ""}</p>
+                            <p>Language: ${clan.language || ""}</p>
+                            <p>ROE: ${clan.roe || ""}</p>
+                            <p>Location:<strong> k: ${clan.kingdom || ""} x: ${rawX || ""} y: ${rawY || ""}</strong></p>
                         </div>
                     </div>
                 `;
