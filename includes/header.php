@@ -133,9 +133,9 @@ if (hasRole('admin')) {
     <a href="<?= BASE_URL ?>/index.php"><i class="fa-solid fa-house"></i> Home</a>
 
     <a href="<?= BASE_URL ?>/calc_squad.php">⚔️ Monster Hunt</a>
-    <a href="#">👹 Monster Editor</a>
-    <a href="#">🪖 Squad Editor</a>
-    <a href="#">🐲 Matrix Data</a>
+    <a href="#">👹 talking heads</a>
+    <a href="#">🪖 calulators</a>
+    <a href="#">🐲 world maps</a>
     <a href="#">👥 Members</a>
 
     <hr>

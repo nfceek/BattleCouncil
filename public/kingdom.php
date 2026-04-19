@@ -26,7 +26,7 @@ require_once __DIR__ . '/../includes/header.php';
             <a href="./map.php" class="bc-card">
                 
                 <div class="bc-img" style="height: 220px;">
-                <img src="<?= BASE_URL ?>/../images/cards/realms1.png" alt="The Realm">
+                <img src="<?= BASE_URL ?>/../images/cards/realms2.png" alt="The Realm">
                 </div>    
 
                 <div class="bc-content">

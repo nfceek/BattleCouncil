@@ -98,7 +98,7 @@ requireLogin();
           </div>
 
           <div class="bc-card">
-            <a href="<?= BASE_URL ?>/public/map.php" class="bc-card">
+            <a href="<?= BASE_URL ?>/public/kingdom.php" class="bc-card">
             <div class="bc-img" style="height: 220px;">
               <img src="<?= BASE_URL ?>/images/cards/kingdom.png" alt="The Kingdom">
             </div>    
