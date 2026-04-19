@@ -65,7 +65,10 @@ try {
             shortname,
             x,
             y,
-            language
+            kingdom,
+            leader,
+            language,
+            ROE
         FROM clans
         WHERE kingdom = ?
     ");

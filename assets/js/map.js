@@ -174,15 +174,36 @@ const MapEngine = {
         el.src = "/images/maps/kingdom.png";
     },
 
+    normalizeToPercent(x, y) {
+        const minX = 5;
+        const maxX = 960;
+        const minY = 40;
+        const maxY = 960;
+
+        const clamp = (val, min = 0, max = 100) =>
+            Math.max(min, Math.min(max, val));
+
+        let percentX = ((x - minX) / (maxX - minX)) * 100;
+        let percentY = ((y - minY) / (maxY - minY)) * 100;
+
+        return {
+            x: clamp(percentX),
+            y: clamp(percentY)
+        };
+    },
+
     renderCapital(kingdom) {
         const pin = this.el("capitalPin");
-        if (!pin) return;
+        if (!pin || !kingdom) return;
 
-        const x = kingdom.capital_x ?? 50;
-        const y = kingdom.capital_y ?? 50;
+        // fallback BEFORE normalization
+        const rawX = kingdom.capital_x ?? 5;
+        const rawY = kingdom.capital_y ?? 40;
 
-        pin.style.left = x + "%";
-        pin.style.top  = y + "%";
+        const pos = this.normalizeToPercent(rawX, rawY);
+
+        pin.style.left = pos.x + "%";
+        pin.style.top  = pos.y + "%";
 
         const img = pin.querySelector("img");
         if (!img) return;
@@ -191,7 +212,7 @@ const MapEngine = {
             ? `/images/capitals/${kingdom.icon}.png`
             : `/images/capitals/default.png`;
     },
-
+/*
     renderPins(clans) {
         const container = this.el("mapPins");
         const infoBox = this.el("mapInfo");
@@ -214,16 +235,90 @@ const MapEngine = {
                 if (!infoBox) return;
 
                 infoBox.innerHTML = `
-                    <h3>${clan.clan_name}</h3>
-                    <p><strong>ROE:</strong> ${clan.roe || ""}</p>
-                    <p><strong>Members:</strong> ${clan.members || ""}</p>
-                    <p><strong>Language:</strong> ${clan.language || ""}</p>
+                    <div class="pin-container">
+                        <div class="pin-header">
+                            <h3>${clan.name}</h3>
+                        </div>
+                        <div class="pin-datapoints">
+                            <div class="pin-datapoints-body">
+                                <p><strong>Abbr:</strong> ${clan.shortname || ""}</p>
+                                <p><strong>Leader:</strong> ${clan.leader || ""}</p>
+                                <p><strong>Language:</strong> ${clan.language || ""}</p>
+                                <p><strong>ROE:</strong> ${clan.roe || ""}</p>
+                                <br />
+                            </div>
+                            <div class="pin-datapoints-location">
+                                <p><strong>Location:</strong> k: ${clan.kingdom || ""} x: ${clan.x || ""} y: ${clan.y || ""}</p>
+                            </div>
+                            <br />
+                            <br />
+                        </div>
+                    </div>
                 `;
             });
-
             container.appendChild(pin);
         });
     },
+*/
+renderPins(clans) {
+    const container = this.el("mapPins");
+    const infoBox = this.el("mapInfo");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    const fragment = document.createDocumentFragment();
+
+    clans.forEach(clan => {
+        // normalize input types (handles "0", null, undefined)
+        const rawX = Number(clan.x);
+        const rawY = Number(clan.y);
+
+        const hasValidCoords =
+            Number.isFinite(rawX) &&
+            Number.isFinite(rawY) &&
+            rawX !== 0 &&
+            rawY !== 0;
+
+        // skip pins with no usable coordinates
+        if (!hasValidCoords) return;
+
+        const pos = this.normalizeToPercent(rawX, rawY);
+
+        const pin = document.createElement("div");
+        pin.className = "pin";
+
+        pin.style.left = pos.x + "%";
+        pin.style.top  = pos.y + "%";
+
+        pin.innerHTML = `<img src="/images/icons/pin.png" alt="">`;
+
+        // hover info
+        if (infoBox) {
+            pin.addEventListener("mouseenter", () => {
+                infoBox.innerHTML = `
+                    <div class="pin-container">
+                        <div class="pin-header">
+                            <h3>${clan.name || ""}</h3>
+                        </div>
+                        <div class="pin-datapoints">
+                            <p><strong>Abbr:</strong> ${clan.shortname || ""}</p>
+                            <p><strong>Leader:</strong> ${clan.leader || ""}</p>
+                            <p><strong>Language:</strong> ${clan.language || ""}</p>
+                            <p><strong>ROE:</strong> ${clan.roe || ""}</p>
+                            <p><strong>Location:</strong> k: ${clan.kingdom || ""}x: ${rawX || ""} y: ${rawY || ""}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        fragment.appendChild(pin);
+    });
+
+    container.appendChild(fragment);
+},
 
     /* =========================
        UI SWITCHING (SAFE)
@@ -278,6 +373,7 @@ const MapEngine = {
         });
     }
 };
+
 
 
 /* =========================

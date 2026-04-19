@@ -57,9 +57,9 @@ const PRELOAD_KINGDOM = <?= $kingdomId ? (int)$kingdomId : 'null' ?>;
                             id="kingdomQuickInput"
                             placeholder="Enter Kingdom ID..."
                         />
-<button id="backToWorldBtn" class="btn" style="display:none;">
-    ← Back to World
-</button>
+                        <button id="backToWorldBtn" class="btn" style="display:none;">
+                            ← Back to World
+                        </button>
                     </div>
 
                 </div>
@@ -86,7 +86,7 @@ const PRELOAD_KINGDOM = <?= $kingdomId ? (int)$kingdomId : 'null' ?>;
 
                         <!-- Capital -->
                         <div id="capitalPin" class="capital-pin">
-                            <img src="/images/capitals/default.png" width="75" height="75">
+                            <img src="/images/capitals/default.png" width="45" height="45">
                         </div>
 
                         <!-- Dynamic Clan Pins -->
