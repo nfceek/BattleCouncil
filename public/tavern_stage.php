@@ -6,7 +6,7 @@ $pageCss = "tavern";
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="bc-container tavern-container">
+<div class="bc-container tavern-container-stage">
 
     <div class="bc-row">
 
@@ -15,19 +15,15 @@ require_once __DIR__ . '/../includes/header.php';
 
             <div class="bc-card tavern-core">
 
-                <div class="bc-card-header">
+                <div class="bc-card-header tavern-header">
                     <h3>The Tavern Stage</h3>
                 </div>
 
                 <div class="bc-card-body tavern-floor">
-
-                    <!-- ======================
-                         SINGLE SOURCE OF TRUTH
-                         ====================== -->
                     <div id="tavernStage" class="tavern-stage">
 
                         <!-- Background -->
-                        <img src="/images/tavern/bg-med.jpg" class="tavern-bg" alt="Tavern">
+                        <img src="/images/tavern/bg/bg_tan.jpg" class="tavern-bg" alt="Tavern">
 
                         <!-- TALKING HEAD ZONE -->
                         <div id="talkingHeadZone"
@@ -50,16 +46,47 @@ require_once __DIR__ . '/../includes/header.php';
                     </div>
 
                     <!-- ACTION BAR (INSIDE CONTEXT) -->
-                    <div class="tavern-actions">
-                        <button class="bc-btn" id="btnSpeak">Speak</button>
-                        <button class="bc-btn" id="btnListen">Listen</button>
-                        <button class="bc-btn" id="btnDrink">Order Drink</button>
 
-                        <!-- TEST BUTTON (ENGINE HOOK) -->
-                        <button class="bc-btn bc-btn-debug" id="btnTestTavern">
-                            Test Engine
+
+                    <div class="tavern-input">
+
+                        <!-- NPC SELECT (future ready) -->
+                        <select id="npcSelect" class="bc-input">
+                            <option value="barWench">Bar Wench</option>
+                            <option value="blueDragon">Blue Dragon</option>
+                            <option value="ambient">Future Use</option>
+                        </select>
+
+                        <!-- TEXT INPUT -->
+                        <textarea id="tavernInput"
+                                class="bc-input"
+                                maxlength="200"
+                                placeholder="Say something to the tavern..."
+                        ></textarea>
+
+                        <!-- COUNTER -->
+                        <div class="tavern-input-meta">
+                            <span id="charCount">0 / 200</span>
+                        </div>
+
+                        <!-- ACTION -->
+                        <button class="bc-btn" id="btnPlayInput">
+                            Play
                         </button>
-                    </div>
+
+                        <div class="tavern-actions">
+                            <button class="bc-btn" id="btnSpeak">Speak</button>
+                            <button class="bc-btn" id="btnListen">Listen</button>
+                            <button class="bc-btn" id="btnDrink">Order</button>
+
+                            <!-- TEST BUTTON (ENGINE HOOK) 
+                            <button class="bc-btn bc-btn-debug" id="btnTestTavern">
+                                Test Engine
+                            </button>
+                            -->
+                        </div>
+
+                </div>
 
                 </div>
             </div>
@@ -67,9 +94,11 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
 
     </div>
+    <!--
     <button class="bc-btn bc-btn-danger" id="btnStopTavern">
         Stop
     </button>
+    -->
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

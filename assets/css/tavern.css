@@ -1,53 +1,121 @@
 .tavern-container {
     padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* optional secondary stage wrapper */
+.tavern-container-stage {
+    padding: 20px;
     max-width: 400px;
     margin: 0 auto;
     text-align: center;
 }
 
-/* central stage */
+/* -----------------------------
+   MAIN STAGE (FIXED CORE ISSUE)
+------------------------------*/
 .tavern-stage {
     position: relative;
-    height: 620px;
+    width: 100%;
+    height: 620px;              /* 🔥 critical: defines layout anchor */
     overflow: hidden;
     border-radius: 12px;
+
+    display: block;             /* prevents flex/grid collapse issues */
 }
 
+/* -----------------------------
+   BACKGROUND LAYER FIX
+------------------------------*/
 .tavern-bg {
+    position: absolute;         /* 🔥 key fix */
+    inset: 0;                   /* top/right/bottom/left = 0 */
+
     width: 100%;
     height: 100%;
     object-fit: cover;
+
+    z-index: 1;
+
+    transition: opacity 0.3s ease;
 }
 
+/* -----------------------------
+   FOREGROUND LAYERS
+------------------------------*/
+#talkingHeadZone {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 10;
+}
+
+/* NPC container */
+.talking-actor {
+    position: absolute;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.talking-actor img {
+    display: block;
+}
+
+/* background glow/plate behind NPC */
+.actor-bg {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+
+    width: 120%;
+    height: 110%;
+
+    transform: translateX(-50%);
+
+    background: radial-gradient(
+        rgba(0,0,0,0.4),
+        rgba(0,0,0,0) 70%
+    );
+
+    z-index: -1;
+}
+
+/* -----------------------------
+   BUBBLES
+------------------------------*/
+.talking-bubble {
+    position: absolute;
+    left: 50%;
+    top: -10px;
+
+    transform: translate(-50%, -100%);
+
+    background: rgba(0,0,0,0.75);
+    color: #fff;
+
+    padding: 10px 14px;
+    border-radius: 10px;
+
+    max-width: 260px;
+    text-align: center;
+
+    z-index: 30;
+}
+
+/* -----------------------------
+   UI ELEMENTS
+------------------------------*/
 .tavern-actions {
     padding: 10px;
 }
-/* talking heads layer */
-#talkingHeadZone {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
 
-.talking-head {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 10px;
-}
-
-.talking-head img {
-    height: 120px;
-}
-
-.talking-bubble {
-    background: rgba(0,0,0,0.75);
-    color: #fff;
-    padding: 10px 14px;
-    border-radius: 10px;
-    max-width: 300px;
+.tavern-header {
+    padding: 10px;
 }
 
 /* bar NPC */
@@ -61,3 +129,22 @@
     font-style: italic;
 }
 
+/* input system */
+.tavern-input {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+}
+
+.tavern-input textarea {
+    resize: none;
+    height: 60px;
+}
+
+.tavern-input-meta {
+    text-align: right;
+    font-size: 12px;
+    opacity: 0.7;
+}

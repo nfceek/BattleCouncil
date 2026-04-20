@@ -107,11 +107,14 @@ requireLogin();
               </div>    
               <div class="bc-content">
                 <div class="bc-content-leader" style="text-align:center">
-                  <h2 class="future-header">Player Tavern</h2>
-                  <h3 class="future">Future Use</h3>
+                  <h2 >Player Tavern</h2>
+                  <h2> -- OPEN -- </h2>
                 </div>
                 <div class="bc-content-inner" style="padding: 15px;">  
-                  <p>Come in! Grab An ale and swap lies about your conquests</p>
+                  <p>Come in! Grab An ale and swap lies about your conquests
+                  <br /><br />
+                  <small>Creature Karaoke is now on Tues</small>
+                  </p>
                 </div>
               </div>
             </a>

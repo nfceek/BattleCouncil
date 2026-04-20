@@ -1,22 +1,98 @@
 const TavernEngine = {
 
-    state: {
-        activeNPC: null,
-        queue: [],
-        mood: "neutral",
-        busy: false,
-        loopInterval: null
+    // -----------------------------
+    // HEAD CONFIG (NOW WITH BG + VOICE)
+    // -----------------------------
+    headMap: {
+        barWench: {
+            src: "/images/tavern/heads/bar_wench-001.png",
+            x: 50,
+            y: 85,
+            size: 400,
+            type: "npc",
+            bg: true,
+            voice: "female",
+            sceneBg: "/images/tavern/bg/bg_wench.jpg"
+        },
+        blueDragon: {
+            src: "/images/tavern/heads/blueDragon.png",
+            x: 50,
+            y: 85,
+            size: 400,
+            type: "npc",
+            bg: true,
+            voice: "male",
+            sceneBg: "/images/tavern/bg/bg_tan.jpg"
+
+        },
+        ambient: {
+            src: "/images/tavern/heads/ambient.png",
+            x: 50,
+            y: 80,
+            size: 300,
+            type: "ambient",
+            voice: "neutral",
+            sceneBg: "/images/tavern/bg/bg_ambient.png"
+        }
     },
+
+    // -----------------------------
+    // STATE
+    // -----------------------------
+    state: {
+        queue: [],
+        busy: false,
+        loopInterval: null,
+        autoEvents: false
+    },
+
+    voices: [],
 
     // -----------------------------
     // INIT
     // -----------------------------
     init() {
+        this.loadVoices();
         this.bindEvents();
         this.bootNPCs();
         this.startLoop();
 
         console.log("Tavern Engine online");
+    },
+
+    // -----------------------------
+    // VOICE SYSTEM
+    // -----------------------------
+    loadVoices() {
+        this.voices = speechSynthesis.getVoices();
+
+        if (!this.voices.length) {
+            speechSynthesis.onvoiceschanged = () => {
+                this.voices = speechSynthesis.getVoices();
+                //console.log("Voices loaded:", this.voices);
+            };
+        }
+    },
+
+    getVoice(type = "neutral") {
+        if (!this.voices.length) return null;
+
+        const femaleHints = ["female", "zira", "aria", "jenny", "samantha"];
+        const maleHints = ["male", "david", "mark"];
+
+        if (type === "female") {
+            return this.voices.find(v =>
+                femaleHints.some(h => v.name.toLowerCase().includes(h))
+            );
+        }
+
+        if (type === "male") {
+            return this.voices.find(v =>
+                maleHints.some(h => v.name.toLowerCase().includes(h))
+            );
+        }
+
+        return this.voices[0];
     },
 
     // -----------------------------
@@ -31,7 +107,9 @@ const TavernEngine = {
     },
 
     tick() {
+        if (!this.state.autoEvents) return;
         if (this.state.busy) return;
+
         this.randomEvent();
     },
 
@@ -42,8 +120,26 @@ const TavernEngine = {
             () => this.ambientNoise()
         ];
 
-        const event = events[Math.floor(Math.random() * events.length)];
-        event();
+        events[Math.floor(Math.random() * events.length)]();
+    },
+
+    // -----------------------------
+    // BACKGROUND CONTROL (NEW)
+    // -----------------------------
+    setSceneBackground(src) {
+        const bg = document.querySelector(".tavern-bg");
+        if (!bg || !src) return;
+
+        if (bg.dataset.current === src) return;
+
+        // fade out
+        bg.style.opacity = 0;
+
+        setTimeout(() => {
+            bg.src = src;
+            bg.dataset.current = src;
+            bg.style.opacity = 1;
+        }, 150);
     },
 
     // -----------------------------
@@ -67,7 +163,7 @@ const TavernEngine = {
     // -----------------------------
     // SPEAK SYSTEM
     // -----------------------------
-    speak(text, headId = null) {
+    speak(text, headId = "barWench") {
 
         if (this.state.busy) {
             this.state.queue.push({ text, headId });
@@ -87,83 +183,86 @@ const TavernEngine = {
         this.playTalkingHead(zone, text, headId);
     },
 
-playTalkingHead(zone, text, headId) {
+    // -----------------------------
+    // RENDER (HEAD + BG)
+    // -----------------------------
+    playTalkingHead(zone, text, headId) {
 
-    zone.innerHTML = "";
+        zone.innerHTML = "";
 
-    const headMap = {
-        barWench: {
-            src: "/images/heads/bar_wench-001.png",
-            x: 53,
-            y: 87,
-            size: 400
-        },
-        ambient: {
-            src: "/images/heads/bar_wench-001.png",
-            x: 53,
-            y: 87,
-            size: 400
+        const config = this.headMap[headId] || this.headMap.barWench;
+
+        // 🔥 APPLY BACKGROUND
+        this.setSceneBackground(config.sceneBg);
+
+        // wrapper
+        const wrapper = document.createElement("div");
+        wrapper.className = "talking-actor";
+        wrapper.style.position = "absolute";
+        wrapper.style.left = config.x + "%";
+        wrapper.style.top = config.y + "%";
+        wrapper.style.transform = "translate(-50%, -100%)";
+
+        // optional background plate
+        if (config.bg) {
+            const plate = document.createElement("div");
+            plate.className = "actor-bg";
+            wrapper.appendChild(plate);
         }
-    };
 
-    const config = headMap[headId] || {
-        src: "/images/heads/default.png",
-        x: 50,
-        y: 80,
-        size: 120
-    };
+        // image
+        const img = document.createElement("img");
+        img.src = config.src;
+        img.style.height = config.size + "px";
 
-    // -----------------------------
-    // IMAGE (ONLY DECLARED ONCE)
-    // -----------------------------
-    const img = document.createElement("img");
-    img.src = config.src;
+        wrapper.appendChild(img);
 
-    img.style.position = "absolute";
-    img.style.left = config.x + "%";
-    img.style.top = config.y + "%";
-    img.style.height = config.size + "px";
-    img.style.transform = "translate(-50%, -100%)";
+        // bubble
+        const bubble = document.createElement("div");
+        bubble.className = "talking-bubble";
+        bubble.innerText = text;
 
-    // -----------------------------
-    // BUBBLE
-    // -----------------------------
-    const bubble = document.createElement("div");
-    bubble.className = "talking-bubble";
-    bubble.innerText = text;
+        bubble.style.position = "absolute";
+        bubble.style.left = "50%";
+        bubble.style.top = "410px";
+        bubble.style.transform = "translate(-50%, -100%)";
 
-    bubble.style.position = "absolute";
-    bubble.style.left = config.x + "%";
-    bubble.style.top = (config.y + 10) + "%";
-    bubble.style.transform = "translate(-50%, -100%)";
+        wrapper.appendChild(bubble);
+        zone.appendChild(wrapper);
+
+        this.playAudio(text, config);
+
+        setTimeout(() => {
+            this.state.busy = false;
+            this.next();
+        }, 3000);
+    },
 
     // -----------------------------
-    // RENDER
-    // -----------------------------
-    zone.appendChild(img);
-    zone.appendChild(bubble);
-
     // AUDIO
-    this.playAudio(text, headId);
-
-    setTimeout(() => {
-        this.state.busy = false;
-        this.next();
-    }, 3000);
-},
-
-    playAudio(text, headId) {
+    // -----------------------------
+    playAudio(text, config) {
         if (!("speechSynthesis" in window)) return;
 
         const utter = new SpeechSynthesisUtterance(text);
-        utter.rate = 1;
-        utter.pitch = 1;
 
+        const voice = this.getVoice(config.voice);
+        if (voice) utter.voice = voice;
+
+        if (config.voice === "female") {
+            utter.rate = 0.80;
+            utter.pitch = 1.05;
+        } else {
+            utter.rate = 0.95;
+            utter.pitch = 1;
+        }
+
+        speechSynthesis.cancel();
         speechSynthesis.speak(utter);
     },
 
     next() {
-        if (this.state.queue.length === 0) return;
+        if (!this.state.queue.length) return;
 
         const nextItem = this.state.queue.shift();
         this.speak(nextItem.text, nextItem.headId);
@@ -178,9 +277,7 @@ playTalkingHead(zone, text, headId) {
             "You look broke.",
             "Another traveler... sigh."
         ];
-
-        const line = lines[Math.floor(Math.random() * lines.length)];
-        this.speak(line, "barWench");
+        this.speak(lines[Math.floor(Math.random() * lines.length)], "barWench");
     },
 
     barWenchIdle() {
@@ -190,9 +287,7 @@ playTalkingHead(zone, text, headId) {
             "You gonna order or just stand there?",
             "These mugs don’t clean themselves..."
         ];
-
-        const line = lines[Math.floor(Math.random() * lines.length)];
-        this.speak(line, "barWench");
+        this.speak(lines[Math.floor(Math.random() * lines.length)], "barWench");
     },
 
     ambientNoise() {
@@ -201,9 +296,7 @@ playTalkingHead(zone, text, headId) {
             "*a mug slams on wood*",
             "*laughter erupts briefly*"
         ];
-
-        const line = lines[Math.floor(Math.random() * lines.length)];
-        this.speak(line, "ambient");
+        this.speak(lines[Math.floor(Math.random() * lines.length)], "ambient");
     },
 
     triggerRumor() {
@@ -216,31 +309,27 @@ playTalkingHead(zone, text, headId) {
             "Rare creatures spotted beyond the ridge."
         ];
 
-        const rumor = rumors[Math.floor(Math.random() * rumors.length)];
-
-        rumorFeed.innerHTML = `<ul><li>${rumor}</li></ul>`;
+        rumorFeed.innerHTML = `<ul><li>${rumors[Math.floor(Math.random() * rumors.length)]}</li></ul>`;
     },
 
+    // -----------------------------
     // STOP
+    // -----------------------------
     stopAll() {
-        // stop loop
+
         if (this.state.loopInterval) {
             clearInterval(this.state.loopInterval);
             this.state.loopInterval = null;
         }
 
-        // clear queue
         this.state.queue = [];
 
-        // stop speech
         if ("speechSynthesis" in window) {
             speechSynthesis.cancel();
         }
 
-        // reset state
         this.state.busy = false;
 
-        // clear UI
         const zone = document.getElementById("talkingHeadZone");
         if (zone) zone.innerHTML = "";
 
@@ -252,42 +341,48 @@ playTalkingHead(zone, text, headId) {
     // -----------------------------
     bindEvents() {
 
-        const bar = document.getElementById("barArea");
+        const input = document.getElementById("tavernInput");
+        const counter = document.getElementById("charCount");
+        const playBtn = document.getElementById("btnPlayInput");
+        const npcSelect = document.getElementById("npcSelect");
 
-        if (bar) {
-            bar.addEventListener("click", () => {
-                this.barWenchReact();
+        if (input && counter) {
+            input.addEventListener("input", () => {
+                counter.textContent = `${input.value.length} / 200`;
             });
         }
 
-        const speakBtn = document.getElementById("btnSpeak");
+        if (playBtn && input) {
+            playBtn.addEventListener("click", () => {
 
-        if (speakBtn) {
-            speakBtn.addEventListener("click", () => {
-                this.speak("Speak your business, traveler...");
+                const text = input.value.trim();
+                if (!text) return;
+
+                const npc = npcSelect?.value || "barWench";
+
+                this.speak(text, npc);
+
+                input.value = "";
+                counter.textContent = "0 / 200";
             });
         }
 
-        const testBtn = document.getElementById("btnTestTavern");
+        document.getElementById("barArea")?.addEventListener("click", () => {
+            this.barWenchReact();
+        });
 
-        if (testBtn) {
-            testBtn.addEventListener("click", () => {
+        document.getElementById("btnSpeak")?.addEventListener("click", () => {
+            this.speak("Speak your business, traveler...");
+        });
 
-                console.log("Tavern Engine Test Triggered");
+        document.getElementById("btnTestTavern")?.addEventListener("click", () => {
+            this.speak("The tavern comes alive...");
+            this.barWenchReact();
+        });
 
-                this.speak("The tavern comes alive...");
-                this.barWenchReact();
-            });
-        }
-
-    const stopBtn = document.getElementById("btnStopTavern");
-
-    if (stopBtn) {
-        stopBtn.addEventListener("click", () => {
+        document.getElementById("btnStopTavern")?.addEventListener("click", () => {
             this.stopAll();
         });
-    }
-
     }
 };
 
@@ -297,6 +392,4 @@ window.TavernEngine = TavernEngine;
 // BOOT
 document.addEventListener("DOMContentLoaded", () => {
     TavernEngine.init();
-
-
 });
