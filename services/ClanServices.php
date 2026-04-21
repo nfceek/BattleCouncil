@@ -9,11 +9,14 @@ class ClanServices {
             $pdo->beginTransaction();
 
             // Normalize inputs
-            $kingdomNumber = (int)$data['kingdom'];
+            $kingdomNumber = (int)$data['k'];
             $clanName = trim($data['clan_name']);
-            $abbr = strtoupper(substr(trim($data['abbr']), 0, 3));
+            $abbr = strtoupper(substr(trim($data['clan_abbr']), 0, 3));
             $x = (int)$data['x'];
             $y = (int)$data['y'];
+            $leader = trim($data['leader']);
+            $lvl = (int)$data['level'];
+            $submitter = 'system';  // TODO: hook into security and pull userID for this 
 
             // Basic validation
             if (!$kingdomNumber || !$clanName || strlen($abbr) !== 3) {
@@ -34,29 +37,28 @@ class ClanServices {
 
             // Insert clan
             $stmt = $pdo->prepare("
-                INSERT INTO kingdom_clans (
-                    kingdom_id, clan_name, clan_abbr,
-                    capital_x, capital_y,
-                    roe, follows_roe,
-                    member_count, 
-                    default_language, clan_size,
-                    created_by
+                INSERT INTO clans (
+                    k,x,y,
+                    `name`, shortname,
+                    kingdom, leader, lvl,
+                    language, roe,
+                    submitter
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
             $stmt->execute([
-                $kingdomId,
-                $clanName,
-                $abbr,
+                $kingdomNumber,
                 $x,
                 $y,
-                $data['roe'] ?? null,
-                $data['follows_roe'] ?? null,
-                $data['members'] ?? null,
+                $clanName,
+                $abbr,
+                $kingdomNumber,
+                $leader,
+                $lvl,
                 $data['language'] ?? null,
-                $data['size'] ?? null,
-                $userId
+                $data['roe'] ?? null,
+                $submitter 
             ]);
 
             $clanId = $pdo->lastInsertId();

@@ -49,6 +49,11 @@ require_once __DIR__ . '/../includes/header.php';
                 <div class="bc-content-inner">
                     <p><?= $balance ?> Points</p>
                 </div>
+                <div>
+                    <input type="text" id="kingdomSearch" placeholder="Search Kingdom..." autocomplete="off">
+                    <input type="hidden" name="kingdom" id="kingdomID">
+                    <div id="kingdomResults" class="search-results"></div>
+                </div>
             </div>
         </div>
 
@@ -81,12 +86,8 @@ require_once __DIR__ . '/../includes/header.php';
 
                     <form method="POST" class="bc-form">
 
-                        <input type="text" id="kingdomSearch" placeholder="Search Kingdom..." autocomplete="off">
-                        <input type="hidden" name="kingdom" id="kingdomID">
-                        <div id="kingdomResults" class="search-results"></div>
-
-                        <label>Clan Name</label>
-                        <input name="clan_name" required>
+                        <label>Kingdom K</label>
+                        <input name="k" required>
 
                         <label>Capital X</label>
                         <input name="x" required>
@@ -94,8 +95,23 @@ require_once __DIR__ . '/../includes/header.php';
                         <label>Capital Y</label>
                         <input name="y" required>
 
+                        <label>Clan Name</label>
+                        <input name="clan_name" required>
+
                         <label>Clan Abbrev.</label>
-                        <input name="abbr" maxlength="3" required>
+                        <input name="clan_abbr" maxlength="3" required>
+
+                        <label>Clan Leader</label>
+                        <input name="leader">
+
+                        <label>Clan Capital Level</label>
+                        <input name="level"> 
+                      
+                        <label>Language</label>
+                        <select id="languageSelect" name="language">
+                            <option value="">Select Language</option>
+                            <option value="other">+ Add New</option>
+                        </select>
 
                         <label>Has ROE</label>
                         <select name="roe">
@@ -104,12 +120,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <option value="0">No</option>
                         </select>
 
-                        <label>Language</label>
 
-                        <select id="languageSelect" name="language">
-                            <option value="">Select Language</option>
-                            <option value="other">+ Add New</option>
-                        </select>
 
                         <input type="text" id="languageNew" placeholder="Enter new language" style="display:none;">
 
