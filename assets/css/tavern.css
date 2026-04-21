@@ -18,17 +18,18 @@
 ------------------------------*/
 .tavern-stage {
     position: relative;
-    width: 100%;
-    height: 620px;              /* 🔥 critical: defines layout anchor */
+    width: 420px;
+    height: 390px;              /* 🔥 critical: defines layout anchor */
     overflow: hidden;
     border-radius: 12px;
 
     display: block;             /* prevents flex/grid collapse issues */
 }
 
-/* -----------------------------
-   BACKGROUND LAYER FIX
-------------------------------*/
+.tavernSelect{
+    padding-bottom: 15px;
+}
+
 .tavern-bg {
     position: absolute;         /* 🔥 key fix */
     inset: 0;                   /* top/right/bottom/left = 0 */
@@ -64,7 +65,9 @@
 
 .talking-actor img {
     display: block;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
 }
+
 
 /* background glow/plate behind NPC */
 .actor-bg {

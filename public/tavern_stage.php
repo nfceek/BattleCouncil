@@ -20,6 +20,15 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
 
                 <div class="bc-card-body tavern-floor">
+                    <div class="tavernSelect">
+                            <!-- NPC SELECT (future ready) -->
+                        <select id="npcSelect" class="bc-input">
+                            <option value="barWench">Choose Character</option>
+                            <option value="blueDragon">Blue Dragon</option>
+                            <option value="barWench">Bar Wench</option>
+                        </select>
+                    </div>
+
                     <div id="tavernStage" class="tavern-stage">
 
                         <!-- Background -->
@@ -49,13 +58,6 @@ require_once __DIR__ . '/../includes/header.php';
 
 
                     <div class="tavern-input">
-
-                        <!-- NPC SELECT (future ready) -->
-                        <select id="npcSelect" class="bc-input">
-                            <option value="barWench">Bar Wench</option>
-                            <option value="blueDragon">Blue Dragon</option>
-                            <option value="ambient">Future Use</option>
-                        </select>
 
                         <!-- TEXT INPUT -->
                         <textarea id="tavernInput"
