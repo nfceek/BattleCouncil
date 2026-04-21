@@ -24,72 +24,102 @@ require_once __DIR__ . '/../includes/header.php';
     <div class="bc-grid">
         <div class="bc-card"> 
             <a href="./map.php" class="bc-card">
-                
                 <div class="bc-img" style="height: 220px;">
-                <img src="<?= BASE_URL ?>/../images/cards/realms2.png" alt="The Realm">
+                    <img src="<?= BASE_URL ?>/../images/cards/realms2.png" alt="The Realm">
                 </div>    
 
                 <div class="bc-content">
-                <div class="bc-content-leader" style="text-align:center">
-                    <h2>The Kingdom</h2>
-                </div>
+                    <div class="bc-content-leader" style="text-align:center">
+                        <h2>The Kingdom</h2>
+                    </div>
 
-                <div class="bc-content-inner" style="padding: 15px;">  
-                    <p>
-                    Want to know more about other lands? Are you searching for<br />
-                    someone or something? This is your resource
-                    </p>
-                </div>
+                    <div class="bc-content-inner" style="padding: 15px;">  
+                        <p>
+                        Want to know more about other lands? Are you searching for<br />
+                        someone or something? This is your resource
+                        </p>
+                    </div>
                 </div>
             </a>
         </div>
 
         <div class="bc-card"> 
             <a href="#" class="bc-card">
-                
                 <div class="bc-img" style="height: 220px;">
-                <img src="<?= BASE_URL ?>/../images/cards/gear_info.png" alt="The Realm">
+                    <img src="<?= BASE_URL ?>/../images/cards/gear_info.png" alt="The Realm">
+                </div> 
+                <div class="bc-content">
+                    <div class="bc-content-leader" style="text-align:center">
+                        <h2>Finery & Armory</h2>
+                        <h3>Get Info -- Spend Rewards </h3>
+                    </div>
+
+                    <div class="bc-content-inner" style="padding: 15px;">  
+                        <p>
+                        Learn what to wear in the Realm? Learn about<br />
+                        Gear for your Hero & Captains
+                        </p>
+                    </div>
+
+                    <p>
+                        <u>Info pages:</u>
+                    </p>
+                    <div class="lead-list">
+                        <div class="lead-item">
+                            <span class="icon">👹</span>
+                            <span>How long does it take?</span>
+                        </div>
+
+                        <div class="lead-item">
+                            <span class="icon">📊</span>
+                            <span>Learn what to wear in the Realm</span>
+                        </div>
+
+                        <div class="lead-item">
+                            <span class="icon">🏰</span>
+                            <span>Gear for your Hero & Captains</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+                
+        <div class="bc-card"> 
+            <a href="<?= BASE_URL ?>/public/clan_create.php" class="bc-card"> 
+                <div class="bc-img" style="height: 220px;">
+                    <img src="<?= BASE_URL ?>/../images/cards/ledger1.png" alt="The Ledger">
                 </div>    
 
                 <div class="bc-content">
-                <div class="bc-content-leader" style="text-align:center">
-                    <h2>Finery & Armory</h2>
-                </div>
+                    <div class="bc-content-leader" style="text-align:center">
+                        <h2>The Ledger</h2>
+                        <h3>Add Info -- Get Rewards</h3>
+                    </div>
 
-                <div class="bc-content-inner" style="padding: 15px;">  
-                    <p>
-                    Learn what to wear in the Realm? Learn about<br />
-                    gear for your Hero & Captains
-                    </p>
+                    <div class="bc-content-inner" style="padding: 15px;">  
+                        <p>
+                            <u>Reward points pages:</u>
+                        </p>
+                        <div class="lead-list">
+                            <div class="lead-item">
+                                <span class="icon">👹</span>
+                                <span>Enter Clan Capitals -- Get Points</span>
+                            </div>
+
+                            <div class="lead-item">
+                                <span class="icon">📊</span>
+                                <span>Enter Player Castle info -- Get Points</span>
+                            </div>
+
+                            <div class="lead-item">
+                                <span class="icon">🏰</span>
+                                <span>Look up Clan Info --  Pay Points</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                </div>
-             </a>   
+            </a>
         </div>
-            
-
-            <div class="bc-card"> 
-                <a href="<?= BASE_URL ?>/public/clan_create.php" class="bc-card">
-                
-                <div class="bc-img" style="height: 220px;">
-                <img src="<?= BASE_URL ?>/../images/cards/ledger1.png" alt="The Ledger">
-                </div>    
-
-                <div class="bc-content">
-                <div class="bc-content-leader" style="text-align:center">
-                    <h2>The Ledger</h2>
-                </div>
-
-                <div class="bc-content-inner" style="padding: 15px;">  
-                    <p>
-                    Help out BattleCouncil and get rewards<br />
-                    This is the reward points info page
-                    </p>
-                </div>
-                </div>
-                </a>
-        </div>
-
-
     </div>       
 </div>
 

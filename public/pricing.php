@@ -75,7 +75,7 @@ include '../includes/header.php';
         <!-- SUPERIOR -->
         <div class="pricing-card superior">
         <h3>Superior</h3>
-        <div class="price">$17.99<span>/mo</span></div>
+        <div class="price">$11.99<span>/mo</span></div>
         <p class="tagline">Full command authority</p>
 
         <ul>

@@ -1,7 +1,17 @@
 <?php 
 
 require_once __DIR__ . '/../config/config.php'; 
-require_once __DIR__ . '/../helpers/auth.php';
+
+// -----------------------------
+// PAGE FLAGS (safe defaults)
+// -----------------------------
+$requiresAuth = $requiresAuth ?? true;
+$loadAppJS    = $loadAppJS ?? true;
+
+// only load auth if needed
+if ($requiresAuth) {
+    require_once __DIR__ . '/../helpers/auth.php';
+}
 
 ?>
 <!DOCTYPE html>
@@ -15,17 +25,16 @@ require_once __DIR__ . '/../helpers/auth.php';
 <!-- CORE CSS -->
 <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
 
-<!-- FONTS / ICONS -->
+<!-- FONTS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <!-- FAVICON -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='https://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
 
 <?php
-/* =========================
-   PAGE CSS (WITH VERSIONING)
-========================= */
-
+// -----------------------------
+// PAGE CSS (VERSIONED)
+// -----------------------------
 $cssMap = [
     'pricing'     => 'pricing.css',
     'map'         => 'map.css',
@@ -38,33 +47,31 @@ if (!empty($pageCss) && isset($cssMap[$pageCss])) {
     $file = "/assets/css/" . $cssMap[$pageCss];
     $fullPath = $_SERVER['DOCUMENT_ROOT'] . $file;
 
-    if (file_exists($fullPath)) {
-        echo '<link rel="stylesheet" href="' . $file . '?v=' . filemtime($fullPath) . '">';
-    } else {
-        echo '<link rel="stylesheet" href="' . $file . '">';
-    }
+    $version = file_exists($fullPath) ? filemtime($fullPath) : time();
+    echo '<link rel="stylesheet" href="' . $file . '?v=' . $version . '">';
 }
 ?>
 
-<!-- BASE URL FOR JS -->
 <meta name="base-url" content="<?= BASE_URL ?>">
 
-<!-- CORE JS (always loaded first) -->
+<!-- CORE JS -->
 <script src="/assets/js/core.js"></script>
+
+<?php if ($loadAppJS): ?>
 <script src="/assets/js/app.js"></script>
+<?php endif; ?>
 
 <?php
-/* =========================
-   PAGE JS (CONTROLLED LOAD)
-========================= */
-
+// -----------------------------
+// PAGE JS (CONTROLLED LOAD)
+// -----------------------------
 $jsMap = [
     'clanCreate' => ['kingdomPicker.js', 'languagePicker.js'],
-    'map'        => ['map.js'], // 🔥 unified map engine
+    'map'        => ['map.js'],
     'tavern'     => ['tavern.js'],
 ];
 
-if (!empty($pageCss) && isset($jsMap[$pageCss])) {
+if ($loadAppJS && !empty($pageCss) && isset($jsMap[$pageCss])) {
     foreach ($jsMap[$pageCss] as $file) {
         echo '<script src="/assets/js/' . $file . '" defer></script>';
     }
@@ -76,16 +83,13 @@ if (!empty($pageCss) && isset($jsMap[$pageCss])) {
 <body class="<?= $pageClass ?? 'page-default' ?>">
 
 <?php 
-/* =========================
-   HEADER IMAGE
-========================= */
-
-$userLoggedIn = requireLogin();
-
+// -----------------------------
+// HEADER IMAGE (no forced auth)
+// -----------------------------
 $headerImg = BASE_URL . "/images/site-header.png";
 $headerAlt = "Battle Council";
 
-if (hasRole('admin')) {
+if ($requiresAuth && function_exists('hasRole') && hasRole('admin')) {
     $headerImg = BASE_URL . "/images/site-header-admin.png";
     $headerAlt = "Admin Battle Council";
 }
@@ -95,28 +99,23 @@ if (hasRole('admin')) {
     <img src="<?= $headerImg ?>" alt="<?= $headerAlt ?>">
 </div>
 
-<!-- NAVBAR -->
+<!-- NAV -->
 <nav class="navbar">
 <div class="nav-inner">
 
-<!-- LEFT -->
-<button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+<button class="menu-toggle" id="menuToggle">
     <i class="fa-solid fa-bars"></i>
-</button>        
+</button>
 
-<!-- CENTER -->
 <a href="<?= BASE_URL ?>/index.php" class="nav-home">
     <i class="fa-solid fa-house"></i>
 </a>
 
-<?php if (isLoggedIn()): ?>
+<?php if ($requiresAuth && function_exists('isLoggedIn') && isLoggedIn()): ?>
 <?php $username = $_SESSION['username'] ?? 'User'; ?>
 
 <div class="title-name">
-    <div class="title-user">
-        <?= htmlspecialchars($username) ?>
-    </div>
-
+    <div class="title-user"><?= htmlspecialchars($username) ?></div>
     <div class="title-logout">
         <a href="/public/logout.php">( Logout )</a>
     </div>
@@ -132,18 +131,8 @@ if (hasRole('admin')) {
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-    <a href="<?= BASE_URL ?>/index.php"><i class="fa-solid fa-house"></i> Home</a>
-
-    <a href="<?= BASE_URL ?>/calc_squad.php">⚔️ Monster Hunt</a>
-    <a href="#">👹 talking heads</a>
-    <a href="#">🪖 calulators</a>
-    <a href="#">🐲 world maps</a>
-    <a href="#">👥 Members</a>
-
-    <hr>
-
-    <a href="<?= BASE_URL ?>/public/login.php"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
-    <a href="<?= BASE_URL ?>/register.php"><i class="fa-solid fa-user-plus"></i> Register</a>
+    <a href="<?= BASE_URL ?>/index.php">Home</a>
+    <a href="<?= BASE_URL ?>/calc_squad.php">Monster Hunt</a>
 </div>
 
 </nav>
