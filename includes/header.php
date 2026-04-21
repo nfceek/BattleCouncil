@@ -4,11 +4,10 @@ require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../helpers/auth.php';
 
 /* =========================
-   PAGE FLAGS (DEFAULTS)
+   SAFE FLAGS (BACKWARD COMPATIBLE)
 ========================= */
-$requiresApp = $requiresApp ?? true;   // 🔥 controls app.js + DB usage
-$pageCss     = $pageCss ?? null;
-$pageJs      = $pageJs ?? [];          // array support
+$requiresApp  = $requiresApp  ?? true;   // controls auth + app behavior
+$pageCss      = $pageCss      ?? null;
 
 ?>
 <!DOCTYPE html>
@@ -55,18 +54,24 @@ if ($pageCss && isset($cssMap[$pageCss])) {
 <meta name="base-url" content="<?= BASE_URL ?>">
 
 <?php if ($requiresApp): ?>
-    <!-- CORE JS (ONLY WHEN NEEDED) -->
+    <!-- CORE JS -->
     <script src="/assets/js/core.js"></script>
     <script src="/assets/js/app.js"></script>
 <?php endif; ?>
 
 <?php
 /* =========================
-   PAGE JS (EXPLICIT CONTROL)
+   PAGE JS
 ========================= */
 
-if (!empty($pageJs)) {
-    foreach ($pageJs as $file) {
+$jsMap = [
+    'clanCreate' => ['kingdomPicker.js', 'languagePicker.js'],
+    'map'        => ['map.js'],
+    'tavern'     => ['tavern.js'],
+];
+
+if ($requiresApp && $pageCss && isset($jsMap[$pageCss])) {
+    foreach ($jsMap[$pageCss] as $file) {
         echo '<script src="/assets/js/' . $file . '" defer></script>';
     }
 }
@@ -75,3 +80,88 @@ if (!empty($pageJs)) {
 </head>
 
 <body class="<?= $pageClass ?? 'page-default' ?>">
+
+<?php 
+/* =========================
+   AUTH (SAFE)
+========================= */
+
+$userLoggedIn = false;
+
+if ($requiresApp) {
+    $userLoggedIn = requireLogin();
+}
+
+/* =========================
+   HEADER IMAGE
+========================= */
+
+$headerImg = BASE_URL . "/images/site-header.png";
+$headerAlt = "Battle Council";
+
+if ($requiresApp && function_exists('hasRole') && hasRole('admin')) {
+    $headerImg = BASE_URL . "/images/site-header-admin.png";
+    $headerAlt = "Admin Battle Council";
+}
+?>
+
+<div class="site-header">
+    <img src="<?= $headerImg ?>" alt="<?= $headerAlt ?>">
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+<div class="nav-inner">
+
+<!-- LEFT -->
+<button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+    <i class="fa-solid fa-bars"></i>
+</button>        
+
+<!-- CENTER -->
+<a href="<?= BASE_URL ?>/index.php" class="nav-home">
+    <i class="fa-solid fa-house"></i>
+</a>
+
+<?php if ($requiresApp && isLoggedIn()): ?>
+<?php $username = $_SESSION['username'] ?? 'User'; ?>
+
+<div class="title-name">
+    <div class="title-user">
+        <?= htmlspecialchars($username) ?>
+    </div>
+
+    <div class="title-logout">
+        <a href="/public/logout.php">( Logout )</a>
+    </div>
+</div>
+
+<?php else: ?>
+
+<a href="/public/login.php">Login</a>
+
+<?php endif; ?>
+
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="<?= BASE_URL ?>/index.php"><i class="fa-solid fa-house"></i> Home</a>
+
+    <a href="<?= BASE_URL ?>/calc_squad.php">⚔️ Monster Hunt</a>
+    <a href="#">👹 Talking Heads</a>
+    <a href="#">🪖 Calculators</a>
+    <a href="#">🐲 World Maps</a>
+    <a href="#">👥 Members</a>
+
+    <hr>
+
+    <a href="<?= BASE_URL ?>/public/login.php">
+        <i class="fa-solid fa-right-to-bracket"></i> Login
+    </a>
+    <a href="<?= BASE_URL ?>/register.php">
+        <i class="fa-solid fa-user-plus"></i> Register
+    </a>
+</div>
+
+</nav>
