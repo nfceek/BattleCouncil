@@ -33,7 +33,6 @@ requireLogin();
               <video src="/../images/trent/Trent_the_Elder_generated.mp4" 
                 alt="Battle Council Video"
                 controls
-                autoplay
                 muted
                 loop
                 style="border-radius:8px;">

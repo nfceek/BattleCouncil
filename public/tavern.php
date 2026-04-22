@@ -16,18 +16,19 @@ require_once __DIR__ . '/../includes/header.php';
 
             <!-- ================= LEFT: MESSAGE BOARD ================= -->
             <div class="bc-card tavern-core">
-                <div class="bc-img-soon" style="height: 220px;">
-                    <img src="<?= BASE_URL ?>/images/cards/message_board.jpg" alt="Player Archive">
-                    </div>    
-                    <div class="bc-content">
-                    <div class="bc-content-leader" style="text-align:center">
-                        <h2 class="future-header">Message Board</h2>
-                        <h3 class="future">Future Use</h3>
+                <a href="<?= BASE_URL ?>/public/message_board.php" class="bc-card">
+                    <div class="bc-img" style="height: 220px;">
+                        <img src="<?= BASE_URL ?>/images/cards/message_board.jpg" alt="Player Archive">
+                        </div>    
+                        <div class="bc-content">
+                        <div class="bc-content-leader" style="text-align:center">
+                            <h2>Message Board</h2>
+                        </div>
+                        <div class="bc-content-inner" style="padding: 15px;">  
+                            <p>Gotta Tip or Tidbit of knowledge you want to share?</p>
+                        </div>
                     </div>
-                    <div class="bc-content-inner" style="padding: 15px;">  
-                        <p>Gotta Tip or Tidbit of knowledge you want to share?</p>
-                    </div>
-                </div>
+                </a>
             </div>
 
             <!-- ================= CENTER: TAVERN CORE ================= -->

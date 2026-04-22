@@ -33,11 +33,12 @@ $pageCss      = $pageCss      ?? null;
 ========================= */
 
 $cssMap = [
-    'pricing'     => 'pricing.css',
-    'map'         => 'map.css',
-    'battle'      => 'battle.css',
-    'clanCreate'  => 'clanCreate.css',
-    'tavern'      => 'tavern.css'
+    'pricing'     =>  'pricing.css',
+    'map'         =>  'map.css',
+    'battle'      =>  'battle.css',
+    'clanCreate'  =>  'clanCreate.css',
+    'tavern'      =>  'tavern.css',
+    'msg'         =>  'msg.css'
 ];
 
 if ($pageCss && isset($cssMap[$pageCss])) {
@@ -165,3 +166,27 @@ if ($requiresApp && function_exists('hasRole') && hasRole('admin')) {
 </div>
 
 </nav>
+
+<?php if (!empty($breadcrumbs) && is_array($breadcrumbs)): ?>
+<div class="bc-container">
+    <div class="bc-row">
+        <div class="bc-col-12">
+
+            <div class="bc-breadcrumb">
+                <a href="<?= BASE_URL ?>/index.php">Home</a>
+
+                <?php foreach ($breadcrumbs as $label => $link): ?>
+                    <span class="bc-breadcrumb-sep">›</span>
+
+                    <?php if ($link): ?>
+                        <a href="<?= $link ?>"><?= htmlspecialchars($label) ?></a>
+                    <?php else: ?>
+                        <span class="bc-breadcrumb-current"><?= htmlspecialchars($label) ?></span>
+                    <?php endif; ?>
+
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
