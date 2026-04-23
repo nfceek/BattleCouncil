@@ -102,17 +102,16 @@ requireLogin();
           <div class="bc-card">
             <a href="<?= BASE_URL ?>/public/tavern.php" class="bc-card">
               <div class="bc-img" style="height: 220px;">
-                <img src="<?= BASE_URL ?>/images/cards/tavern.jpg" alt="tavern">
+                <img src="<?= BASE_URL ?>/images/cards/marketplace.jpg" alt="tavern">
               </div>    
               <div class="bc-content">
                 <div class="bc-content-leader" style="text-align:center">
-                  <h2 >Player Tavern</h2>
+                  <h2 >Player Market</h2>
                   <h2> -- OPEN -- </h2>
                 </div>
                 <div class="bc-content-inner" style="padding: 15px;">  
-                  <p>Come in! Grab An ale and swap lies about your conquests
-                  <br /><br />
-                  <small>Creature Karaoke is now on Tues</small>
+                  <p>Welcome to the Town Square<br />
+                  <small>Look, Browse and Shop our stalls and shoppes</small>
                   </p>
                 </div>
               </div>

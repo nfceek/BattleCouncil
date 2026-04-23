@@ -1,7 +1,7 @@
 const TavernEngine = {
 
     // -----------------------------
-    // HEAD CONFIG (NPC + VOICE + SCENE BG)
+    // HEAD CONFIG
     // -----------------------------
     headMap: {
         barWench: {
@@ -9,7 +9,6 @@ const TavernEngine = {
             x: 50,
             y: 100,
             size: 400,
-            type: "npc",
             bg: true,
             voice: "female",
             sceneBg: "/images/tavern/bg/bg_wench.jpg"
@@ -20,7 +19,6 @@ const TavernEngine = {
             x: 50,
             y: 100,
             size: 450,
-            type: "npc",
             bg: true,
             voice: "male",
             sceneBg: "/images/tavern/bg/bg_tan.jpg"
@@ -31,7 +29,7 @@ const TavernEngine = {
             x: 50,
             y: 80,
             size: 300,
-            type: "ambient",
+            bg: false,
             voice: "neutral",
             sceneBg: "/images/tavern/bg/bg_ambient.jpg"
         }
@@ -55,7 +53,6 @@ const TavernEngine = {
     init() {
         this.loadVoices();
         this.bindEvents();
-        this.bootNPCs();
         this.startLoop();
 
         // default preview
@@ -65,7 +62,7 @@ const TavernEngine = {
     },
 
     // -----------------------------
-    // VOICE SYSTEM (SAFE LOAD)
+    // VOICES
     // -----------------------------
     loadVoices() {
         const load = () => {
@@ -82,8 +79,8 @@ const TavernEngine = {
     getVoice(type = "neutral") {
         if (!this.voices.length) return null;
 
-        const femaleHints = ["female", "zira", "samantha", "aria", "jenny"];
-        const maleHints = ["male", "david", "mark", "daniel"];
+        const femaleHints = ["zira", "samantha", "aria", "jenny"];
+        const maleHints = ["david", "mark", "daniel"];
 
         if (type === "female") {
             return this.voices.find(v =>
@@ -129,7 +126,7 @@ const TavernEngine = {
     },
 
     // -----------------------------
-    // BACKGROUND SWITCH (SMOOTH)
+    // BACKGROUND
     // -----------------------------
     setSceneBackground(src) {
         const bg = document.querySelector(".tavern-bg");
@@ -147,7 +144,7 @@ const TavernEngine = {
     },
 
     // -----------------------------
-    // PREVIEW ONLY (dropdown)
+    // PREVIEW
     // -----------------------------
     renderPreview(headId) {
         const cfg = this.headMap[headId];
@@ -162,6 +159,7 @@ const TavernEngine = {
 
         const img = document.createElement("img");
         img.src = cfg.src;
+
         img.style.position = "absolute";
         img.style.left = cfg.x + "%";
         img.style.top = cfg.y + "%";
@@ -172,7 +170,7 @@ const TavernEngine = {
     },
 
     // -----------------------------
-    // MAIN SPEAK
+    // SPEAK
     // -----------------------------
     speak(text, headId = "barWench") {
 
@@ -192,103 +190,76 @@ const TavernEngine = {
     // -----------------------------
     // RENDER ACTOR
     // -----------------------------
+    playTalkingHead(zone, text, headId) {
+
+        zone.innerHTML = "";
+
+        const config = this.headMap[headId] || this.headMap.barWench;
+
+        this.setSceneBackground(config.sceneBg);
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "talking-actor";
+
+        wrapper.style.position = "absolute";
+        wrapper.style.left = config.x + "%";
+        wrapper.style.top = config.y + "%";
+        wrapper.style.transform = "translate(-50%, -100%)";
+
+        // glow plate
+        if (config.bg) {
+            const plate = document.createElement("div");
+            plate.className = "actor-bg";
+            wrapper.appendChild(plate);
+        }
+
+        // head
+        const img = document.createElement("img");
+        img.src = config.src;
+        img.style.height = config.size + "px";
+
+        wrapper.appendChild(img);
+
+        // ✅ speech bubble (fixed + visible)
+        const bubble = document.createElement("div");
+        bubble.className = "talking-bubble";
+        bubble.innerText = text;
+
+        bubble.style.position = "absolute";
+        bubble.style.left = "50%";
+        bubble.style.bottom = "105%";
+        bubble.style.transform = "translateX(150%)";
+        bubble.style.transform = "translateY(150%)";
+        bubble.style.zIndex = "20";
+
+        wrapper.appendChild(bubble);
+
+        zone.appendChild(wrapper);
+
+        this.playAudio(text, config);
+
+        setTimeout(() => {
+            this.state.busy = false;
+            this.next();
+        }, 3200);
+    },
+
+    next() {
+        if (!this.state || !this.state.queue) return;
+
+        if (this.state.queue.length === 0) return;
+
+        const nextItem = this.state.queue.shift();
+
+        if (!nextItem || !nextItem.text) return;
+
+        this.speak(nextItem.text, nextItem.headId || "barWench");
+    },
+
+    // -----------------------------
+    // AUDIO
+    // -----------------------------
     /*
-    playTalkingHead(zone, text, headId) {
-
-        zone.innerHTML = "";
-
-        const config = this.headMap[headId] || this.headMap.barWench;
-
-        this.setSceneBackground(config.sceneBg);
-
-        const wrapper = document.createElement("div");
-        wrapper.className = "talking-actor";
-
-        wrapper.style.position = "absolute";
-        wrapper.style.left = config.x + "%";
-        wrapper.style.top = config.y + "%";
-        wrapper.style.transform = "translate(-50%, -100%)";
-
-        if (config.bg) {
-            const plate = document.createElement("div");
-            plate.className = "actor-bg";
-            wrapper.appendChild(plate);
-        }
-
-        const img = document.createElement("img");
-        img.src = config.src;
-        img.style.height = config.size + "px";
-
-        wrapper.appendChild(img);
-
-        const bubble = document.createElement("div");
-        bubble.className = "talking-bubble";
-        bubble.innerText = text;
-
-        wrapper.appendChild(bubble);
-        zone.appendChild(wrapper);
-
-        this.playAudio(text, config);
-
-        setTimeout(() => {
-            this.state.busy = false;
-            this.next();
-        }, 3200);
-    },
-*/
-    playTalkingHead(zone, text, headId) {
-
-        zone.innerHTML = "";
-
-        const config = this.headMap[headId] || this.headMap.barWench;
-
-        // background swap
-        this.setSceneBackground(config.sceneBg);
-
-        const wrapper = document.createElement("div");
-        wrapper.className = "talking-actor";
-
-        wrapper.style.position = "absolute";
-        wrapper.style.left = config.x + "%";
-        wrapper.style.top = config.y + "%";
-        wrapper.style.transform = "translate(-50%, -100%)";
-
-        // optional glow plate
-        if (config.bg) {
-            const plate = document.createElement("div");
-            plate.className = "actor-bg";
-            wrapper.appendChild(plate);
-        }
-
-        // head image
-        const img = document.createElement("img");
-        img.src = config.src;
-        img.style.height = config.size + "px";
-
-        wrapper.appendChild(img);
-
-        // -----------------------------
-        // 🔥 FIX: speech bubble restored properly
-        // -----------------------------
-        const bubble = document.createElement("div");
-        bubble.className = "talking-bubble";
-        bubble.innerText = text;
-
-        wrapper.appendChild(bubble);
-
-        zone.appendChild(wrapper);
-
-        // audio
-        this.playAudio(text, config);
-
-        setTimeout(() => {
-            this.state.busy = false;
-            this.next();
-        }, 3200);
-    },
-    // -----------------------------
-    // AUDIO (VOICE CONTROL)
-    // -----------------------------
     playAudio(text, config) {
         if (!("speechSynthesis" in window)) return;
 
@@ -318,9 +289,67 @@ const TavernEngine = {
         const next = this.state.queue.shift();
         this.speak(next.text, next.headId);
     },
+    */
+
+    playAudio(text, config) {
+
+    if (!("speechSynthesis" in window)) {
+        console.warn("Speech not supported");
+        return;
+    }
+
+    const speakNow = () => {
+        const utter = new SpeechSynthesisUtterance(text);
+
+        const voice = this.getVoice(config.voice);
+        if (voice) utter.voice = voice;
+
+        // tuning
+        if (config.voice === "female") {
+            utter.rate = 0.80;
+            utter.pitch = 1.05;
+        } else if (config.voice === "male") {
+            utter.rate = 0.90;
+            utter.pitch = 0.95;
+        } else {
+            utter.rate = 0.92;
+            utter.pitch = 1;
+        }
+
+        utter.volume = 1;
+
+        // 🔥 DEBUG hooks
+        utter.onstart = () => console.log("🔊 speaking:", text);
+        utter.onerror = (e) => console.error("Speech error:", e);
+
+        speechSynthesis.cancel(); // clear queue
+        speechSynthesis.speak(utter);
+    };
+
+
+    // 🔥 CRITICAL: ensure voices exist before speaking
+    if (!this.voices.length) {
+        console.log("⏳ waiting for voices...");
+
+        const wait = setInterval(() => {
+            this.voices = speechSynthesis.getVoices();
+
+            if (this.voices.length) {
+                clearInterval(wait);
+                speakNow();
+            }
+        }, 100);
+
+        // safety timeout
+        setTimeout(() => clearInterval(wait), 2000);
+
+    } else {
+        speakNow();
+    }
+},
 
     // -----------------------------
-    // NPC BEHAVIOR
+    // NPC EVENTS
     // -----------------------------
     barWenchReact() {
         const lines = [
@@ -371,7 +400,7 @@ const TavernEngine = {
     },
 
     // -----------------------------
-    // STOP SYSTEM
+    // STOP
     // -----------------------------
     stopAll() {
 
@@ -403,21 +432,18 @@ const TavernEngine = {
         const playBtn = document.getElementById("btnPlayInput");
         const npcSelect = document.getElementById("npcSelect");
 
-        // dropdown preview change
         if (npcSelect) {
             npcSelect.addEventListener("change", (e) => {
                 this.renderPreview(e.target.value);
             });
         }
 
-        // input counter
         if (input && counter) {
             input.addEventListener("input", () => {
                 counter.textContent = `${input.value.length} / 200`;
             });
         }
 
-        // speak input
         if (playBtn && input) {
             playBtn.addEventListener("click", () => {
 
@@ -434,15 +460,6 @@ const TavernEngine = {
         }
 
         document.getElementById("barArea")?.addEventListener("click", () => {
-            this.barWenchReact();
-        });
-
-        document.getElementById("btnSpeak")?.addEventListener("click", () => {
-            this.speak("Speak your business, traveler...");
-        });
-
-        document.getElementById("btnTestTavern")?.addEventListener("click", () => {
-            this.speak("The tavern comes alive...");
             this.barWenchReact();
         });
 

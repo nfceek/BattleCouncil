@@ -1,6 +1,6 @@
 <?php
 $pageClass = 'page-message-board';
-$pageTitle = "War Room Message Board";
+$pageTitle = "The Crow - Message Board";
 $pageCss = "msg";
 
 require_once __DIR__ . '/../includes/header.php';
@@ -21,7 +21,7 @@ $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <div class="container">
     <div class="container-lead">
-        War Room Message Board
+        The Crow - Message Board
     </div>
 
     <div class="bc-grid msg-grid">
@@ -33,24 +33,47 @@ $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="bc-card-body msg-board">
 
                     <!-- POST FORM -->
-                    <form method="POST" action="/public/message_post.php" class="msg-form">
+                    <div class="msg-tabs">
+                        <button class="msg-tab active" data-tab="tips">Tips</button>
+                        <button class="msg-tab" data-tab="questions">Questions</button>
+                    </div>
 
-                        <input type="text" name="title" class="bc-input" placeholder="Title (optional)">
+                    <div id="tab-tips" class="msg-tab-content active">
 
-                        <textarea name="message"
-                                  class="bc-input msg-textarea"
-                                  maxlength="500"
-                                  required
-                                  placeholder="Write your message..."></textarea>
+                        <?php if (canPostTip($_SESSION)): ?>
+                            <form method="POST" action="/public/message_post.php" class="msg-form">
+                                <input type="hidden" name="type" value="tip">
 
-                        <input type="text" name="tag" class="bc-input" placeholder="Clan / Kingdom tag (optional)">
+                                <input type="text" name="title" class="bc-input" placeholder="Tip title">
 
-                       <button class="bc-btn msg-board-btn">
-                            <i class="fa-solid fa-feather"></i>
-                            Post Message
-                        </button>
+                                <textarea name="message" class="bc-input msg-textarea" required></textarea>
 
-                    </form>
+                                <button class="bc-btn msg-board-btn">
+                                    <i class="fa-solid fa-lightbulb"></i> Post Tip
+                                </button>
+                            </form>
+                        <?php else: ?>
+                            <div class="msg-locked">
+                                Tips are available to officers and above.
+                            </div>
+                        <?php endif; ?>
+
+                    </div>
+
+                    <div id="tab-questions" class="msg-tab-content">
+
+                        <form method="POST" action="/public/message_post.php" class="msg-form">
+                            <input type="hidden" name="type" value="question">
+
+                            <textarea name="message" class="bc-input msg-textarea" required
+                                placeholder="Ask a question..."></textarea>
+
+                            <button class="bc-btn msg-board-btn">
+                                <i class="fa-solid fa-question"></i> Ask Question
+                            </button>
+                        </form>
+
+                    </div>
 
                     <hr>
 

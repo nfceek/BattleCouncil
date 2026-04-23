@@ -24,16 +24,23 @@
 ------------------------------*/
 .tavern-stage {
     position: relative;
-    width: 420px;
-    height: 390px;              /* 🔥 critical: defines layout anchor */
+    width: 330px;
+    height: 390px;
+    margin: 0 auto;          /* 🔥 centers the stage itself */
     overflow: hidden;
     border-radius: 12px;
 
-    display: block;             /* prevents flex/grid collapse issues */
+    display: flex;           /* 🔥 enables true centering */
+    justify-content: center; /* horizontal center */
+    align-items: center;     /* vertical center */
 }
 
 .tavernSelect{
-    padding-bottom: 15px;
+    padding: 12px;
+}
+
+.tavern-floor{
+    padding-bottom: 12px;
 }
 
 .tavern-bg {

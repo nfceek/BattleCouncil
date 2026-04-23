@@ -18,11 +18,11 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="bc-card tavern-core">
                 <a href="<?= BASE_URL ?>/public/message_board.php" class="bc-card">
                     <div class="bc-img" style="height: 220px;">
-                        <img src="<?= BASE_URL ?>/images/cards/message_board.jpg" alt="Player Archive">
+                        <img src="<?= BASE_URL ?>/images/cards/message_board.jpg" alt="Crowing Wall">
                         </div>    
                         <div class="bc-content">
                         <div class="bc-content-leader" style="text-align:center">
-                            <h2>Message Board</h2>
+                            <h2>The Crowing Wall</h2>
                         </div>
                         <div class="bc-content-inner" style="padding: 15px;">  
                             <p>Gotta Tip or Tidbit of knowledge you want to share?</p>
@@ -35,16 +35,16 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="bc-card tavern-core">
                 <a href="<?= BASE_URL ?>/public/tavern_stage.php" class="bc-card">
                     <div class="bc-img" style="height: 220px;">
-                        <img src="<?= BASE_URL ?>/images/cards/tavern_stage.jpg">
+                        <img src="<?= BASE_URL ?>/images/cards/tavern_wench.png"  alt="Talking Heads">
                     </div>
 
                     <div class="bc-content">
                         <div class="bc-content-leader" style="text-align:center">
-                            <h2>Tavern Stage</h2>
+                            <h2>The Kings' Rook</h2>
                         </div>
 
                         <div class="bc-content-inner" style="padding: 15px;">
-                            C'mon Over Here — interact with NPCs, Talking Heads, and Monsters.
+                            What is the key?
                         </div>
                     </div>
                 </a>
@@ -52,15 +52,31 @@ require_once __DIR__ . '/../includes/header.php';
             <!-- ================= RIGHT: BAR + RUMORS ================= -->
             <div class="bc-card tavern-core">
                 <div class="bc-img-soon" style="height: 220px;">
-                    <img src="<?= BASE_URL ?>/images/cards/tavern_wench.png" alt="Player Archive">
+                    <img src="<?= BASE_URL ?>/images/cards/lynnes-a.jpg" alt="Lynnes Mystic">
                     </div>    
                     <div class="bc-content">
                     <div class="bc-content-leader" style="text-align:center">
-                        <h2 class="future-header">The Bar</h2>
+                        <h2 class="future-header">Mystic Lynnes</h2>
                         <h3 class="future">Future Use</h3>
                     </div>
                     <div class="bc-content-inner" style="padding: 15px;">  
-                        <p>What cha drinkin` ?</p>
+                        <p>What does yer future portend ?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= Kings Rook ================= -->
+            <div class="bc-card tavern-core">
+                <div class="bc-img-soon" style="height: 220px;">
+                    <img src="<?= BASE_URL ?>/images/cards/kingsrook.jpg" alt="Kings Rook">
+                    </div>    
+                    <div class="bc-content">
+                    <div class="bc-content-leader" style="text-align:center">
+                        <h2 class="future-header">Mystic Lynnes</h2>
+                        <h3 class="future">Future Use</h3>
+                    </div>
+                    <div class="bc-content-inner" style="padding: 15px;">  
+                        <p>What does yer future portend ?</p>
                     </div>
                 </div>
             </div>

@@ -167,6 +167,7 @@ if ($requiresApp && function_exists('hasRole') && hasRole('admin')) {
 
 </nav>
 
+
 <?php if (!empty($breadcrumbs) && is_array($breadcrumbs)): ?>
 <div class="bc-container">
     <div class="bc-row">

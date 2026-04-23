@@ -21,11 +21,9 @@ const PRELOAD_KINGDOM = <?= $kingdomId ? (int)$kingdomId : 'null' ?>;
     <!-- =========================
         1. KINGDOM CONTROL CARD
     ========================== -->
-    <div class="bc-row">
+    <div class="pad-row">
         <div class="bc-col-12">
-            <div class="bc-card">
-
-
+            <div class="bc-card map-card">
 
                 <div class="bc-card-body">
 

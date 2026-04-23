@@ -8,7 +8,7 @@ require_once __DIR__ . '/../includes/header.php';
 
 <div class="container tavern-container-stage">
     <div class="container-lead">
-        The Tavern Stage
+        Welcome to the Talking Head Tavern
     </div>
     <div class="bc-row">
 
@@ -81,11 +81,11 @@ require_once __DIR__ . '/../includes/header.php';
                             <button class="bc-btn" id="btnListen">Listen</button>
                             <button class="bc-btn" id="btnDrink">Order</button>
 
-                            <!-- TEST BUTTON (ENGINE HOOK) 
+                            <!-- TEST BUTTON (ENGINE HOOK) -->
                             <button class="bc-btn bc-btn-debug" id="btnTestTavern">
                                 Test Engine
                             </button>
-                            -->
+                            
                         </div>
 
                 </div>
