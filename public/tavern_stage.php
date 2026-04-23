@@ -6,8 +6,10 @@ $pageCss = "tavern";
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="bc-container tavern-container-stage">
-
+<div class="container tavern-container-stage">
+    <div class="container-lead">
+        The Tavern Stage
+    </div>
     <div class="bc-row">
 
         <!-- MAIN STAGE -->
@@ -15,9 +17,7 @@ require_once __DIR__ . '/../includes/header.php';
 
             <div class="bc-card tavern-core">
 
-                <div class="bc-card-header tavern-header">
-                    <h3>The Tavern Stage</h3>
-                </div>
+
 
                 <div class="bc-card-body tavern-floor">
                     <div class="tavernSelect">

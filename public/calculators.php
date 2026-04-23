@@ -19,8 +19,8 @@ require_once __DIR__ . '/../includes/header.php';
 
 <!-- MAIN CONTENT -->
 <div class="container">
-    <div style="padding-bottom: 10px">
-        <h1>Calculate ... Then Kill</h1>
+    <div class="container-lead">
+        Calculate ... Then Kill
     </div>
     <div class="bc-grid">
         <div class="bc-card"> 

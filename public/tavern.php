@@ -9,8 +9,8 @@ require_once __DIR__ . '/../includes/header.php';
 
 <!-- MAIN CONTENT -->
 <div class="container tavern-container">
-    <div style="padding-bottom: 10px">
-        <h1>Eat, Drink & Be Merry ... Dammit !</h1>
+    <div class="container-lead">
+        Eat, Drink & Be Merry ... Dammit !
     </div>
     <div class="bc-grid">
 

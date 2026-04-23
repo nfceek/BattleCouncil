@@ -25,8 +25,8 @@ require_once __DIR__ . '/../includes/header.php';
 
 <div class="container">
 
-    <div class="mh-leader">
-        <h1>Citadel Cracking Calculator</h1>
+    <div class="container-lead">
+        Citadel Cracking Calculator
     </div>
 
     <div class="layer-grid">

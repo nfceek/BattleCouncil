@@ -35,8 +35,10 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
+    <div class="container-lead">
+        Clan Intelligence System
+    </div>
 
-    <h1>Clan Intelligence System</h1>
 
     <div class="bc-grid">
 

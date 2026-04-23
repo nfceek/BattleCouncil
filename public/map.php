@@ -14,8 +14,10 @@ const PRELOAD_KINGDOM = <?= $kingdomId ? (int)$kingdomId : 'null' ?>;
 </script>
 
 
-<div class="container bc-page">
-
+<div class="container map-container">
+    <div class="container-lead">
+        Kingdom Selector
+    </div>
     <!-- =========================
         1. KINGDOM CONTROL CARD
     ========================== -->
@@ -23,9 +25,7 @@ const PRELOAD_KINGDOM = <?= $kingdomId ? (int)$kingdomId : 'null' ?>;
         <div class="bc-col-12">
             <div class="bc-card">
 
-                <div class="bc-card-header">
-                    <h2>Kingdom Selector</h2>
-                </div>
+
 
                 <div class="bc-card-body">
 

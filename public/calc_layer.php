@@ -58,8 +58,8 @@ window.__BONUS_MATRIX = <?= json_encode($bonusMatrix, JSON_UNESCAPED_UNICODE) ?>
 
 <div class="container">
 
-    <div class="mh-leader">
-        <h1>Monster Hunting Calculator</h1>
+    <div class="container-lead">
+        Monster Hunting Calculator
     </div>
 
     <div class="layer-grid">

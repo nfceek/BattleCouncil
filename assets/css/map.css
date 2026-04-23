@@ -1,8 +1,10 @@
-#map-container {
-    position: relative;
-    width: 992px;
-    height: 989px;
-    background: #111;
+
+.map-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+       background: #111; 
 }
 
 #map {

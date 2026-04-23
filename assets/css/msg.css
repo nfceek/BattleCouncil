@@ -134,3 +134,9 @@
 .msg-board-btn i {
     font-size: 14px;
 }
+
+.container-lead {
+    font-size: 2em;
+    font-weight: bold;
+    padding: 12px;
+}

@@ -5,6 +5,12 @@
     text-align: center;
 }
 
+.container-lead {
+    font-size: 2em;
+    font-weight: bold;
+    padding: 12px;
+}
+
 /* optional secondary stage wrapper */
 .tavern-container-stage {
     padding: 20px;

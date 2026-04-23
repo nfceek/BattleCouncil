@@ -1,4 +1,9 @@
 
+.container-lead {
+    font-size: 2em;
+    font-weight: bold;
+    padding: 12px;
+}
 
 .pricing-wrap {
   padding: 60px 20px;

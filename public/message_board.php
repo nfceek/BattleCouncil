@@ -19,15 +19,16 @@ $stmt = $pdo->query("
 $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<div class="bc-container">
+<div class="container">
+    <div class="container-lead">
+        War Room Message Board
+    </div>
 
     <div class="bc-grid msg-grid">
         <div class="bc-col-4"></div>
         <div class="bc-col-4">
             <div class="bc-card">
-                <div class="bc-card-header-msg">
-                    <h3>War Room Message Board</h3>
-                </div>
+
 
                 <div class="bc-card-body msg-board">
 
