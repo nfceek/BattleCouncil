@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../config/config.php'; 
 require_once __DIR__ . '/../helpers/auth.php';
+require_once __DIR__ . '/../helpers/permissions.php'; 
 
 /* =========================
    SAFE FLAGS (BACKWARD COMPATIBLE)
@@ -18,13 +19,8 @@ $pageCss      = $pageCss      ?? null;
 
 <title><?= $pageTitle ?? APP_NAME ?></title>
 
-<!-- CORE CSS -->
 <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
-
-<!-- FONTS / ICONS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<!-- FAVICON -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='https://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
 
 <?php

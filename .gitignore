@@ -1,6 +1,7 @@
 *.log
 /testing
 /admin
+/public/admin
 /old
 /images/old
 /images/monsters/old

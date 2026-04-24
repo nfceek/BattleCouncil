@@ -34,55 +34,28 @@ require_once __DIR__ . '/../includes/header.php';
                     </div>
 
                     <div class="bc-content-inner" style="padding: 15px;">  
-                        <p>
-                        Want to know more about other lands? Are you searching for<br />
-                        someone or something? This is your resource
-                        </p>
-                    </div>
-                </div>
-            </a>
-        </div>
+                        <div class="lead-list">
+                            <div class="lead-item">
+                                <span class="icon">👹</span>
+                                <span> Want to know more ?</span>
+                            </div>
 
-        <div class="bc-card"> 
-            <a href="#" class="bc-card">
-                <div class="bc-img" style="height: 220px;">
-                    <img src="<?= BASE_URL ?>/../images/cards/gear_info.png" alt="The Realm">
-                </div> 
-                <div class="bc-content">
-                    <div class="bc-content-leader" style="text-align:center">
-                        <h2>Finery & Armory</h2>
-                        <h3>Get Info -- Spend Rewards </h3>
-                    </div>
+                            <div class="lead-item">
+                                <span class="icon">📊</span>
+                                <span>Are you searching for someone ?</span>
+                            </div>
 
-                    <div class="bc-content-inner" style="padding: 15px;">  
-                        <p>
-                        Learn what to wear in the Realm? Learn about<br />
-                        Gear for your Hero & Captains
-                        </p>
-                    </div>
-
-                    <p>
-                        <u>Info pages:</u>
-                    </p>
-                    <div class="lead-list">
-                        <div class="lead-item">
-                            <span class="icon">👹</span>
-                            <span>How long does it take?</span>
-                        </div>
-
-                        <div class="lead-item">
-                            <span class="icon">📊</span>
-                            <span>Learn what to wear in the Realm</span>
-                        </div>
-
-                        <div class="lead-item">
-                            <span class="icon">🏰</span>
-                            <span>Gear for your Hero & Captains</span>
+                            <div class="lead-item">
+                                <span class="icon">🏰</span>
+                                <span>Are you searching for something ?</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </a>
         </div>
+
+
                 
         <div class="bc-card"> 
             <a href="<?= BASE_URL ?>/public/clan_create.php" class="bc-card"> 

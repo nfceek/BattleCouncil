@@ -1,34 +1,39 @@
 <?php
 /**
  * ==================================================
- * PERMISSIONS HELPER (DROP-IN)
+ * PERMISSIONS HELPER (CLEAN DROP-IN)
  * ==================================================
- * Connects:
- *  users.user_level_id → role_permissions
+ * Uses:
+ *   users.role_id → role_permissions.role_id
  *
- * Usage:
- *   require_once 'helpers/permissions.php';
- *
- *   $user = getCurrentUser();
- *
- *   if (canPostTip($user)) { ... }
- *   if (hasPermission($user, 'edit_map')) { ... }
+ * Requires:
+ *   global $pdo from config.php
  */
 
 /**
  * --------------------------------------------------
- * NORMALIZE CURRENT USER
+ * CURRENT USER (SESSION SAFE)
  * --------------------------------------------------
  */
 function getCurrentUser(): array {
     return [
-        'id' => $_SESSION['user_id'] ?? $_SESSION['id'] ?? null
+        'id'      => $_SESSION['user_id'] ?? $_SESSION['id'] ?? null,
+        'role_id' => $_SESSION['role_id'] ?? null
     ];
 }
 
 /**
  * --------------------------------------------------
- * LOAD USER PERMISSIONS (CACHED PER REQUEST)
+ * LOGIN CHECK
+ * --------------------------------------------------
+ */
+function isUserLoggedIn(array $user): bool {
+    return !empty($user['id']);
+}
+
+/**
+ * --------------------------------------------------
+ * LOAD PERMISSIONS (CACHED PER REQUEST)
  * --------------------------------------------------
  */
 function getUserPermissions(PDO $pdo, int $userId): array {
@@ -41,16 +46,14 @@ function getUserPermissions(PDO $pdo, int $userId): array {
     $stmt = $pdo->prepare("
         SELECT rp.permission_key
         FROM users u
-        JOIN role_permissions rp 
-            ON rp.role_id = u.user_level_id
+        JOIN role_permissions rp
+            ON rp.role_id = u.role_id
         WHERE u.id = ?
     ");
 
     $stmt->execute([$userId]);
 
-    $perms = $stmt->fetchAll(PDO::FETCH_COLUMN);
-
-    $cache[$userId] = $perms ?: [];
+    $cache[$userId] = $stmt->fetchAll(PDO::FETCH_COLUMN) ?: [];
 
     return $cache[$userId];
 }
@@ -63,51 +66,71 @@ function getUserPermissions(PDO $pdo, int $userId): array {
 function hasPermission(array $user, string $permission): bool {
     global $pdo;
 
-    $userId = $user['id'] ?? null;
-    if (!$userId) return false;
+    $userId  = $user['id'] ?? null;
+    $roleId  = $user['role_id'] ?? null;
+
+    if (!$userId) {
+        return false;
+    }
+
+    /**
+     * 🔥 ADMIN OVERRIDE (role_id = 1)
+     */
+    if ((int)$roleId === 1) {
+        return true;
+    }
 
     $perms = getUserPermissions($pdo, (int)$userId);
 
-    return in_array($permission, $perms);
+    return in_array($permission, $perms, true);
 }
 
 /**
  * ==================================================
- * FEATURE HELPERS (YOUR RULES)
+ * FEATURE PERMISSION WRAPPERS
  * ==================================================
  */
 
-/**
- * Tips
- */
+/* ---------------- MESSAGE BOARD ---------------- */
+
 function canPostTip(array $user): bool {
     return hasPermission($user, 'post_tip');
 }
 
-/**
- * Questions (logged in only)
- */
 function canAskQuestion(array $user): bool {
-    return !empty($user['id']);
+    return isUserLoggedIn($user);
 }
 
-/**
- * Replies / Answers
- */
 function canReply(array $user): bool {
     return hasPermission($user, 'reply_message');
 }
 
-/**
- * Moderation (superior+)
- */
 function canModerate(array $user): bool {
     return hasPermission($user, 'moderate_board');
 }
 
-/**
- * Optional: voting (if you want to gate later)
- */
 function canVote(array $user): bool {
-    return !empty($user['id']);
+    return isUserLoggedIn($user);
+}
+
+/* ---------------- MAP ---------------- */
+
+function canEditMap(array $user): bool {
+    return hasPermission($user, 'edit_map');
+}
+
+/* ---------------- TAVERN ---------------- */
+
+function canControlTavern(array $user): bool {
+    return hasPermission($user, 'control_tavern');
+}
+
+/* ---------------- ATTACK PLANS ---------------- */
+
+function canSaveAttackPlan(array $user): bool {
+    return hasPermission($user, 'save_attack_plan');
+}
+
+function canShareAttackPlan(array $user): bool {
+    return hasPermission($user, 'share_attack_plan');
 }
