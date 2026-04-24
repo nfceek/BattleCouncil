@@ -10,27 +10,36 @@ class MysticController
     }
 
     /**
-     * MAIN ENTRY: returns a Mystic Lynne response
+     * MAIN ENTRY: Mystic Lynne oracle response
      */
     public function ask(array $payload = []): array
     {
-        $question = $payload['question'] ?? '';
+        $question = trim($payload['question'] ?? '');
 
         $answers = $this->getAllAnswers();
 
-        if (!$answers) {
-            return [
+        if (empty($answers)) {
+            return $this->formatAnswer([
                 'answer_text' => 'The orb is silent...',
                 'type' => 'neutral',
                 'rarity' => 'common'
-            ];
+            ]);
         }
 
         $pool = $this->buildWeightedPool($answers);
 
+        if (empty($pool)) {
+            return $this->formatAnswer([
+                'answer_text' => 'The mist refuses to form an answer...',
+                'type' => 'neutral',
+                'rarity' => 'common'
+            ]);
+        }
+
+        // Optional future hook: question influence
         $selected = $pool[array_rand($pool)];
 
-        return $selected;
+        return $this->formatAnswer($selected);
     }
 
     /**
@@ -38,12 +47,16 @@ class MysticController
      */
     private function getAllAnswers(): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM mystic_lynne_answers");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $stmt = $this->pdo->query("SELECT * FROM mystic_lynne_answers");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+        } catch (Throwable $e) {
+            return [];
+        }
     }
 
     /**
-     * BUILD WEIGHTED RANDOM POOL
+     * BUILD WEIGHTED POOL
      */
     private function buildWeightedPool(array $answers): array
     {
@@ -51,7 +64,10 @@ class MysticController
 
         foreach ($answers as $a) {
 
-            $rarityWeight = match($a['rarity']) {
+            $rarity = $a['rarity'] ?? 'common';
+            $baseWeight = isset($a['weight']) ? (int)$a['weight'] : 1;
+
+            $rarityWeight = match($rarity) {
                 'common' => 10,
                 'uncommon' => 6,
                 'rare' => 3,
@@ -59,7 +75,7 @@ class MysticController
                 default => 5
             };
 
-            $weight = $rarityWeight * (int)$a['weight'];
+            $weight = max(1, $rarityWeight * max(1, $baseWeight));
 
             for ($i = 0; $i < $weight; $i++) {
                 $pool[] = $a;
@@ -67,5 +83,17 @@ class MysticController
         }
 
         return $pool;
+    }
+
+    /**
+     * NORMALIZE OUTPUT (CRITICAL FOR JS STABILITY)
+     */
+    private function formatAnswer(array $row): array
+    {
+        return [
+            'answer_text' => $row['answer_text'] ?? 'The oracle is unclear...',
+            'type'        => $row['type'] ?? 'neutral',
+            'rarity'      => $row['rarity'] ?? 'common'
+        ];
     }
 }

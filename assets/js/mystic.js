@@ -147,6 +147,7 @@ window.MysticEngine = (() => {
     function init() {
 
         console.log('MysticEngine init');
+        //el.input.addEventListener('input', updateCounter);
 
         el = {
             input: document.getElementById('tavernInput'),
@@ -173,3 +174,12 @@ window.MysticEngine = (() => {
 window.addEventListener('DOMContentLoaded', () => {
     window.MysticEngine.init();
 });
+
+function updateCounter() {
+    const elInput = document.getElementById('tavernInput');
+    const counter = document.getElementById('charCount');
+
+    if (!elInput || !counter) return;
+
+    counter.textContent = `${elInput.value.length} / 200`;
+}
