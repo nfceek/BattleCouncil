@@ -34,7 +34,8 @@ $cssMap = [
     'battle'      =>  'battle.css',
     'clanCreate'  =>  'clanCreate.css',
     'tavern'      =>  'tavern.css',
-    'msg'         =>  'msg.css'
+    'msg'         =>  'msg.css',
+    'mystic'      =>  'mystic'
 ];
 
 if ($pageCss && isset($cssMap[$pageCss])) {
@@ -58,18 +59,28 @@ if ($pageCss && isset($cssMap[$pageCss])) {
 
 <?php
 /* =========================
-   PAGE JS
+   PAGE JS (DECOUPLED FROM CSS)
 ========================= */
+
+$pageJs = $pageJs ?? null;
 
 $jsMap = [
     'clanCreate' => ['kingdomPicker.js', 'languagePicker.js'],
     'map'        => ['map.js'],
     'tavern'     => ['tavern.js'],
+    'mystic'     => ['mystic.js'], // ✅ ADD THIS
 ];
 
-if ($requiresApp && $pageCss && isset($jsMap[$pageCss])) {
-    foreach ($jsMap[$pageCss] as $file) {
-        echo '<script src="/assets/js/' . $file . '" defer></script>';
+if ($requiresApp && $pageJs && isset($jsMap[$pageJs])) {
+
+    foreach ($jsMap[$pageJs] as $file) {
+
+        $path = "/assets/js/" . $file;
+        $fullPath = $_SERVER['DOCUMENT_ROOT'] . $path;
+
+        echo '<script src="' . $path .
+            (file_exists($fullPath) ? '?v=' . filemtime($fullPath) : '') .
+            '" defer></script>';
     }
 }
 ?>

@@ -51,18 +51,20 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
             <!-- ================= RIGHT: BAR + RUMORS ================= -->
             <div class="bc-card tavern-core">
-                <div class="bc-img-soon" style="height: 220px;">
-                    <img src="<?= BASE_URL ?>/images/cards/lynnes-b.jpg" alt="Lynnes Mystic">
-                    </div>    
-                    <div class="bc-content">
-                    <div class="bc-content-leader" style="text-align:center">
-                        <h2 class="future-header">Mystic Lynnes</h2>
-                        <h3 class="future">Future Use</h3>
+                <a href="<?= BASE_URL ?>/public/mystic.php" class="bc-card">
+                    <div class="bc-img" style="height: 220px;">
+                        <img src="<?= BASE_URL ?>/images/cards/lynnes-b.jpg" alt="Lynnes Mystic">
+                        </div>    
+                        <div class="bc-content">
+                        <div class="bc-content-leader" style="text-align:center">
+                            <h2>Mystic Lynnes</h2>
+                            <h3>Questions ?</h3>
+                        </div>
+                        <div class="bc-content-inner" style="padding: 15px;">  
+                            <p>What does yer future portend ?</p>
+                        </div>
                     </div>
-                    <div class="bc-content-inner" style="padding: 15px;">  
-                        <p>What does yer future portend ?</p>
-                    </div>
-                </div>
+                </a>
             </div>
 
             <!-- ================= Kings Rook ================= -->

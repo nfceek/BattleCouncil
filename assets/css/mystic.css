@@ -1,0 +1,61 @@
+/* =========================
+   MYSTIC LYNNE SYSTEM
+   ========================= */
+
+.npc-Lynne {
+    position: relative;
+    transition: all 0.4s ease;
+}
+
+/* ---------- STATES ---------- */
+
+.npc-Lynne.shake {
+    animation: lynneShake 0.6s infinite;
+}
+
+.npc-Lynne.glow {
+    filter: drop-shadow(0 0 14px #b06cff);
+}
+
+.npc-Lynne.doom {
+    animation: lynneFlicker 0.18s infinite;
+    filter: hue-rotate(320deg) saturate(1.5);
+}
+
+.npc-Lynne.fade {
+    opacity: 0.15;
+    transition: opacity 2s ease;
+}
+
+/* ---------- OUTPUT BUBBLE ---------- */
+
+.mystic-answer {
+    background: rgba(10, 5, 20, 0.85);
+    border: 1px solid #7a4cff;
+    color: #e9ddff;
+    padding: 12px 16px;
+    margin-top: 10px;
+    border-radius: 10px;
+    font-style: italic;
+    max-width: 420px;
+}
+
+/* ---------- ANIMATIONS ---------- */
+
+@keyframes lynneShake {
+    0% { transform: translate(0,0); }
+    25% { transform: translate(-2px, 1px); }
+    50% { transform: translate(2px, -1px); }
+    75% { transform: translate(-2px, -1px); }
+    100% { transform: translate(0,0); }
+}
+
+@keyframes lynneFlicker {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+.tavern-stage {
+    pointer-events: none;
+}
