@@ -1,0 +1,166 @@
+.tavern-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.container-lead {
+    font-size: 2em;
+    font-weight: bold;
+    padding: 12px;
+}
+
+/* optional secondary stage wrapper */
+.tavern-container-stage {
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* -----------------------------
+   MAIN STAGE (FIXED CORE ISSUE)
+------------------------------*/
+.tavern-stage {
+    position: relative;
+    width: 330px;
+    height: 390px;
+    margin: 0 auto;          /* 🔥 centers the stage itself */
+    overflow: hidden;
+    border-radius: 12px;
+
+    display: flex;           /* 🔥 enables true centering */
+    justify-content: center; /* horizontal center */
+    align-items: center;     /* vertical center */
+}
+
+.tavernSelect{
+    padding: 12px;
+}
+
+.tavern-floor{
+    padding-bottom: 12px;
+}
+
+.tavern-bg {
+    position: absolute;         /* 🔥 key fix */
+    inset: 0;                   /* top/right/bottom/left = 0 */
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    z-index: 1;
+
+    transition: opacity 0.3s ease;
+}
+
+/* -----------------------------
+   FOREGROUND LAYERS
+------------------------------*/
+#talkingHeadZone {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 10;
+}
+
+/* NPC container */
+.talking-actor {
+    position: absolute;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.talking-actor img {
+    display: block;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+
+
+/* background glow/plate behind NPC */
+.actor-bg {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+
+    width: 120%;
+    height: 110%;
+
+    transform: translateX(-50%);
+
+    background: radial-gradient(
+        rgba(0,0,0,0.4),
+        rgba(0,0,0,0) 70%
+    );
+
+    z-index: -1;
+}
+
+/* -----------------------------
+   BUBBLES
+------------------------------*/
+.talking-bubble {
+    position: absolute;
+    left: 50%;
+    top: -10px;
+
+    transform: translate(-50%, -100%);
+
+    background: rgba(0,0,0,0.75);
+    color: #fff;
+
+    padding: 10px 14px;
+    border-radius: 10px;
+
+    max-width: 260px;
+    text-align: center;
+
+    z-index: 30;
+}
+
+/* -----------------------------
+   UI ELEMENTS
+------------------------------*/
+.tavern-actions {
+    padding: 10px;
+}
+
+.tavern-header {
+    padding: 10px;
+}
+
+/* bar NPC */
+.bar-npc {
+    text-align: center;
+    padding: 10px;
+}
+
+.npc-dialogue {
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* input system */
+.tavern-input {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+}
+
+.tavern-input textarea {
+    resize: none;
+    height: 60px;
+}
+
+.tavern-input-meta {
+    text-align: right;
+    font-size: 12px;
+    opacity: 0.7;
+}

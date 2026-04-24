@@ -35,7 +35,8 @@ $cssMap = [
     'clanCreate'  =>  'clanCreate.css',
     'tavern'      =>  'tavern.css',
     'msg'         =>  'msg.css',
-    'mystic'      =>  'mystic'
+    'mystic'      =>  'mystic',
+    'market'      =>  'market',
 ];
 
 if ($pageCss && isset($cssMap[$pageCss])) {
@@ -68,7 +69,9 @@ $jsMap = [
     'clanCreate' => ['kingdomPicker.js', 'languagePicker.js'],
     'map'        => ['map.js'],
     'tavern'     => ['tavern.js'],
-    'mystic'     => ['mystic.js'], // ✅ ADD THIS
+    'mystic'     => ['mystic.js'], 
+    'market'     => ['market.js'], 
+       
 ];
 
 if ($requiresApp && $pageJs && isset($jsMap[$pageJs])) {

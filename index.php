@@ -100,7 +100,7 @@ requireLogin();
           </div>
 
           <div class="bc-card">
-            <a href="<?= BASE_URL ?>/public/tavern.php" class="bc-card">
+            <a href="<?= BASE_URL ?>/public/market.php" class="bc-card">
               <div class="bc-img" style="height: 220px;">
                 <img src="<?= BASE_URL ?>/images/cards/marketplace.jpg" alt="tavern">
               </div>    

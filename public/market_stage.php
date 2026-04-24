@@ -1,26 +1,26 @@
 <?php
-$pageClass = 'page-tavern-stage';
-$pageTitle = "The Tavern Stage";
-$pageCss = "tavern";
+$pageClass = 'page-market-tavern-stage';
+$pageTitle = "The market-tavern Stage";
+$pageCss = "market-tavern";
 
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="container tavern-container-stage">
+<div class="container market-tavern-container-stage">
     <div class="container-lead">
-        Welcome to the Talking Head Tavern
+        Welcome to the Talking Head market-tavern
     </div>
     <div class="bc-row">
 
         <!-- MAIN STAGE -->
         <div class="bc-col-12">
 
-            <div class="bc-card tavern-core">
+            <div class="bc-card market-tavern-core">
 
 
 
-                <div class="bc-card-body tavern-floor">
-                    <div class="tavernSelect">
+                <div class="bc-card-body market-tavern-floor">
+                    <div class="market-tavernSelect">
                             <!-- NPC SELECT (future ready) -->
                         <select id="npcSelect" class="bc-input">
                             <option value="barWench">Choose Character</option>
@@ -29,10 +29,10 @@ require_once __DIR__ . '/../includes/header.php';
                         </select>
                     </div>
 
-                    <div id="tavernStage" class="tavern-stage">
+                    <div id="market-tavernStage" class="market-tavern-stage">
 
                         <!-- Background -->
-                        <img src="/images/tavern/bg/bg_tan.jpg" class="tavern-bg" alt="Tavern">
+                        <img src="/images/market-tavern/bg/bg_tan.jpg" class="market-tavern-bg" alt="market-tavern">
 
                         <!-- TALKING HEAD ZONE -->
                         <div id="talkingHeadZone"
@@ -57,17 +57,17 @@ require_once __DIR__ . '/../includes/header.php';
                     <!-- ACTION BAR (INSIDE CONTEXT) -->
 
 
-                    <div class="tavern-input">
+                    <div class="market-tavern-input">
 
                         <!-- TEXT INPUT -->
-                        <textarea id="tavernInput"
+                        <textarea id="market-tavernInput"
                                 class="bc-input"
                                 maxlength="200"
-                                placeholder="Say something to the tavern..."
+                                placeholder="Say something to the market-tavern..."
                         ></textarea>
 
                         <!-- COUNTER -->
-                        <div class="tavern-input-meta">
+                        <div class="market-tavern-input-meta">
                             <span id="charCount">0 / 200</span>
                         </div>
 
@@ -76,13 +76,13 @@ require_once __DIR__ . '/../includes/header.php';
                             Play
                         </button>
 
-                        <div class="tavern-actions">
+                        <div class="market-tavern-actions">
                             <button class="bc-btn" id="btnSpeak">Speak</button>
                             <button class="bc-btn" id="btnListen">Listen</button>
                             <button class="bc-btn" id="btnDrink">Order</button>
 
                             <!-- TEST BUTTON (ENGINE HOOK) -->
-                            <button class="bc-btn bc-btn-debug" id="btnTestTavern">
+                            <button class="bc-btn bc-btn-debug" id="btnTestmarket-tavern">
                                 Test Engine
                             </button>
                             
@@ -97,7 +97,7 @@ require_once __DIR__ . '/../includes/header.php';
 
     </div>
     <!--
-    <button class="bc-btn bc-btn-danger" id="btnStopTavern">
+    <button class="bc-btn bc-btn-danger" id="btnStopmarket-tavern">
         Stop
     </button>
     -->

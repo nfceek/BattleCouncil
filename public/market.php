@@ -1,21 +1,21 @@
 <?php
-$pageClass = 'page-tavern';
-$pageTitle = "The Tavern";
-$pageCss = "tavern";
+$pageClass = 'page-market';
+$pageTitle = "The market";
+$pageCss = "market";
 
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
 
 <!-- MAIN CONTENT -->
-<div class="container tavern-container">
+<div class="container market-container">
     <div class="container-lead">
-        Eat, Drink & Be Merry ... Dammit !
+        Lust for Knowledge !
     </div>
     <div class="bc-grid">
 
             <!-- ================= LEFT: MESSAGE BOARD ================= -->
-            <div class="bc-card tavern-core">
+            <div class="bc-card market-core">
                 <a href="<?= BASE_URL ?>/public/message_board.php" class="bc-card">
                     <div class="bc-img" style="height: 220px;">
                         <img src="<?= BASE_URL ?>/images/cards/message_board.jpg" alt="Crowing Wall">
@@ -25,32 +25,32 @@ require_once __DIR__ . '/../includes/header.php';
                             <h2>The Crowing Wall</h2>
                         </div>
                         <div class="bc-content-inner" style="padding: 15px;">  
-                            <p>Gotta Tip or Tidbit of knowledge you want to share?</p>
+                            <p>Gotta Tip or Tidbit of knowledge? Share it!</p>
                         </div>
                     </div>
                 </a>
             </div>
 
-            <!-- ================= CENTER: TAVERN CORE ================= -->
-            <div class="bc-card tavern-core">
-                <a href="<?= BASE_URL ?>/public/tavern_stage.php" class="bc-card">
-                    <div class="bc-img" style="height: 220px;">
-                        <img src="<?= BASE_URL ?>/images/cards/tavern_wench.png"  alt="Talking Heads">
+            <!-- ================= CENTER: market ================= -->
+            <div class="bc-card market-core">
+                <a href="<?= BASE_URL ?>/index.php" class="bc-card">
+                    <div class="bc-img-soon" style="height: 220px;">
+                        <img src="<?= BASE_URL ?>/images/cards/market_stage.jpg"  alt="Market Stage">
                     </div>
 
                     <div class="bc-content">
                         <div class="bc-content-leader" style="text-align:center">
-                            <h2>The Talking Head Tavern</h2>
+                            <h2 class="future-header">Town Square</h2>
                         </div>
 
                         <div class="bc-content-inner" style="padding: 15px;">
-                            C'mon in. Have a pint and share a few lies
+                            Watch the game characters come alive
                         </div>
                     </div>
                 </a>
             </div>
             <!-- ================= RIGHT: BAR + RUMORS ================= -->
-            <div class="bc-card tavern-core">
+            <div class="bc-card market-core">
                 <a href="<?= BASE_URL ?>/public/mystic.php" class="bc-card">
                     <div class="bc-img" style="height: 220px;">
                         <img src="<?= BASE_URL ?>/images/cards/lynnes-b.jpg" alt="Lynnes Mystic">
@@ -68,17 +68,17 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
 
             <!-- ================= Kings Rook ================= -->
-            <div class="bc-card tavern-core">
+            <div class="bc-card market-core">
                 <div class="bc-img-soon" style="height: 220px;">
                     <img src="<?= BASE_URL ?>/images/cards/kingsrook.jpg" alt="Kings Rook">
                     </div>    
                     <div class="bc-content">
                     <div class="bc-content-leader" style="text-align:center">
                         <h2 class="future-header">The Kings' Rook</h2>
-                        <h3 class="future">Future Use</h3>
+                        <h2 class="future-header">Tavern</h2>
                     </div>
                     <div class="bc-content-inner" style="padding: 15px;">  
-                        <p>What is the key?</p>
+                        <p>The Topic is Dragons....Discuss</p>
                     </div>
                 </div>
             </div>
@@ -98,8 +98,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                     <div class="bc-content-inner" style="padding: 15px;">  
                         <p>
-                        The 2 things the games needs<br />
-                         Time and something of value
+                            The games in 2 words: Time & Value
                         </p>
                     </div>
 
@@ -125,6 +124,25 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
             </a>
         </div>
+                    <!-- ================= shiny bits ================= -->
+            <div class="bc-card market-core">
+                <a href="<?= BASE_URL ?>/index.php" class="bc-card">
+                    <div class="bc-img-soon" style="height: 220px;">
+                        <img src="<?= BASE_URL ?>/images/cards/shiny_bits.png"  alt="Shoppe">
+                    </div>
+
+                    <div class="bc-content">
+                        <div class="bc-content-leader" style="text-align:center">
+                            <h2 class="future-header">Shiny Bits</h2>
+                            <h3 class="future">Gift Shoppe</h3>
+                        </div>
+
+                        <div class="bc-content-inner" style="padding: 15px;">
+                            Got Gold in Yer Britches to Spend ?
+                        </div>
+                    </div>
+                </a>
+            </div>
     </div>
 </div>
 
