@@ -30,15 +30,18 @@ require_once __DIR__ . '/../includes/header.php';
                              data-zone="center"
                              data-mode="queue"></div>
 
-                        <!-- NPC: CHAR -->
                         <div id="npc_lynne"
-                             class="npc npc-Lynne"
-                             data-npc="Lynne"
-                             data-state="idle"
-                             data-mood="annoyed"></div>
+                            class="npc npc-Lynne"
+                            data-npc="Lynne"
+                            data-state="idle"
+                            data-mood="annoyed">
 
+                            <div class="npc-body">
+                                <div class="lynne-mouth"></div>
+                            </div>
+
+                        </div>
                     </div>
-
                     <!-- ACTION BAR (INSIDE CONTEXT) -->
 
                     <div class="mystic-input">

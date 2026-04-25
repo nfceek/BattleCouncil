@@ -1,61 +1,164 @@
 /* =========================
-   MYSTIC LYNNE SYSTEM
-   ========================= */
+   MYSTIC LYNNE SYSTEM (SAFE FIX)
+========================= */
 
+/* =========================
+   BASE NPC
+========================= */
 .npc-Lynne {
-    position: relative;
-    transition: all 0.4s ease;
+    position: absolute;
+    bottom: 15px;
+    right: 25px;
+
+    width: 320px;
+    height: 420px;
+
+    background: url('/images/mystic/mystic-dragon.png') no-repeat center bottom;
+    background-size: contain;
+
+    z-index: 5;
+
+    transition: transform 0.3s ease, filter 0.3s ease, opacity 0.6s ease;
+
+    animation: lynneIdle 4s ease-in-out infinite;
 }
 
-/* ---------- STATES ---------- */
+/* =========================
+   IDLE
+========================= */
+@keyframes lynneIdle {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
 
+/* =========================
+   STATES
+========================= */
+
+/* THINKING */
 .npc-Lynne.shake {
-    animation: lynneShake 0.6s infinite;
+    animation: lynneShake 0.5s infinite;
 }
 
+@keyframes lynneShake {
+    0%   { transform: translate(0, 0); }
+    25%  { transform: translate(-2px, 1px); }
+    50%  { transform: translate(2px, -1px); }
+    75%  { transform: translate(-1px, 2px); }
+    100% { transform: translate(0, 0); }
+}
+
+/* BLESSING */
 .npc-Lynne.glow {
-    filter: drop-shadow(0 0 14px #b06cff);
+    filter: drop-shadow(0 0 16px rgba(176,108,255,0.9));
 }
 
+/* DOOM */
 .npc-Lynne.doom {
-    animation: lynneFlicker 0.18s infinite;
-    filter: hue-rotate(320deg) saturate(1.5);
+    animation: lynneFlicker 0.2s infinite;
+    filter: hue-rotate(320deg) saturate(1.6) brightness(0.9);
 }
 
+@keyframes lynneFlicker {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* FADE */
 .npc-Lynne.fade {
-    opacity: 0.15;
-    transition: opacity 2s ease;
+    opacity: 0.2;
 }
 
-/* ---------- OUTPUT BUBBLE ---------- */
+.npc-body {
+    width: 100%;
+    height: 100%;
+    animation: lynneFloat 4s ease-in-out infinite;
+}
 
+@keyframes lynneFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* =========================
+   TALKING (SAFE OVERRIDE)
+========================= */
+.npc-Lynne.talking {
+    animation: none !important;
+}
+
+/* =========================
+   MOUTH SYSTEM
+========================= */
+.lynne-mouth {
+    position: absolute;
+    bottom: 48%;
+    left: 42%;
+
+    width: 49px;
+    height: 10px;
+
+    /*background: #8d5d5d;
+    background: url('/images/mystic/mystic-dragon-jaw.png');
+    border-radius: 0 0 20px 20px;
+    border-bottom-width: 5px solid #362626;*/
+
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    /* FIX: combine transforms */
+    transform: translateX(-46%) rotate(-30deg);
+    transform-origin: center;    
+}
+
+.npc-Lynne.talking .lynne-mouth {
+    opacity: 1;
+    animation: mouthFlicker 120ms infinite;
+}
+
+@keyframes mouthFlicker {
+    0% {
+        transform: translateX(-46%) rotate(-30deg) scaleY(0.6);
+    }
+    50% {
+        transform: translateX(-46%) rotate(-31deg) scaleY(1.1);
+    }
+    100% {
+        transform: translateX(-46%) rotate(-30deg) scaleY(0.8);
+    }
+}
+/* =========================
+   OUTPUT BUBBLE
+========================= */
 .mystic-answer {
     background: rgba(10, 5, 20, 0.85);
     border: 1px solid #7a4cff;
     color: #e9ddff;
+
     padding: 12px 16px;
     margin-top: 10px;
+
     border-radius: 10px;
     font-style: italic;
     max-width: 420px;
 }
 
-/* ---------- ANIMATIONS ---------- */
-
-@keyframes lynneShake {
-    0% { transform: translate(0,0); }
-    25% { transform: translate(-2px, 1px); }
-    50% { transform: translate(2px, -1px); }
-    75% { transform: translate(-2px, -1px); }
-    100% { transform: translate(0,0); }
+/* THINKING ANIMATION */
+.mystic-thinking {
+    letter-spacing: 4px;
+    animation: thinkingDots 1.2s infinite;
 }
 
-@keyframes lynneFlicker {
-    0% { opacity: 1; }
-    50% { opacity: 0.4; }
-    100% { opacity: 1; }
+@keyframes thinkingDots {
+    0%   { opacity: 0.3; }
+    50%  { opacity: 1; }
+    100% { opacity: 0.3; }
 }
 
+/* =========================
+   CONTAINER SYSTEM (RESTORED)
+========================= */
 .mystic-container {
     padding: 20px;
     max-width: 1200px;
@@ -63,13 +166,6 @@
     text-align: center;
 }
 
-.container-lead {
-    font-size: 2em;
-    font-weight: bold;
-    padding: 12px;
-}
-
-/* optional secondary stage wrapper */
 .mystic-container-stage {
     padding: 20px;
     max-width: 400px;
@@ -77,141 +173,50 @@
     text-align: center;
 }
 
-/* -----------------------------
-   MAIN STAGE (FIXED CORE ISSUE)
-------------------------------*/
+/* =========================
+   STAGE
+========================= */
 .mystic-stage {
     position: relative;
     width: 330px;
     height: 390px;
-    margin: 0 auto;          /* 🔥 centers the stage itself */
+    margin: 0 auto;
     overflow: hidden;
     border-radius: 12px;
 
-    display: flex;           /* 🔥 enables true centering */
-    justify-content: center; /* horizontal center */
-    align-items: center;     /* vertical center */
-}
-
-.mysticSelect{
-    padding: 12px;
-}
-
-.mystic-floor{
-    padding-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .mystic-bg {
-    position: absolute;         /* 🔥 key fix */
-    inset: 0;                   /* top/right/bottom/left = 0 */
-
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-
     z-index: 1;
-
-    transition: opacity 0.3s ease;
 }
 
-/* -----------------------------
-   FOREGROUND LAYERS
-------------------------------*/
+/* TALKING LAYER */
 #talkingHeadZone {
     position: absolute;
     inset: 0;
-
-    width: 100%;
-    height: 100%;
 
     z-index: 10;
 
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;   /* 🔥 pushes content to bottom */
-    align-items: center;         /* optional: center horizontally */
+    justify-content: flex-end;
+    align-items: center;
 
-    padding: 20px;               /* gives breathing room */
+    padding: 20px;
     box-sizing: border-box;
 }
 
-/* NPC container */
-.talking-actor {
-    position: absolute;
-    pointer-events: none;
-    z-index: 20;
-}
-
-.talking-actor img {
-    display: block;
-    filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
-}
-
-
-/* background glow/plate behind NPC */
-.actor-bg {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-
-    width: 120%;
-    height: 110%;
-
-    transform: translateX(-50%);
-
-    background: radial-gradient(
-        rgba(0,0,0,0.4),
-        rgba(0,0,0,0) 70%
-    );
-
-    z-index: -1;
-}
-
-/* -----------------------------
-   BUBBLES
-------------------------------*/
-.talking-bubble {
-    position: absolute;
-    left: 50%;
-    top: -10px;
-
-    transform: translate(-50%, -100%);
-
-    background: rgba(0,0,0,0.75);
-    color: #fff;
-
-    padding: 10px 14px;
-    border-radius: 10px;
-
-    max-width: 260px;
-    text-align: center;
-
-    z-index: 30;
-}
-
-/* -----------------------------
-   UI ELEMENTS
-------------------------------*/
-.mystic-actions {
-    padding: 10px;
-}
-
-.mystic-header {
-    padding: 10px;
-}
-
-/* bar NPC */
-.bar-npc {
-    text-align: center;
-    padding: 10px;
-}
-
-.npc-dialogue {
-    margin-top: 8px;
-    font-style: italic;
-}
-
-/* input system */
+/* =========================
+   INPUT SYSTEM (RESTORED - IMPORTANT)
+========================= */
 .mystic-input {
     margin-top: 15px;
     display: flex;
@@ -231,7 +236,9 @@
     opacity: 0.7;
 }
 
-/* Base chrome button */
+/* =========================
+   BUTTONS
+========================= */
 .bc-btn {
     position: relative;
     display: inline-block;
@@ -242,14 +249,8 @@
 
     color: #fff;
     font-weight: 600;
-    letter-spacing: 0.5px;
 
-    background: linear-gradient(
-        180deg,
-        #4da3ff 0%,
-        #2f7edb 50%,
-        #1f5fb5 100%
-    );
+    background: linear-gradient(180deg,#4da3ff,#2f7edb,#1f5fb5);
 
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.35),
@@ -257,48 +258,10 @@
         0 4px 10px rgba(0,0,0,0.4);
 
     cursor: pointer;
-    transition: all 0.15s ease;
 }
 
-/* Top chrome shine */
-.bc-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-
-    height: 45%;
-    border-radius: 8px 8px 0 0;
-
-    background: linear-gradient(
-        rgba(255,255,255,0.45),
-        rgba(255,255,255,0.05)
-    );
-
-    pointer-events: none;
-}
-
-/* Hover = brighter */
-.bc-btn:hover {
-    background: linear-gradient(
-        180deg,
-        #6bb6ff 0%,
-        #3b8df0 50%,
-        #2469c9 100%
-    );
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.5),
-        inset 0 -2px 4px rgba(0,0,0,0.3),
-        0 6px 14px rgba(0,0,0,0.5);
-}
-
-/* Active press */
-.bc-btn:active {
-    transform: translateY(2px);
-
-    box-shadow:
-        inset 0 3px 6px rgba(0,0,0,0.4),
-        0 2px 4px rgba(0,0,0,0.4);
+/* EXIT BUTTON */
+.bc-btn-exit {
+    background: linear-gradient(180deg,#ffd36b,#e6a93a,#b97a1f);
+    border-color: #8a5a12;
 }
