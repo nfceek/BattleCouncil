@@ -150,7 +150,7 @@ window.MysticEngine = (() => {
         //el.input.addEventListener('input', updateCounter);
 
         el = {
-            input: document.getElementById('tavernInput'),
+            input: document.getElementById('mysticInput'),
             button: document.getElementById('btnPlayInput'),
             zone: document.getElementById('talkingHeadZone'),
             npc: document.getElementById('npc_lynne')
@@ -176,7 +176,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function updateCounter() {
-    const elInput = document.getElementById('tavernInput');
+    const elInput = document.getElementById('mysticInput');
     const counter = document.getElementById('charCount');
 
     if (!elInput || !counter) return;

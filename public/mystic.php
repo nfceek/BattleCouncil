@@ -2,34 +2,35 @@
 $pageClass = 'page-mystic';
 $pageTitle = "Mystic Lynnes";
 $pageCss = "mystic";
+$pageJs = 'mystic';
 
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="container tavern-container-stage">
+<div class="container mystic-container-stage">
     <div class="container-lead">
-        Welcome Lynnes' Mystic Corner Tavern
+        Questions Answered
     </div>
     <div class="bc-row">
 
         <!-- MAIN STAGE -->
         <div class="bc-col-12">
 
-            <div class="bc-card tavern-core">
+            <div class="bc-card mystic-core">
 
 
 
-                    <div id="tavernStage" class="tavern-stage">
+                    <div id="mysticStage" class="mystic-stage">
 
                         <!-- Background -->
-                        <img src="/images/mystic/mystic-bg.jpg" class="mystic-bg" alt="Tavern">
+                        <img src="/images/mystic/mystic-bg.jpg" class="mystic-bg" alt="mystic" style="padding-top:12px;">
 
                         <!-- TALKING HEAD ZONE -->
                         <div id="talkingHeadZone"
                              data-zone="center"
                              data-mode="queue"></div>
 
-                        <!-- NPC: BAR WENCH -->
+                        <!-- NPC: CHAR -->
                         <div id="npc_lynne"
                              class="npc npc-Lynne"
                              data-npc="Lynne"
@@ -40,48 +41,36 @@ require_once __DIR__ . '/../includes/header.php';
 
                     <!-- ACTION BAR (INSIDE CONTEXT) -->
 
-
-                    <div class="tavern-input">
+                    <div class="mystic-input">
 
                         <!-- TEXT INPUT -->
-                        <textarea id="tavernInput"
+                        <textarea id="mysticInput"
                                 class="bc-input"
                                 maxlength="200"
-                                placeholder="Say something to the tavern..."
+                                placeholder="Do you ask something of the mystic ?"
                         ></textarea>
 
                         <!-- COUNTER -->
-                        <div class="tavern-input-meta">
+                        <div class="mystic-input-meta">
                             <span id="charCount">0 / 200</span>
                         </div>
 
-                        <!-- ACTION -->
-                        <button class="bc-btn" id="btnPlayInput">
-                            Play
-                        </button>
-
-                        <div class="tavern-actions">
-                            <button class="bc-btn" id="btnSpeak">Speak</button>
-                            <button class="bc-btn" id="btnListen">Listen</button>
-                            <button class="bc-btn" id="btnDrink">Order</button>
-
-                            <!-- TEST BUTTON (ENGINE HOOK) -->
-                            <button class="bc-btn bc-btn-debug" id="btnTestTavern">
-                                Test Engine
+                        <div class="mystic-actions">
+                            <button class="bc-btn" id="btnPlayInput">
+                                Ask Your Question
                             </button>
-                            
+
+                           <!--<button class="bc-btn" id="btnPlayHome">
+                                Home
+                            </button>-->
                         </div>
-
-                </div>
-
+                    </div>
                 </div>
             </div>
-
         </div>
-
     </div>
     <!--
-    <button class="bc-btn bc-btn-danger" id="btnStopTavern">
+    <button class="bc-btn bc-btn-danger" id="btnStopmystic">
         Stop
     </button>
     -->
